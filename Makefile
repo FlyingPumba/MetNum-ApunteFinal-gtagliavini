@@ -11,5 +11,4 @@ clean:
 	rm -f $(main).log
 	rm -f $(main).toc
 	rm -f $(main).out
-	rm -f $(main).pdf
 	rm -f $(main).synctex.gz
