@@ -1,0 +1,220 @@
+\section{Normas}
+
+\subsection{Definiciones}
+
+\begin{defi}
+Una función $f : \mathbb{R}^n \to \mathbb{R}$ es una norma vectorial si cumple:
+\begin{enumerate}
+\item $f(x) > 0$ para todo $x \neq 0$ y $f(0) = 0$.
+\item $f(\lambda x) = |\lambda| f(x)$.
+\item $f(x + y) \leq f(x) + f(y)$.
+\end{enumerate}
+\end{defi}
+
+Algunos ejemplos de normas vectoriales son:
+\begin{itemize}
+\item $\norm{x}_1 = \sum_{i = 1}^{n} |x_i|$
+\item $\norm{x}_2 = \left(\sum_{i = 1}^{n} x_i^2\right)^{1/2}$
+\item $\norm{x}_{\infty} = \max\limits_{1 \leq i \leq n}|x_i|$
+\end{itemize}
+
+El concepto se extiende naturalmente para matrices.
+
+\begin{defi}
+Una función $F : \mathbb{R}^{n \times n} \to \mathbb{R}$ es una norma matricial si cumple:
+\begin{enumerate}
+\item $F(A) > 0$ para toda $A \neq 0$ y $F(0) = 0$.
+\item $F(\lambda A) = |\lambda| F(A)$.
+\item $F(A + B) \leq F(A) + F(B)$.
+\end{enumerate}
+\end{defi}
+
+Un ejemplo de norma matricial es la norma de Frobenius, una extensión aparentemente natural de la norma 2:
+\begin{itemize}
+\item $\norm{A}_F = \left(\sum_{i = 1}^{n} \sum_{j = 1}^{n} A_{ij}^2\right)^{1/2}$
+\end{itemize}
+
+Una propiedad no necesaria, aunque deseable, es la de submultiplicatividad.
+
+\begin{defi}
+Si $F : \mathbb{R}^{n \times n} \to \mathbb{R}$ es una norma matricial, $F$ se dice submultiplicativa si
+
+\[F(AB) \leq F(A)F(B)\]
+
+para todas $A, B \in \mathbb{R}^{n \times n}$.
+\end{defi}
+
+Otra propiedad notable de las normas es la de consistencia.
+
+\begin{defi}
+Si $F : \mathbb{R}^{n \times n} \to \mathbb{R}$ es una norma matricial y $f : \mathbb{R}^n \to \mathbb{R}$ es una norma vectorial, $F$ se dice consistente con $f$ si 
+
+\[f(Ax) \leq F(A)f(x)\]
+
+para todos $A \in \mathbb{R}^{n \times n}$, $x \in \mathbb{R}^n$.
+\end{defi}
+
+\subsection{Normas inducidas}
+
+\begin{defi}
+Sea $f : \mathbb{R}^n \to \mathbb{R}$ una norma vectorial. Definimos $F : \mathbb{R}^{n \times n} \to \mathbb{R}$ como
+
+\[
+F(A) = \max\limits_{x : f(x) = 1} f(Ax)
+\]
+
+$F$ resulta una norma matricial y se la llama norma inducida por $f$.
+\end{defi}
+
+A partir de ahora simbolizaremos tanto las normas vectoriales como sus respectivas normas matriciales inducidas mediante $\norm{\cdot}$, y el significado quedará claro por el contexto.
+
+Las normas inducidas son de especial interés por lo siguiente.
+
+\begin{propo}
+Si $\norm{\cdot} : \mathbb{R}^{n \times n} \to \mathbb{R}$ es una norma matricial inducida, entonces $\norm{\cdot}$ es submultiplicativa y consistente, es decir que
+\begin{enumerate}
+\item $\norm{AB} \leq \norm{A}\norm{B}$
+\item $\norm{Ax} \leq \norm{A}\norm{x}$
+\end{enumerate}
+
+\begin{proof}
+\begin{enumerate}
+\item Sea $x_0 \in \mathbb{R}^n$ unitario, que realiza la norma de $AB$. Entonces
+
+\[\norm{AB} = \norm{ABx_0} = \norm{A\frac{Bx_0}{\norm{Bx_0}}}\norm{Bx_0}\]
+
+Como $\frac{Bx_0}{\norm{Bx_0}}$ es un vector unitario, entonces $\norm{A\frac{Bx_0}{\norm{Bx_0}}} \leq \norm{A}$. Análogamente, $\norm{Bx_0} \leq \norm{B}$. Finalmente, como todos los factores son positivos, $\norm{AB} \leq \norm{A} \norm{B}$.
+
+\item Sea $x \in \mathbb{R}^n$ cualquiera. Entonces $\norm{A} \geq \norm{A \frac{x}{\norm{x}}} = \frac{\norm{Ax}}{\norm{x}}$ pues $\frac{x}{\norm{x}}$ es unitario. Luego $\norm{Ax} \leq \norm{A}\norm{x}$.
+\end{enumerate}
+\end{proof}
+\end{propo}
+
+\subsection{Normas matriciales clásicas}
+
+\begin{propo}
+Sea $A \in \mathbb{R}^{n \times n}$. Entonces
+
+\[\norm{A}_{1} = \max\limits_{1 \leq j \leq n} \norm{col_j(A)}_1\]
+
+\begin{proof}
+($\geq$) Sea $1 \leq j \leq n$ arbitrario, entonces
+
+\[\norm{A}_1 = \max\limits_{x : \norm{x}_1 = 1} \norm{Ax}_1 \geq \norm{A e_j}_1 = \norm{col_j(A)}_1\]
+
+Como $j$ es cualquiera, resulta que $\norm{A}_1 \geq \max\limits_{1 \leq j \leq n} \norm{col_j(A)}_1$.\\[0.25cm]
+
+($\leq$)
+
+\begin{align*}
+\norm{A}_1 &= \max\limits_{x : \norm{x}_1 = 1} \norm{Ax}_1\\
+& = \max\limits_{x : \norm{x}_1 = 1} \norm{(fil_1(A) x, \cdots, fil_n(A) x)}_1\\
+& = \max\limits_{x : \norm{x}_1 = 1} \sum_{i = 1}^n |fil_i(A) x|\\
+& = \max\limits_{x : \norm{x}_1 = 1} \sum_{i = 1}^n \left|\sum_{j = 1}^n a_{ij} x_j\right|\\
+& \leq \max\limits_{x : \norm{x}_1 = 1} \sum_{i = 1}^n \sum_{j = 1}^n |a_{ij}| |x_j|\\
+& = \max\limits_{x : \norm{x}_1 = 1} \sum_{j = 1}^n |x_j| \left(\sum_{i = 1}^n |a_{ij}|\right)\\
+& \leq \max\limits_{x : \norm{x}_1 = 1} \sum_{j = 1}^n |x_j| \left(\max\limits_{1 \leq k \leq n} \sum_{i = 1}^n |a_{ik}|\right)\\
+& = \max\limits_{x : \norm{x}_1 = 1} \left(\max\limits_{1 \leq k \leq n} \sum_{i = 1}^n |a_{ik}|\right)\left(\sum_{j = 1}^n |x_j|\right)\\
+& = \max\limits_{x : \norm{x}_1 = 1} \left(\max\limits_{1 \leq k \leq n} \norm{col_k(A)}_1\right) \norm{x}_1\\
+& = \max \limits_{1 \leq j \leq n}\norm{col_j(A)}_1 
+\end{align*}
+
+\end{proof}
+\end{propo}
+
+\begin{propo}
+\label{propo:normainf}
+Sea $A \in \mathbb{R}^{n \times n}$. Entonces
+
+\[\norm{A}_{\infty} = \max\limits_{1 \leq i \leq n} \norm{fil_i(A)}_1\]
+
+\begin{proof} Si $A = 0$ no hay nada que ver. Supongamos $A \neq 0$.
+
+($\geq$) Sea $i_0$ la fila de $A$ con norma 1 máxima. Definimos el vector $\alpha \in \mathbb{R}^n$ de modo tal que $\alpha_j = \text{sgn}(A_{i_0j})$ para todo $j = 1, \cdots, n$. Entonces 
+
+\[fil_{i_0}(A)\alpha = \sum_{j = 1}^n A_{i_0j}\alpha_j = \sum_{j = 1}^n \text{sgn}(A_{i_0j})A_{i_0j} = \sum_{j = 1}^n |A_{i_0j}| = \norm{fil_{i_0}(A)}_1\]
+
+y si $i$ es una fila cualquiera de $A$ entonces 
+
+\[|fil_{i}(A)\alpha| = \left|\sum_{j = 1}^n A_{ij}\alpha_j\right| \leq \sum_{j = 1}^n |A_{ij}||\alpha_j| \leq \sum_{j = 1}^n |A_{ij}| = \norm{fil_{i}(A)}_1\]
+
+Luego, como $\norm{fil_i(A)}_1 \leq \norm{fil_{i_0}(A)}_1$ para todo $i$, resulta que
+
+\[\max\limits_{1 \leq i \leq n}|fil_i(A)\alpha| = \norm{fil_{i_0}(A)}_1 = \max\limits_{1 \leq i \leq n} \norm{fil_i(A)}_1\]
+
+Por otro lado, como $A \neq 0$ entonces $fil_{i_0}(A) \neq 0$ con lo cual $\alpha$ tiene alguna componente no nula. Como todas las coordenadas de $\alpha$ son 0, 1 ó -1, entonces $\norm{v}_{\infty} = 1$. Luego
+
+\[\norm{A}_{\infty} = \max\limits_{x : \norm{x}_{\infty} = 1} \norm{Ax}_{\infty} \geq \norm{A\alpha}_{\infty} = \max\limits_{1 \leq i \leq n} |fil_i(A)\alpha| = \max\limits_{1 \leq i \leq n} \norm{fil_i(A)}_1\]
+\\[0.25cm]
+($\leq$) 
+
+\begin{align*}
+\norm{A}_{\infty} = &\max\limits_{x : \norm{x}_{\infty} = 1} \norm{Ax}_{\infty}\\
+& =\max\limits_{x : \norm{x}_{\infty} = 1} \max\limits_{1 \leq i \leq n} |fil_i(A)x|\\
+& = \max\limits_{x : \norm{x}_{\infty} = 1} \max\limits_{1 \leq i \leq n} \left|\sum_{j = 1}^n a_{ij} x_j\right|\\
+& \leq \max\limits_{x : \norm{x}_{\infty} = 1} \max\limits_{1 \leq i \leq n} \sum_{j = 1}^n |a_{ij}||x_j|\\
+& \leq \max\limits_{x : \norm{x}_{\infty} = 1} \max\limits_{1 \leq i \leq n} \sum_{j = 1}^n |a_{ij}|\norm{x}_{\infty}\\
+& = \max\limits_{1 \leq i \leq n} \sum_{j = 1}^n |a_{ij}|\\
+& = \max\limits_{1 \leq i \leq n} \norm{fil_i(A)}_1
+\end{align*}
+\end{proof}
+
+\end{propo}
+
+\subsection{Estabilidad de un sistema y número de condición}
+
+Consideremos un sistema lineal $Ax = b$ de $2 \times 2$. Geométricamente se representa mediante dos rectas en el plano. Supongamos que estas rectas son \textit{casi paralelas}.
+
+\begin{figure}[h]
+\centering
+\input{imagenes/sistema.pdf_tex}
+\end{figure}
+
+Este sistema tiene solución única $x^{*} = \begin{pmatrix}x_1^* \\ x_2^*\end{pmatrix}$. Al resolverlo numéricamente encontramos una aproximación de la solución dada por $\tilde{x} = \begin{pmatrix}\tilde{x_1} \\ \tilde{x_2}\end{pmatrix}$ que, debido a la proximidad entre rectas, es tal que $A\tilde{x} = \tilde{b}$ con $\tilde{b}$ parecido a $b$. Sin embargo, pese a este parecido, $\tilde{x}$ está muy lejos de la solución exacta $x^{*}$.
+
+En este caso, en que una pequeña variación respecto del resultado exacto significa una gran imprecisión en la aproximación obtenida, se dice que el sistema está mal condicionado.
+
+La siguiente proposición formaliza esta idea intuitiva.
+
+\begin{propo}
+Sea $A \in \mathbb{R}^{n \times n}$ inversible. Sea $x^*$ solución de $Ax = b$. Sea $\tilde{x}$ solución de $Ax = \tilde{b}$. Si $\norm{\cdot}$ es una norma inducida cualquiera, entonces
+\begin{enumerate}
+\item $\norm{x^* - \tilde{x}} \leq \norm{b - \tilde{b}} \norm{A^{-1}}$
+\item $\frac{\norm{x^* - \tilde{x}}}{\norm{x^*}} \leq \norm{A} \norm{A^{-1}} \frac{\norm{b - \tilde{b}}}{\norm{b}}$
+\end{enumerate}
+
+\begin{proof}
+\begin{enumerate}
+\item Como $A$ es inversible y $\norm{\cdot}$ consistente,
+
+\[\norm{x^* - \tilde{x}} = \norm{A^{-1}b - A^{-1}\tilde{b}} = \norm{A^{-1}(b - \tilde{b})} \leq \norm{A^{-1}} \norm{b - \tilde{b}}\]
+
+\item Usando la desigualdad anterior,
+
+\[\norm{x^* - \tilde{x}} \leq \norm{A^{-1}} \norm{b - \tilde{b}} = \frac{\norm{Ax^*}}{\norm{Ax^*}} \norm{A^{-1}} \norm{b - \tilde{b}} \leq \norm{A} \norm{x^*} \norm{A^{-1}} \frac{\norm{b - \tilde{b}}}{\norm{b}}\]
+
+Para terminar basta dividir la desigualdad por $\norm{x^*}$.
+
+\end{enumerate}
+
+\end{proof}
+
+\end{propo}
+
+\begin{defi}
+Si $A\in \mathbb{R}^{n \times n}$ es inversible y $\norm{\cdot}$ es una norma inducida, definimos el número de condición de $A$ como
+
+\[\kappa(A) = \norm{A}\norm{A^{-1}}\]
+\end{defi}
+
+Con esta definición, podemos reescribir el resultado anterior como
+
+\begin{coro}
+\[\frac{\norm{x^* - \tilde{x}}}{\norm{x^*}} \leq \kappa(A) \frac{\norm{b - \tilde{b}}}{\norm{b}}\]
+\end{coro}
+
+Este resultado nos dice que cuanto más chico sea $\kappa(A)$ entonces bajo un pequeño error relativo $\frac{\norm{b - \tilde{b}}}{\norm{b}}$ (es decir, que el resultado obtenido es similar al buscado) podremos asegurar con mayor certeza un pequeño error relativo $\frac{\norm{x^* - \tilde{x}}}{\norm{x^*}}$ (es decir, que la aproximación es precisa).
+
+\begin{obs}
+$\kappa(A) \geq \norm{I} = 1$
+\end{obs}

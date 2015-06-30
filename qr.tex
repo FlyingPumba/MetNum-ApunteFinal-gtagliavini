@@ -1,0 +1,260 @@
+\section{Factorización QR}
+
+\subsection{Matrices ortogonales}
+
+\begin{defi}
+Una matriz $Q \in \mathbb{R}^{n \times n}$ se dice ortogonal si $Q^{-1} = Q^t$.
+\end{defi}
+
+\begin{obs}
+Si $Q$ es ortogonal entonces $Q^t = Q^{-1}$ también, pues $((Q^t)^{-1})^t = ((Q^t)^t)^{-1} = Q^{-1} = Q^t$.
+\end{obs}
+
+En lo que sigue, $Q$ es una matriz ortogonal de $n \times n$.
+
+\begin{lema}
+$Q$ preserva norma 2, i. e., $\norm{Qx}_2 = \norm{x}_2$.
+\end{lema}
+
+\begin{lema}
+$\norm{Q}_2 = 1$.
+\end{lema}
+
+\begin{coro}
+$\kappa_2(Q) = 1$.
+\end{coro}
+
+Esto nos dice que las matrices ortogonales son estables, lo cual se condice con el hecho de que preservan norma 2, es decir, que no deforman vectores, haciendo que el error de las componentes escalares no sea amplificado. Este motivo hace a las matrices ortogonales atractivas desde el punto de vista numérico. Además, el cómputo de su inversa no requiere más que una transposición de elementos, y por lo tanto no introduce error.
+
+\begin{defi}
+Sea $A \in \mathbb{R}^{n \times n}$. Se llama factorización QR de $A$ a una escritura de la forma $A = QR$ con $Q \in \mathbb{R}^{n \times n}$ una matriz ortogonal y $R \in \mathbb{R}^{n \times n}$ triangular superior. 
+\end{defi}
+
+Notemos que de tener la factorización QR, tenemos la cadena de equivalencias $Ax = b \Leftrightarrow QR x = b \Leftrightarrow Rx = Q^t b$ y este último sistema se puede resolver mediante backward substitution, con error mínimo.
+
+\subsection{Método de rotaciones (Givens)}
+
+Dado $\theta \in [0, \frac{\pi}{2}]$ queremos encontrar una transformación lineal $W : \mathbb{R}^2 \to \mathbb{R}^2$ que rote en un ángulo $\theta$ todo vector en el plano. Es fácil ver en forma geométrica que $W$ actúa del siguiente modo sobre la base canónica,
+
+\[W\begin{pmatrix}1 \\ 0\end{pmatrix} = \begin{pmatrix}\cos\theta \\ -\sin \theta\end{pmatrix}\]
+\[W\begin{pmatrix}0 \\ 1\end{pmatrix} = \begin{pmatrix}\sin\theta \\ \cos \theta\end{pmatrix}\]
+
+Entonces
+
+\[W = \begin{pmatrix}
+\cos \theta & \sin \theta \\
+-\sin \theta & \cos \theta
+\end{pmatrix}\]
+
+Se puede probar que esto vale para cualquier $\theta \in \mathbb{R}$ (separando en casos, según el cuadrante en que se encuentre $\theta$). De este modo quedan caracterizadas todas las rotaciones en $\mathbb{R}^2$. Notemos que $W$ es ortogonal.
+
+Supongamos que dado $v = \begin{pmatrix}v_1 \\ v_2 \end{pmatrix} \in \mathbb{R}^2$ no nulo, queremos encontrar una rotación $W : \mathbb{R}^2 \to \mathbb{R}^2$ que rote $v$ sobre el eje positivo de las abscisas, es decir, tal que $Wv = \begin{pmatrix}\norm{v}_2 \\ 0\end{pmatrix}$. Usando la forma de una rotación en $\mathbb{R}^2$, tenemos que
+
+\[Wv = \begin{pmatrix}\norm{v}_2 \\ 0\end{pmatrix} \Leftrightarrow 
+\begin{pmatrix}
+\cos \theta & \sin \theta \\
+-\sin \theta & \cos \theta
+\end{pmatrix} \begin{pmatrix}v_1 \\ v_2\end{pmatrix} = 
+\begin{pmatrix}\norm{v}_2 \\ 0\end{pmatrix} \Leftrightarrow 
+\begin{cases}
+v_1 \cos \theta  + v_2 \sin \theta  = \norm{v}_2 \\
+-v_1 \sin \theta  + v_2 \cos \theta  = 0
+\end{cases}\] 
+
+Tomemos $\theta$ tal que $\cos \theta = \frac{v_1}{\norm{v}_2}$ y  $\sin \theta = \frac{v_2}{\norm{v}_2}$. Este $\theta$ existe y es único ($\cos \theta$ y $\sin \theta$ se pueden pensar como las coordenadas $x$ e $y$ respectivamente de un punto sobre la circunferencia unitaria), y se puede verificar que así tomado satisface las ecuaciones previas. De este modo, hemos probado lo siguiente,
+
+\begin{propo}
+Sea $v = \begin{pmatrix}v_1 \\ v_2 \end{pmatrix} \in \mathbb{R}^2$ un vector no nulo. La única rotación $W : \mathbb{R}^2 \to \mathbb{R}^2$ que cumple $Wv = \begin{pmatrix}\norm{v}_2 \\ 0 \end{pmatrix}$ es
+
+\[W = \begin{pmatrix}
+\frac{v_1}{\norm{v}_2} & \frac{v_2}{\norm{v}_2}\\
+-\frac{v_2}{\norm{v}_2} & \frac{v_1}{\norm{v}_2}
+\end{pmatrix}\]
+\end{propo}
+
+Sea ahora $A = \begin{pmatrix}
+a_{11} & a_{12}\\
+a_{21} & a_{22}
+\end{pmatrix}$ cualquiera y pongamos $v = \begin{pmatrix}a_{11} \\ a_{21}\end{pmatrix}$. Si $v = 0$ entonces $A$ es triangular superior y por lo tanto $I_2 A$ es una factorización QR de $A$. Si $v \neq 0$ construimos, usando la proposición anterior, una rotación $W$ tal que $Wv = \begin{pmatrix}\norm{v}_2 \\ 0\end{pmatrix}$, con lo cual 
+
+\[WA = \begin{pmatrix}
+\norm{v}_2 & * \\
+0 & *
+\end{pmatrix} = R\]
+
+Luego $WA = R$ con $R$ triangular superior y en definitiva $A = W^tR$ es una factorización QR de $A$.
+
+\begin{propo}
+Si $A \in \mathbb{R}^{2 \times 2}$ entonces $A$ tiene factorización QR.
+\end{propo}
+
+\subsubsection{Extensión al caso general}
+Definimos para cada $1 \leq i < j \leq n$ y $v \in \mathbb{R}^2$ no nulo, las matrices
+
+\[W_{ij}(v) = \begin{pmatrix}
+I_{(i-1)}	&												&			&															& \\
+		& \frac{v_1}{\norm{v}_2}	& 0 			& \cdots & 0 & \frac{v_2}{\norm{v}_2} 	& \\
+		& 0												& 1 			& \cdots & 0 & 0												& \\
+		& \vdots											& \vdots 	& \ddots & \vdots & \vdots										& \\
+		& 0												& 0			& \cdots & 1 & 0												& \\
+		& -\frac{v_2}{\norm{v}_2}	& 0			& \cdots	 & 0 & \frac{v_1}{\norm{v}_2}	& \\
+		&												&			&		 &	 &												& I_{(n - j)}
+\end{pmatrix}\]
+
+Los espacios en blanco representan ceros. Es fácil ver que estas matrices siempre son ortogonales. 
+
+Sea $A = (a_{ij})_{i, j} \in \mathbb{R}^{n \times n}$. Vamos a ir multiplicando sucesivamente a izquierda la matriz $A$ por matrices ortogonales $W_{ij}$, de modo tal de colocar ceros en la primer columna, luego en la segunda, y así continuando. Escribamos $A^{(k)} = (a^{(k)}_{ij})_{i, j}$ a la matriz que se obtiene luego de $k$ multiplicaciones sobre $A$. A cada una de estas matrices $A^{(k)}$ la llamamos \textit{matriz transitoria}.
+
+\texttt{Paso 1:} Definimos $v = \begin{pmatrix}a_{11} \\ a_{21}\end{pmatrix}$ y sea $W_{12} = W_{12}(v)$. Entonces
+
+\[W_{12}A = \begin{pmatrix}
+a_{11}^{(1)} 	& * & \cdots & * \\
+0				& * & \cdots & * \\
+a_{31}^{(1)}		& * & \cdots & * \\
+\vdots			& \vdots &  & \vdots \\
+a_{n1}^{(1)}		& * & \cdots & *
+\end{pmatrix} = A^{(1)}\]
+
+\texttt{Paso 2:} Definimos $v = \begin{pmatrix}a_{11}^{(1)} \\ a_{31}^{(1)}\end{pmatrix}$ y sea $W_{13} = W_{13}(v)$. Entonces
+
+\[W_{13}W_{12}A = \begin{pmatrix}
+a_{11}^{(2)} 	& * & \cdots & * \\
+0				& * & \cdots & * \\
+0				& * & \cdots & * \\
+\vdots			& \vdots &  & \vdots \\
+a_{n1}^{(2)}		& * & \cdots & *
+\end{pmatrix} = A^{(2)}\]
+
+Continuando así, llegaremos al
+
+\texttt{Paso n - 1:} Definimos $v = \begin{pmatrix}a_{11}^{(n - 2)} \\ a_{n1}^{(n - 2)}\end{pmatrix}$ y sea $W_{1n} = W_{1n}(v)$. Entonces
+
+ \[W_{1n} \cdots W_{12}A = \begin{pmatrix}
+a_{11}^{(n - 1)} 	& * & \cdots & * \\
+0				& * & \cdots & * \\
+0				& * & \cdots & * \\
+\vdots			& \vdots &  & \vdots \\
+0				& * & \cdots & *
+\end{pmatrix} = A^{(n - 1)}\]
+
+Si en alguno de los pasos resulta que $v = 0$ entonces no es necesario multiplicar por ninguna matriz para colocar un cero en una determinada posición, y podemos saltar al paso siguiente.
+
+Análogamente, para poner ceros en la segunda columna definimos $W_{2j}$, $j = 3, \cdots, n$. En general, al poner ceros en la columna $i$ definimos $W_{ij}$, $j = i + 1, \cdots, n$. Notar que al multiplicar por las matrices $W_{ij}$, las columnas $1, \cdots, i - 1$ no son modificadas. 
+
+El último paso será el
+
+\texttt{Paso n(n - 1)/2:} Definimos $W_{(n - 1)n}$ como se indica arriba, de modo tal que
+
+\[W_{(n-1)n} \cdots W_{23}W_{1n} \cdots W_{12} A = R\]
+
+con $R$ triangular superior. Luego, como cada $W_{ij}$ es ortogonal,
+
+\[A = W_{12}^t \cdots W_{(n-1)n}^tR\]
+
+y como producto de matrices ortogonales es una matriz ortogonal, definiendo $Q = W_{12}^t \cdots W_{(n-1)n}^t$, llegamos a que $A = QR$, que es la factorización QR de $A$.
+
+\begin{propo}
+Si $A \in \mathbb{R}^{n \times n}$ entonces $A$ tiene factorización QR.
+\end{propo}
+
+\subsubsection{Costo del algoritmo}
+
+El costo está dado por
+
+\[\sum_{i = 1}^{n - 1}(\text{costo de colocar ceros en la columna }i)\]
+
+Para colocar ceros en la columna $i$ de la matriz transitoria la multiplicamos por $n - i$ matrices $W_{ij}$, $j = i + 1, \cdots, n$. El costo de armar $W_{ij}$ es $\mathcal{O}(1)$ suponiendo una representación óptima en el sentido espacial, pues sólo es necesario almacenar 4 elementos. Para computar el producto de $W_{ij}$ por la matriz transitoria, sólo es necesario multiplicar las filas $i$ y $j$ de $W_{ij}$, pues el resto de las filas son vectores canónicos que dejan intactas las correspondientes filas de la matriz transitoria. Las filas $i$ y $j$ de $W_{ij}$ sólo contienen dos entradas no nulas, que son las únicas que se multiplican y suman contra las $n - i + 1$ últimas columnas de la matriz transitoria (las únicas no nulas debajo de la diagonal).
+
+Sumando estos costos, resultan en total
+
+\[\mathcal{O}\left(\sum_{i = 1}^{n - 1}(n - i)(1 + 2\cdot 2 \cdot (n - i + 1)))\right) = \mathcal{O}(n^3)\]
+
+Un análisis más fino permite ver que el método de rotaciones realiza aproximadamente $\frac{4}{3}n^3$ operaciones de punto flotante.
+
+\subsection{Método de reflexiones (Householder)}
+
+Dado un vector $u \in \mathbb{R}^n$, $\norm{u}_2 = 1$, busco una transformación lineal $W : \mathbb{R}^n \to \mathbb{R}^n$ que refleje todo vector sobre el hiperplano $H$ perpendicular a $u$. Notemos que una tal $W$ cumple:
+
+\begin{itemize}
+\item $Wu = -u$
+\item $Wv = v$ para todo $v \in H$
+\end{itemize}
+
+Estas condiciones caracterizan unívocamente a $W$, porque indican cómo actúa sobre $u$ y sobre una base de $H$, y esta información define a $W$ sobre una base de $\mathbb{R}^n$. Calculemos entonces esta transformación lineal.
+
+Consideremos $P = uu^t \in \mathbb{R}^{n \times n}$. Se tiene
+
+\[Pu = uu^tu = u(u^tu) = u\]
+\[Pv = uu^tv = u(u^tv) = 0\]
+
+A partir de $P$, definimos $W = I - 2P$, que cumple
+
+\[Wu = u - 2Pu = u - 2u = -u\]
+\[Wv = v - 2Pv = v - 0 = v\]
+
+Entonces $W = I - 2P = I - 2uu^t$ es la única transformación lineal que cumple lo pedido. Esta transformación lineal se llama reflexión sobre el hiperplano ortogonal a $u$. De este modo, hemos caracterizado todas las reflexiones en $\mathbb{R}^n$. Notemos que esta matriz $W$ es ortogonal.
+
+Supongamos ahora que tenemos dos vectores $v, w \in \mathbb{R}^n$ con misma norma 2. Queremos encontrar una reflexión $W$, que refleje $v$ en $w$. En otras palabras, buscamos un vector $u \in \mathbb{R}^n$ tal que la reflexión sobre el hiperplano perpendicular a $u$ mande $v$ en $w$.
+
+\begin{propo}
+Sean $v, w \in \mathbb{R}^n$ tal que $\norm{v}_2 = \norm{w}_2$. Entonces existe una reflexión $W$ tal que $Wv = w$.
+
+\begin{proof}
+Si $v = w = 0$ no hay nada que ver. Supongamos que son no nulos. Como $\norm{v}_2 = \norm{w}_2$, podemos tomar $u = \frac{v - w}{\norm{v - w}_2}$ que es tal que $\norm{u}_2 = 1$, y una cuenta indica que $W = I - 2uu^t$ es una reflexión que manda $v$ en $w$.
+\end{proof}
+\end{propo}
+
+A partir de esto vamos a construir una factorización QR de una matriz $A = (a_{ij})_{i, j} \in \mathbb{R}^{n \times n}$. Vamos a ir multiplicando a la matriz $A$ sucesivamente por matrices de reflexión, para poner ceros en la primera columna, luego en la segunda, y así sucesivamente. Como de costumbre, llamemos $A^{(k)}$ a la matriz $A$ luego de $k$ multiplicaciones.
+
+
+\texttt{Paso 1:} Definimos $v$ como la primera columna de $A$, es decir, $v = \begin{pmatrix} a_{11} \\ \vdots \\ a_{n1} \end{pmatrix} \in \mathbb{R}^{n}$, y sea $w = \begin{pmatrix}\norm{v}_2 \\ 0 \\ \vdots \\ 0 \end{pmatrix} \in \mathbb{R}^{n}$. Entonces $\norm{v}_2 = \norm{w}_2$ con lo cual existe una reflexión $W_1 = I - 2u_1u_1^t \in \mathbb{R}^{n \times n}$ tal que $W_1v = w$, que cumple
+
+\[W_1 A = \begin{pmatrix}
+* & * & \cdots & *\\
+0 & * & \cdots & *\\
+\vdots & \vdots & & \vdots \\
+0 & * & \cdots & *
+\end{pmatrix} = A^{(1)}\]
+
+\texttt{Paso 2:} Definimos $v$ como la primer columna de la submatriz de $A^{(1)}$ que se obtiene sacando su primera fila y columna, es decir, $v = \begin{pmatrix}a^{(1)}_{22} \\ \vdots \\ a^{(1)}_{n2} \end{pmatrix} \in \mathbb{R}^{n - 1}$, y sea $w = \begin{pmatrix}\norm{v}_2 \\ 0 \\ \vdots \\ 0 \end{pmatrix} \in \mathbb{R}^{n - 1}$. Entonces existe $\overline{W}_2 = I - 2\overline{u}_2\overline{u}_2^t \in \mathbb{R}^{(n - 1) \times (n - 1)}$ reflexión tal que $\overline{W}_2v = w$. Si llamamos $u_2 = \begin{pmatrix}0 \\ \overline{u}_2\end{pmatrix} \in \mathbb{R}^n$ y $W_2 = I - 2u_2u_2^t = \begin{pmatrix}1 & 0 & \cdots & 0 \\ 0 & &  & \\
+\vdots & & \overline{W}_2 & \\ 0 & & &\end{pmatrix}$, entonces
+
+\[W_2W_1A = W_2A^{(1)} = \begin{pmatrix}
+* & * & \cdots & *\\
+0 & * & \cdots & *\\
+0 & 0 & \cdots & *\\
+\vdots & \vdots & & \vdots \\
+0 & 0 & \cdots & *
+\end{pmatrix} = A^{(2)}\]
+
+El paso $k < n$ es análogo,
+
+\texttt{Paso k:} Definimos $v$ como la primer columna de la submatriz de $A^{(k - 1)}$ que se obtiene sacando sus primeras $k - 1$ filas y columnas, es decir, $v = \begin{pmatrix}a_{kk}^{(k - 1)}\\ \vdots \\ a_{nk}^{(k - 1)}\end{pmatrix} \in \mathbb{R}^{n - k + 1}$, y sea $w = \begin{pmatrix}\norm{v}_2\\ 0 \\ \vdots \\ 0 \end{pmatrix} \in \mathbb{R}^{n - k + 1}$. Con estos, definimos la correspondiente reflexión $\overline{W_k}$ de $\mathbb{R}^{(n - k + 1) \times (n - k + 1)}$ con vector normal $\overline{u}_k$ y luego la extiendo a una reflexión $W_{k}$ de $\mathbb{R}^{n \times n}$ definiendo $u_k = \begin{pmatrix}0 \\ \vdots \\ 0 \\ \overline{u}_k\end{pmatrix}$. Entonces
+
+\[W_k \cdots W_1 A = A^{(k)}\]
+
+El último es el
+
+\texttt{Paso n - 1:} Definimos $W_{n - 1}$ como se indica arriba, de modo tal que
+
+\[W_{n - 1} \cdots W_2 W_1 A = R\]
+
+con $R$ triangular superior. Como toda reflexión es ortogonal, entonces transponiendo $W_1, \cdots, W_{n - 1}$ llegamos a la factorización QR.
+
+\subsubsection{Costo del algoritmo}
+
+Si computáramos el producto matricial en forma naïve $\mathcal{O}(n^3)$ el costo de $W_{n - 1} \cdots W_1 A$ sería $\mathcal{O}(n^4)$. Podemos usar la escritura $W_i = I - 2 u_i u_i^t$ de las matrices ortogonales para computar el producto en forma más eficiente. Notemos que $W_1A = (I - 2u_1u_1^t)A = A - 2u_iu_i^tA$. Si asociamos en la forma $A - 2u_i(u_i^tA)$, se puede ver que el costo de cada una de las operaciones es $\mathcal{O}(n^2)$. En definitiva, podemos computar $W_1A = A^{(1)}$ en $\mathcal{O}(n^2)$. Lo mismo sucede para $W_2A^{(1)}$ y así siguiendo. En total son $n - 1$ multiplicaciones, totalizando un costo $\mathcal{O}(n^3)$.
+
+El método de reflexiones realiza aproximadamente $\frac{2}{3}n^3$ operaciones de punto flotante.
+
+\subsection{Observaciones finales}
+
+El método de las rotaciones es particularmente útil cuando la matriz $A$ es rala. Como dicho método coloca ceros de a una posición a la vez, podemos evitar hacerlo para cada una de las entradas de $A$ que contengan ceros. En contraste, el método de reflexiones coloca en cada paso ceros en toda una columna.
+
+Por otra parte, a lo largo del desarrollo hemos pedido que la matriz $A$ fuese cuadrada. Sin embargo esto no es necesario, y es posible adaptar cualquiera de los métodos anteriores para obtener una factorización QR de una matriz no necesariamente cuadrada. Se tiene la siguiente generalización,
+
+\begin{propo}
+Si $A \in \mathbb{R}^{m \times n}$ entonces existen $Q \in \mathbb{R}^{m \times m}$ ortogonal y $R \in \mathbb{R}^{m \times n}$ triangular superior, tal que $A = QR$.
+\end{propo}
+
+

@@ -1,0 +1,104 @@
+\section{Integración numérica}
+
+\subsection{Problema}
+
+Dada una función $f : [a, b] \to R$, queremos calcular $\int_{a}^b f(x) dx$. Conociendo una primitiva $F$, entonces por la Regla de Barrow podemos calcular la integral y vale $\int_{a}^b f(x) dx = F(b) - F(a)$. En la mayoría de los casos calcular una primitiva de $f$ es muy difícil o no es posible. Es por esto que queremos encontrar métodos numéricos que permitan aproximar la integral.
+
+Dado que los polinomios se pueden integrar fácilmente y que además sabemos cómo aproximar una función via polinomios, vamos a utilizar la escritura
+
+\[f(x) = P_n(x) + E_n(x)\]
+
+donde $P_n$ es el polinomio interpolador de Lagrange en $n + 1$ puntos en el intervalo $[a, b]$ y $E_n$ es el error de la aproximación. Integrando:
+
+\[\int_{a}^b f(x) dx = \int_{a}^b P_n(x) dx + \int_{a}^b E_n(x) dx\]
+
+Estas fórmulas se llaman \textit{fórmulas de cuadraturas} (geométricamente cuadran el área debajo de la curva).
+
+\subsection{Regla del trapecio ($n = 1$)}
+
+Tomamos $x_0 = a$, $x_1 = b$ y consideramos $P_1$ que interpola $x_0$ y $x_1$. Sea $h = b - a$ la longitud del intervalo de integración. Entonces
+
+\[\int_{a}^b P_1(x) dx = \frac{h}{2}(f(x_0) + f(x_1))\]
+
+\[\int_{a}^b E_1(x) dx = -\frac{h^3}{12} f''(\mu)\]
+
+con $\mu \in (a, b)$.
+
+\subsection{Regla de Simpson ($n = 2$)}
+
+Tomamos $x_0 = a$, $x_1 = \frac{a + b}{2}$, $x_2 = b$ y consideramos $P_2$ que interpola $x_0$, $x_1$ y $x_2$. Sea $h = x_1 - x_0 = x_2 - x_1 = \frac{b - a}{2}$ la longitud de los subintervalos. Entonces
+
+\[\int_{a}^b P_2(x) dx = \frac{h}{3}(f(x_0) + 4f(x_1) + f(x_2))\]
+
+\[\int_{a}^b E_2(x) dx = -\frac{h^5}{90} f^{(4)}(\mu)\]
+
+con $\mu \in (a, b)$.
+
+\subsection{Grado de precisión}
+
+\begin{defi}
+Se llama grado de precisión de una fórmula de cuadratura al máximo entero positivo $n$ tal que la fórmula es exacta para todo polinomio de grado menor o igual a $n$.
+\end{defi}
+
+El grado de precisión se puede deducir de la fórmula del error de los métodos. En el caso de trapecio, el error involucra una derivada segunda, con lo cual el grado de precisión es 1 (es exacta para todo polinomio de grado 0 o 1 pero existen polinomios de grado 2 para los cuales no lo es). En el caso de Simpson, el grado de precisión es 3.
+
+\subsection{Reglas compuestas}
+Al intervalo de integración lo dividimos en subintervalos y en cada uno de ellos aplicamos alguno de los métodos conocidos.
+
+\subsubsection{Regla compuesta del trapecio}
+
+Si dividimos al intervalo $[a, b]$ en $n$ subintervalos, entonces cada uno tendrá longitud $h = \frac{b - a}{n}$. La aproximación es ahora
+
+\[\frac{h}{2}\left(f(x_0) + 2 \sum_{i = 1}^{n - 1} f(x_i) + f(x_n)\right)\]
+
+El error es
+
+\[-\frac{b - a}{12}h^2 f''(\mu)\]
+
+con $\mu \in (a, b)$.
+
+\subsubsection{Regla compuesta de Simpson}
+
+Recordemos que Simpson utilizaba tres puntos del intervalo para aproximar. Entonces, si dividimos al intervalo $[a, b]$ en $n$ subintervalos, la regla de Simpson se aplicará sobre cada par consecutivo de ellos. Por lo tanto, necesitamos una cantidad $n$ de subitervalos par. La aproximación es
+
+\[\frac{h}{3}\sum_{k = 0}^{n/2 - 1}\left(f(x_{2k}) + 4 f(x_{2k + 1}) + f(x_{2k + 2})\right)\]
+
+El error es
+
+\[-\frac{b - a}{180}h^4 f^{(4)}(\mu)\]
+
+con $\mu \in (a, b)$.
+
+\subsection{Métodos adaptativos}
+
+Supongamos que queremos integrar una función cuyo comportamiento es irregular. En cierto subintervalo, la función tiene una gran variación, lo cual obliga a utilizar una aproximación con una partición fina del subintervalo sobre la cual utilizar una regla compuesta. Sin embargo en otro subintervalo disjunto, la función tiene una variación muy pequeña, haciéndola apta para un método de aproximación sin demasiado refinamiento.
+
+En este tipo de situaciones se utilizan métodos adaptativos, que analizan en cada subintervalo cuál es la precisión de una aproximación de la integral y en caso de no ser suficiente, utilizan una aproximación más fina partiendo en otros subintervalos.
+
+Estudiemos el método basado en la regla de Simpson compuesta. Llamemos $S(x, y)$ a la aproximación de Simpson del intervalo $[x, y]$ para la función $f$. Supongamos que queremos integrar el intervalo $[a, b]$.
+
+\texttt{Paso 1:} Tomamos dos subintervalos, cada uno de tamaño $h = \frac{b - a}{2}$, aplicando Simpson, obteniendose
+
+\[\int_{a}^b f(x) dx = S(a, b) - \frac{h^5}{90} f^{(4)}(\mu)\]
+
+\texttt{Paso 2:} Partimos cada subintervalo en otros dos de tamaño $\frac{h}{2}$. Aplicamos la regla compuesta de simpson en $\left[a, \frac{a + b}{2}\right]$ y $\left[\frac{a + b}{2}, b\right]$, obteniendose
+
+\[\int_{a}^b f(x) dx = S\left(a, \frac{a + b}{2}\right) + S\left(\frac{a + b}{2}, b\right) - \frac{1}{180}\left(\frac{h}{2}\right)^4(b - a) f^{(4)}(\tilde{\mu})\]
+
+Como $h = \frac{b - a}{2}$, el resto se puede reescribir como
+
+\[- \frac{1}{16}\frac{h^5}{90} f^{(4)}(\tilde{\mu})\]
+
+Supongamos que $f^{(4)}(\mu) \approx f^{(4)}(\tilde{\mu})$, entonces si igualamos las expresiones obtenidas en los pasos 1 y 2:
+
+\begin{align*}
+&\int_{a}^b f(x) dx = S(a, b) - \frac{h^5}{90} f^{(4)}(\mu) = \int_{a}^b f(x) dx = S\left(a, \frac{a + b}{2}\right) + S\left(\frac{a + b}{2}, b\right) - \frac{1}{16}\frac{h^5}{90} f^{(4)}(\mu)\\
+	&\Leftrightarrow -\frac{15}{16}\frac{h^5}{90} f^{(4)}(\mu) = S\left(a, \frac{a + b}{2}\right) + S\left(\frac{a + b}{2}, b\right) - S(a, b)\\
+	&\Leftrightarrow -\frac{1}{16}\frac{h^5}{90} f^{(4)}(\mu) = \frac{1}{15}\left(S\left(a, \frac{a + b}{2}\right) + S\left(\frac{a + b}{2}, b\right) - S(a, b)\right)
+\end{align*}
+
+Es decir que el error al subdividir los intervalos es
+
+\[\frac{1}{15}\left(S\left(a, \frac{a + b}{2}\right) + S\left(\frac{a + b}{2}, b\right) - S(a, b)\right)\]
+
+Si este valor es suficientemente chico, concluyo la subdivisión. En caso contrario, procedo recursivamente, volviendo al paso 1, sobre los intervalos $\left[a, \frac{a + b}{2}\right]$ y $\left[\frac{a + b}{2}, b\right]$

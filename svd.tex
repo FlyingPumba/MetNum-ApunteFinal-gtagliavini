@@ -1,0 +1,381 @@
+\section{Descomposición en valores singulares}
+
+\subsection{Problema}
+
+Dada $A \in \mathbb{R}^{m \times n}$ queremos descomponer $A = U \Sigma V^t$ con $U \in \mathbb{R}^{m \times m}$ ortogonal, $\Sigma \in \mathbb{R}^{m \times n}$ diagonal y $V\in \mathbb{R}^{n \times n}$ ortogonal.
+
+\subsection{Lemas auxiliares}
+
+Para llegar al resultado principal de esta sección necesitaremos algunos resultados auxiliares.
+
+\begin{obs}
+El producto interno canónico en $\mathbb{C}^n$ es la forma $\Phi: \mathbb{C}^n \times \mathbb{C}^n \to \mathbb{C}$ tal que
+
+\[\Phi(x, y) = x^t \overline{y}\]
+
+donde $\overline{y}$ es la conjugación de $y$ coordenada a coordenada. Notar que restringido a $\mathbb{R}^n$, coincide con el producto interno canónico en $\mathbb{R}^n$.
+\end{obs}
+
+En lo que sigue, todos los productos internos considerados serán el canónico en $\mathbb{C}^n$, y lo notaremos con $\langle, \rangle$.
+
+\begin{obs}
+Si $\alpha \in \mathbb{C}$ y $x, y \in \mathbb{C}^n$, entonces
+
+\[\langle \alpha x, y \rangle = (\alpha x)^t \overline{y} = \alpha x^t \overline{y} = \alpha \langle x, y \rangle\]
+
+\[\langle x, \alpha y \rangle = x^t \overline{\alpha y} = x^t (\overline{\alpha} \hspace{1mm} \overline{y}) = \overline{\alpha} x^t \overline{y} = \overline{\alpha} \langle x, y \rangle\]
+\end{obs}
+
+\begin{obs}
+Si $A \in \mathbb{R}^{n \times n}$ es simétrica y $v, w \in \mathbb{C}^n$, entonces
+
+\[\langle Av, w \rangle = (Av)^t \overline{w} = v^t A^t \overline{w} = v^t A \overline{w} = v^t \overline{\overline{A} w} = v^t \overline{A w} = \langle v, Aw \rangle\]
+\end{obs}
+
+\begin{lema}
+\label{lema:autovreales}
+Sea $A \in \mathbb{R}^{n \times n}$ simétrica. Entonces todos sus autovalores son reales.
+
+\begin{proof}
+Sea $\lambda \in \mathbb{C}$ un autovalor de $A$. Sea $v \in \mathbb{C}^n$ un autovector asociado. Entonces
+
+\[\langle Av, v \rangle = \langle \lambda v, v \rangle = \lambda \langle v, v \rangle = \lambda \norm{v}^2\]
+
+Por otro lado,
+
+\[\langle Av, v \rangle = \langle v, Av \rangle = \langle v, \lambda v \rangle = \overline{\lambda}\langle v, v \rangle = \overline{\lambda} \norm{v}^2\]
+
+Luego $\lambda \norm{v}^2 = \langle Av, v \rangle = \overline{\lambda} \norm{v}^2$, es decir que $\lambda \norm{v}^2 = \overline{\lambda} \norm{v}^2$. Como $v \neq 0$ por ser autovector, entonces $\lambda = \overline{\lambda}$, por lo que concluimos que $\lambda \in \mathbb{R}$.
+\end{proof}
+\end{lema}
+
+\begin{lema}
+Sea $A \in \mathbb{R}^{n \times n}$ simétrica. Si $\lambda \in \mathbb{R}$ es autovalor de $A$ entonces $\lambda$ tiene un autovector asociado con coordenadas reales.
+
+\begin{proof}
+Sea $v \in \mathbb{C}^n$ un autovector asociado a $\lambda$. Si todas las coordenadas de $v$ son imaginarios puros, entonces definimos $w = iv$, que tiene todas las coordenadas reales. Además $w \neq 0$ porque $v \neq 0$. Se tiene
+
+\[Aw = A(iv) = iAv = i(\lambda v) = \lambda (iv) = \lambda w\]
+
+Entonces $w \in \mathbb{R}^n$ es un autovector asociado a $\lambda$.
+
+Veamos el caso en que $v$ tiene alguna coordenada que no es imaginario puro. Consideramos $w = v + \overline{v}$. Es claro que $w$ es un vector de números reales. La coordenada que en $v$ no era un imaginario pura tiene parte real no nula, con lo cual esa misma coordenada es no nula en $w$. Luego $w \neq 0$. Además, usando que $A$ y $\lambda$ son reales,
+
+\[Aw = A(v + \overline{v}) = Av + A\overline{v} = Av + \overline{\overline{A}v} = Av + \overline{Av} = \lambda v + \overline{\lambda v} = \lambda v + \overline{\lambda} \overline{v} = \lambda v + \lambda \overline{v} = \lambda(v + \overline{v}) = \lambda w \]
+
+Luego $w \in \mathbb{R}^n$ es un autovector asociado a $\lambda$.
+\end{proof}
+\end{lema}
+
+\begin{propo}
+Sea $A \in \mathbb{R}^{n \times n}$ simétrica. Entonces existen $Q \in \mathbb{R}^{n \times n}$ ortogonal y $D \in \mathbb{R}^{n \times n}$ diagonal tal que
+
+\[A = Q D Q^t\]
+\begin{proof}
+
+Inducción en $n \in \mathbb{N}$.
+
+Si $n = 1$, $A = \begin{pmatrix} a \end{pmatrix}$ para cierto $a \in \mathbb{R}$, y tomamos $Q = \begin{pmatrix} 1 \end{pmatrix}$ y $D = \begin{pmatrix} a \end{pmatrix}$.
+
+Sea $n > 1$. Sea $\lambda \in \mathbb{R}$ un autovalor de $A$, y $v \in \mathbb{R}^n$ un autovector asociado con coordenadas reales,  normalizado. Completamos $v$ a una base de $\mathbb{R}^n$, con $v_2, \cdots, v_n$. A la base $\{v, v_2, \cdots, v_n\} \subset \mathbb{R}^n$ le aplicamos el proceso de ortogonalización de Gram-Schmidt, obteniendose $\{v, w_2, \cdots, w_n\} \subset \mathbb{R}^n$. Sea 
+
+\[W = \left(\begin{array}{c|c|c}
+& &\\
+w_2 & \cdots & w_n\\
+& &
+\end{array}\right) \in \mathbb{R}^{n \times (n - 1)}\]
+
+A partir de esta, definimos
+
+\[U = \left(\begin{array}{c|ccc}
+& & &\\
+v& & W &\\
+& & &
+\end{array}\right) \in \mathbb{R}^{n \times n}\]
+
+Entonces 
+
+\begin{align*}
+U^t A U &= \left(\begin{array}{ccc}
+& v^t& \\\hline
+& & \\
+& W^t & \\
+& &
+\end{array}\right) A \left(\begin{array}{c|ccc}
+& & &\\
+v& & W &\\
+& & &
+\end{array}\right)\\
+&= \left(\begin{array}{ccc}
+& v^t A& \\\hline
+& & \\
+& W^t A & \\
+& &
+\end{array}\right)\left(\begin{array}{c|ccc}
+& & &\\
+v& & W &\\
+& & &
+\end{array}\right)\\
+&= \left(\begin{array}{c|c}
+v^t A v & v^t A W\\\hline
+W^t A u & W^t A W
+\end{array}\right)
+\end{align*}
+
+Tenemos que
+
+\[v^t A v = v^t (\lambda v) = \lambda v^t v = \lambda \norm{v}^2 = \lambda\]
+
+Además $W^tAv = W^t (\lambda v) = \lambda W^t v$, y como las filas de $W^t$ son ortogonales a $v$ entonces
+
+\[W^t Av = 0\]
+
+Análogamente
+
+\[v^tAW = (A^tv)^tW = (Av)^tW = (\lambda v)^t W = \lambda v^t W = 0\]
+
+Luego
+
+\[U^t A U = \left(\begin{array}{c|ccc}
+1 & 0 & \cdots & 0\\ \hline
+0 & & & \\
+\vdots & & W^tAW &\\
+0 & & &
+\end{array}\right)\]
+
+Resta calcular el bloque $W^tAW$. Como $W^tAW \in \mathbb{R}^{(n - 1) \times (n - 1)}$ es simétrica, entonces por hipótesis inductiva existen $\tilde{P} \in \mathbb{R}^{(n - 1) \times (n - 1)}$ ortogonal y $\tilde{D} \in \mathbb{R}^{(n - 1) \times (n - 1)}$ diagonal, tal que $W^t A W = \tilde{P}\tilde{D}\tilde{P}^t$. Extendemos $\tilde{P}$ definiendo
+
+\[P = \left(\begin{array}{c|ccc}
+1 & 0 & \cdots & 0\\ \hline
+0 & & & \\
+\vdots & & \tilde{P} &\\
+0 & & &
+\end{array}\right) \in \mathbb{R}^{n \times n}\]
+
+A $\tilde{D}$ la extendemos del siguiente modo
+
+\[D = \left(\begin{array}{c|ccc}
+\lambda & 0 & \cdots & 0\\ \hline
+0 & & & \\
+\vdots & & \tilde{D} &\\
+0 & & &
+\end{array}\right) \in \mathbb{R}^{n \times n}\]
+
+Notemos que, como $\tilde{P}$ es ortogonal, entonces $P$ también lo es. Análogamente, como $\tilde{D}$ es triangular superior, entonces $D$ también lo es. Luego
+
+\begin{align*}
+PDP^t &= \left(\begin{array}{c|ccc}
+1 & 0 & \cdots & 0\\ \hline
+0 & & & \\
+\vdots & & \tilde{P} &\\
+0 & & &
+\end{array}\right)
+\left(\begin{array}{c|ccc}
+\lambda & 0 & \cdots & 0 \\ \hline
+0 & & & \\
+\vdots & & \tilde{D} &\\
+0 & & &
+\end{array}\right)
+\left(\begin{array}{c|ccc}
+1 & 0 & \cdots & 0\\ \hline
+0 & & & \\
+\vdots & & \tilde{P}^t &\\
+0 & & &
+\end{array}\right)\\
+&= \left(\begin{array}{c|ccc}
+\lambda & 0 & \cdots & 0\\ \hline
+0 & & & \\
+\vdots & & \tilde{P}\tilde{D} &\\
+0 & & &
+\end{array}\right)
+\left(\begin{array}{c|ccc}
+1 & 0 & \cdots & 0\\ \hline
+0 & & & \\
+\vdots & & \tilde{P}^t &\\
+0 & & &
+\end{array}\right)\\
+& = \left(\begin{array}{c|ccc}
+\lambda & 0 & \cdots & 0\\ \hline
+0 & & & \\
+\vdots & & \tilde{P}\tilde{D}\tilde{P}^t &\\
+0 & & &
+\end{array}\right)\\
+& = \left(\begin{array}{c|ccc}
+\lambda & 0 & \cdots & 0\\ \hline
+0 & & & \\
+\vdots & & W^tAW &\\
+0 & & &
+\end{array}\right)\\
+& = U^tAU
+\end{align*}
+
+Entonces $PDP^t = U^tAU$, con lo cual $A = (UP)D(UP)^t$. Poniendo $Q = UP \in \mathbb{R}^{n \times n}$ resulta que $Q$ es ortogonal por ser producto de matrices ortogonales, y $A = QDQ^t$, que es lo que queríamos demostrar.
+\end{proof}
+\end{propo}
+
+\begin{lema}
+En las condiciones de la proposición anterior, las columnas de $Q$ son autovectores de $A$ y los elementos de la diagonal de $D$ son autovalores de $A$. Más precisamente $col_i(Q)$ es autovector de $A$ de autovalor $D_{ii}$.
+
+\begin{proof}
+Se tiene
+
+\[Q^tAQ = D \Rightarrow QQ^t AQ = QD \Rightarrow AQ = QD \Rightarrow col_i(AQ) = col_i(QD) \Rightarrow A\text{ }col_i(Q) = D_{ii}\text{ }col_i(Q)\]
+
+Como $Q$ es ortogonal, en particular es inversible y por lo tanto no tiene columnas nulas. Luego, $col_i(Q) \neq 0$ es autovector de $A$ de autovalor $D_{ii}$.
+\end{proof}
+\end{lema}
+
+\begin{teo}
+\label{teo:diagonalizacion}
+Sea $A \in \mathbb{R}^{n \times n}$ simétrica. Entonces existe una base ortonormal de $\mathbb{R}^n$ formada por autovectores reales de $A$.
+
+\begin{proof}
+Escribamos $A = QDQ^t$ como antes. Por el lema previo, las columnas de $Q$ son autovectores de $A$. Como $Q$ es es inversible, sus columnas son linealmente independientes y, por lo tanto, como son $n$, forman una base de $\mathbb{R}^n$. Más aún, son vectores ortogonales, pues $Q$ es ortogonal. Para que la base sea ortonormal, basta dividir cada vector por su norma.
+\end{proof}
+\end{teo}
+
+\subsection{Teorema de descomposición en valores singulares}
+
+\begin{teo}
+Sea $A \in \mathbb{R}^{m \times n}$ arbitraria. Entonces existen $U \in \mathbb{R}^{m \times m}$ ortogonal, $V \in \mathbb{R}^{n \times n}$ ortogonal y $\Sigma \in \mathbb{R}^{m \times n}$ diagonal tal que
+
+\[A = U \Sigma V^t\]
+
+\begin{proof}
+Vamos a descomponer la prueba en varios pasos.
+
+\begin{enumerate}
+\item \textbf{La matriz $AA^t \in \mathbb{R}^{m \times m}$ es simétrica.} Por la Proposición \ref{teo:diagonalizacion} existe una base ortonormal $\{u_1, \cdots, u_m\}$ de $\mathbb{R}^m$ formada por autovectores de $AA^t$. Sean $\lambda_1, \cdots, \lambda_m \in \mathbb{R}$ los autovalores asociados, todos reales por el Lema \ref{lema:autovreales}.
+
+\item \textbf{Los autovalores $\lambda_1, \cdots, \lambda_m$ son no negativos.}
+
+\begin{align*}
+AA^tu_i = \lambda_i u_i 	&\Rightarrow u_i^t AA^t u_i = \lambda_i u_i^t u_i\\
+						&\Rightarrow (A^tu_i)^t(A^tu_i) = \lambda_i \norm{u_i}_2^2\\
+						&\Rightarrow \norm{A^tu_i}_2^2 = \lambda_i \norm{u_i}_2^2\\
+						&\Rightarrow \lambda_i \geq 0 
+\end{align*}
+
+\item Supongamos sin pérdida de generalidad que $\lambda_1, \cdots, \lambda_r$ son los autovalores de $AA^t$ no nulos y definamos para cada $1 \leq i \leq r$,
+
+\[\sigma_i = \sqrt{\lambda_i}\]
+\[v_i = \frac{1}{\sigma_i} A^t u_i\]
+
+Notemos que $v_i \neq 0$ porque $Av_i = \frac{1}{\sigma_i} AA^t u_i = \frac{\lambda_i}{\sigma_i} u_i \neq 0$. 
+
+\item \textbf{Para cada $1 \leq i \leq r$, $v_i$ es autovector de $A^tA$ de autovalor $\lambda_i$.} Ya vimos que $v_i \neq 0$. Además
+
+\[A^tAv_i = \frac{1}{\sigma_i}A^tAA^tu_i = \frac{\lambda_i}{\sigma_i}A^tu_i = \lambda_i v_i\]
+
+\item \textbf{El conjunto $\{v_1, \cdots, v_r\}$ es ortonormal.}
+
+\begin{align*}
+v_i^t v_j = \left(\frac{A^t u_i}{\sigma_i}\right)^t \left(\frac{A^t u_j}{\sigma_j}\right)
+&= \frac{1}{\sigma_i \sigma_j}u_i^t AA^t u_j\\
+&= \frac{1}{\sigma_i \sigma_j} u_i^t \lambda_j u_j\\
+&= \frac{\lambda_j}{\sigma_i \sigma_j} u_i^t u_j\\
+&= \frac{\lambda_j}{\sigma_i \sigma_j} \delta_{ij}\\
+&= \frac{\lambda_j}{\sqrt{\lambda_i} \sqrt{\lambda_j}} \delta_{ij}\\
+&= \delta_{ij}
+\end{align*}
+
+\item Extendemos $\{v_1, \cdots, v_r\}$ a una base ortonormal de $\mathbb{R}^n$ con $v_{r + 1}, \cdots, v_n$. Definimos
+
+\[U = \begin{pmatrix}
+ & & \\
+u_1 & \cdots & u_m\\
+ & &
+\end{pmatrix}
+\hspace{1cm}
+V = \begin{pmatrix}
+ & & \\
+v_1 & \cdots & v_n\\
+ & &
+\end{pmatrix}
+\hspace{1cm}
+\Sigma = \begin{pmatrix}
+\sigma_1		&			&			&		& 			&		\\
+			& \ddots		&			&		&	0		&		\\
+			&			& \sigma_r 	&		&			&		\\
+			&			&			& 0		&			&		\\
+			&	0		&			&		& \ddots		&		\\
+			&			&			&		&			& 0
+\end{pmatrix}\]
+
+\item Veamos que $A = U \Sigma V^t$. Como $U$ y $V$ son ortogonales, es lo mismo ver que $U^t A V = \Sigma$. Se tiene
+
+\begin{align*}
+(U^tAV)_{ij} & = fil_i(U^tA) \text{ }col_j(V)\\
+			& = fil_i(U^t)A \text{ }col_j(V)\\
+			& = col_i(U)^tA \text{ }col_j(V)\\
+			& = u_i^t A v_j
+\end{align*}
+
+Separemos en casos:
+
+\begin{itemize}
+\item Si $j \leq r$:
+
+En este caso $v_j = \frac{1}{\sigma_j}A^t u_j$, con lo cual
+
+\begin{align*}
+u_i^t A v_j &= \frac{1}{\sigma_j} u_i^t AA^t u_j				&\\
+			&= \frac{1}{\sigma_j} u_i^t (\lambda_j u_j)		&\\
+			&= \frac{\lambda_j}{\sigma_j}u_i^t u_j			&\\
+			&= \frac{\sigma_j^2}{\sigma_j} \delta_{ij}		&& \text{(pues } \{u_1, \cdots, u_m\} \text{ es ortonormal)} \\\\
+			&= \sigma_j \delta_{ij}							&
+\end{align*}
+
+\item Si $j > r$:
+
+\begin{itemize}
+\item Si $i \leq r$:
+
+En este caso $v_i = \frac{1}{\sigma_i} A^t u_i \Rightarrow \sigma_i v_i = A^t u_i$, con lo cual
+
+\begin{align*}
+u_i^t A v_j &= (u_i^t A v_j)^t			& \\
+			&= v_j^t A^t u_i				& \\
+			&= v_j^t (\sigma_i v_i)		& \\
+			&= \sigma_i v_j^t v_i		& \\
+			&= \sigma_i \delta_{ij}		& \text{(pues } \{v_1, \cdots, v_n\} \text{ es ortonormal)} \\
+			&= 0							& \text{(pues }i \leq r < j \text{)} \\
+\end{align*}
+
+\item Si $i > r$:
+
+Tenemos entonces que $\lambda_i = 0$. Veamos que necesariamente $A^t u_i = 0$. Por el absurdo supongamos que $A^t u_i \neq 0$, entonces $0 \neq \norm{A^t u_i}_2^2 = (A^t u_i)^t(A^t u_i) = u_i^t A A^t u_i = u_i^t (\lambda_i u_i) = \lambda_i u_i^t u_i = \lambda_i \norm{u_i}_2^2$. Luego $0 \neq \lambda_i \norm{u_i}_2^2 \Rightarrow \lambda_i \neq 0$, absurdo.
+
+Como $A^t u_i = 0$ entonces
+
+\[u_i^t A v_j = (u_i^t A v_j)^t = v_j^t A^t u_i = 0\]
+\end{itemize}
+\end{itemize}
+\end{enumerate}
+\end{proof}
+\end{teo}
+
+Los elementos no nulos de la diagonal de $\Sigma$, $\sigma_1, \cdots, \sigma_r$, se llaman valores singulares de $A$. Si bien la descomposición en valores singulares no es única, las matrices $U$, $\Sigma$ y $V$ siempre cumplen ciertas propiedades
+
+\begin{propo}
+Sea $A = U \Sigma V^t$ una descomposición en valores singulares. Sean $\sigma_1, \cdots, \sigma_r$ los valores singulares. Sean $u_1, \cdots, u_m$ las columnas de $U$, y $v_1, \cdots, v_n$ las columnas de $V$. Entonces
+\begin{itemize}
+\item $u_i$ es autovector de $AA^t$.
+\item $v_i$ es autovector de $A^tA$.
+\end{itemize}
+En ambos casos, si $i \leq r$ entonces el autovalor asociado es $\sigma_i^2$ y es 0 en caso contrario.
+
+\begin{proof}
+Tenemos que
+
+\[AA^t = (U \Sigma V^t)(U \Sigma V^t)^t = U \Sigma V^t V \Sigma^t U^t = U \Sigma \Sigma^t U^t\]
+
+Notemos que $\Sigma \Sigma^t = \overline{\Sigma} = \text{diag}(\sigma_1^2, \cdots, \sigma_r^2, 0, \cdots, 0) \in \mathbb{R}^{m \times m}$. Entonces
+
+\[AA^tu_i = U \overline{\Sigma} U^t u_i = U \overline{\Sigma} e_i = U \text{ } col_i(\overline{\Sigma})\]
+
+Si $i \leq r$ entonces $col_i(\overline{\Sigma}) = \sigma_i^2 e_i$ con lo cual $AA^t u_i = \sigma_i^2 U e_i = \sigma_i^2 u_i$, es decir que $u_i$ es autovector de $AA^t$ de autovalor $\sigma_i^2$. Si $i > r$ entonces $col_i(\overline{\Sigma}) = 0$ con lo cual $u_i$ es autovector de autovalor 0.
+
+Para los $v_i$ la demostración es igual.
+\end{proof}
+\end{propo}

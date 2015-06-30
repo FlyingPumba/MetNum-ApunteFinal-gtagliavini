@@ -1,0 +1,353 @@
+\section{Métodos iterativos para resolución de sistemas lineales}
+
+\subsection{Definiciones}
+
+\begin{defi}
+Sea $A \in \mathbb{R}^{n \times n}$. El polinomio característico de $A$ es
+
+\[\chi_A(x) = \det(xI_n - A)\]
+\end{defi}
+
+\begin{defi}
+$\lambda \in \mathbb{C}$ se dice autovalor de $A \in \mathbb{R}^{n \times n}$ si existe un vector $v \in \mathbb{C}^{n}$ no nulo tal que $Av = \lambda v$. El vector $v$ se llama autovector asociado al autovalor $\lambda$.
+\end{defi}
+
+\begin{propo}
+$\lambda \in \mathbb{C}$ es autovalor de $A$ sí y sólo si $\lambda$ es raíz de $\chi_A$.
+\begin{proof}
+\begin{align*}
+\lambda \text{ es autovalor de }A & \Leftrightarrow \exists v \neq 0 \text{ tal que } Av = \lambda v\\
+& \Leftrightarrow \exists v \neq 0 \text{ tal que } (\lambda I_{n} - A)v = 0\\
+& \Leftrightarrow \lambda I_{n} - A \text{ no es inversible}\\
+& \Leftrightarrow \det(\lambda I_{n} - A) = 0\\
+& \Leftrightarrow \chi_A(\lambda) = 0
+\end{align*} 
+\end{proof}
+\end{propo}
+
+\begin{defi}
+Sea $A \in \mathbb{R}^{n \times n}$. El radio espectral de $A$ es
+
+\[\rho(A) = \max\limits_{\lambda \text{ autovalor de }A} |\lambda|\]
+\end{defi}
+
+\begin{propo}
+$\rho(A) \leq \norm{A}$ para toda norma matricial inducida compleja.
+
+\begin{proof}
+Sea $\lambda_0 \in \mathbb{C}$ un autovalor de $A$ de módulo máximo. Sea $v_0 \in \mathbb{C}^n$ un autovector asociado a $\lambda_0$. Entonces
+
+\[\norm{A} \geq \norm{A \frac{v_0}{\norm{v_0}}} = \frac{\norm{Av_0}}{\norm{v_0}}  = \frac{\norm{\lambda_0 v_0}}{\norm{v_0}} = \frac{|\lambda_0| \norm{v_0}}{\norm{v_0}} = |\lambda_0| = \rho(A) \]
+\end{proof}
+\end{propo}
+
+\begin{defi}
+Decimos que una matriz $A \in \mathbb{R}^{n \times n}$ es convergente si
+
+\[\lim_{k \to \infty}(A^k)_{ij} = 0\]
+
+para todo $i, j$.
+\end{defi}
+
+\begin{propo}
+$A$ es convergente si y sólo si $\rho(A) < 1$.
+%\begin{proof}
+%Escribir la forma de Jordan $J$ de $A$. Entonces $A$ es convergente sí y sólo si $J$ es convergente. Calcular $J^k$ y verificar que una posición cualquiera de esta matriz se puede escribir como ${k \choose i} \lambda^{k - i}$ donde $\lambda \in \mathbb{C}$ es un autovalor de $A$, e $i \in \mathbb{N}_0$. Se puede ver que esta expresión converge a 0 sí y sólo si $|\lambda| < 1$.
+%\end{proof}
+\end{propo}
+
+\begin{propo}
+Si $\rho(A) < 1$ entonces $I - A$ es inversible y además
+
+\[\sum_{k = 0}^{\infty}A^k = (I - A)^{-1}\]
+\end{propo}
+
+\subsection{Problema}
+
+Dado un sistema lineal, queremos construir una sucesión de vectores $\{x^{(k)}\}_{k \in \mathbb{N}_0}$ tal que $x^{(k)} \xrightarrow[k \to \infty]{} x^{*}$, donde $x^{*}$ sea una solución del sistema.
+
+\subsection{Métodos exactos vs. métodos iterativos}
+
+Ya hemos visto cómo resolver sistemas lineales en forma directa y exacta. La pregunta lógica es ¿por qué buscar una solución iterativa al problema si ya tenemos una directa? Para sistemas de ecuaciones pequeños, los métodos iterativos resultan más lentos que los directos, pues demandan más tiempo para realizar las suficientes iteraciones de modo de aproximar con exactitud la solución. Sin embargo, en dos situaciones los métodos iterativos resultan una mejor opción:
+\begin{itemize}
+\item \textbf{Sistemas de ecuaciones ralos (la matriz del sistema presenta muchos ceros).} Aquí los métodos iterativos son más eficientes tanto en términos temporales como espaciales. Si la matriz del sistema es rala, los métodos iterativos son compatibles con la utilización de representaciones adecuadas que reduzcan el espacio y tiempo de las operaciones, mientras que los métodos directos no. Por ejemplo, la eliminación gaussiana opera con filas completas, haciendo desaparecer los ceros presentes inicialmente en una fila. Otro ejemplo es la factorización LU que, aunque $A$ sea rala, no asegura que $L$ y $U$ sean ralas.
+
+\item \textbf{Sistemas de ecuaciones muy grandes.} Dado que la solución se aproxima mediante iteraciones sucesivas, la cantidad de iteraciones necesarias para obtener una aproximación tan buena como se desee depende de nuestro criterio. Para sistemas grandes, acotar la cantidad de iteraciones es un factor determinante en el costo temporal.
+\end{itemize}
+
+\subsection{Método de Jacobi}
+
+Sean $A = (a_{ij})_{i, j} \in \mathbb{R}^{n \times n}$ y $b = (b_i)_i \in \mathbb{R}^n$ los componentes del sistema $Ax = b$ que queremos resolver. Vamos a suponer que $a_{ii} \neq 0$ para todo $i$. Fijemos $x^{(0)} = (x_1^{(0)}, \cdots, x_n^{(0)})$ cualquiera. Definimos $x^{(1)}$ del siguiente modo. Para cada $i = 1, \cdots, n$ tomamos la ecuación $i$-ésima del sistema
+
+\[a_{i1} x_1 + \cdots + a_{in} x_n = b_i\]
+
+Reemplazamos $x_j$ por $x_j^{(0)}$ para cada $j \neq i$ y despejamos $x_i$ para definir
+
+\[x_i^{(1)} = \frac{1}{a_{ii}}\left(b_i - \sum_{j \neq i}^n a_{ij}x_j^{(0)}\right)\]
+
+En general, para definir $x^{(k)}$ usamos $x^{(k - 1)}$:
+
+\[x_i^{(k)} = \frac{1}{a_{ii}}\left(b_i - \sum_{j \neq i}^n a_{ij}x_j^{(k - 1)}\right)\]
+
+\begin{algorithm}
+\caption[]{Método de Jacobi}
+Definir $x^0$;\\
+\For{$k = 1$ to $N$}{
+		\For{$i = 1$ to $n$}{
+			$x_i^{(k)} = \frac{1}{a_{ii}}\left(b_i - \sum_{j \neq i}^n a_{ij}x_j^{(k - 1)}\right)$;\\
+		}
+}
+\end{algorithm}
+
+Es claro que el costo de cada iteración del método es $\mathcal{O}(n^2)$.
+
+Con este algoritmo podemos aprovechar los ceros que presente la matriz $A$. Supongamos que tenemos una representación adecuada para dicha matriz en la cual, en cada fila, sólo almacenamos las entradas no nulas. Con esta representación, en cada iteración de Jacobi, sólo necesitamos computar los productos $a_{ij}x_j^{(k - 1)}$ cuando $a_{ij}$ sea no nulo. Observar que como la matriz $A$ no es modificada a lo largo del proceso, nunca destruimos la representación.
+
+\subsubsection{Forma matricial}
+
+Nos proponemos dar una forma completamente matricial del método. Escribamos
+
+\[A = D - L - U\]
+
+donde 
+
+\[D = \begin{pmatrix}
+a_{11} 	& 			& 0	\\
+		& \ddots		& 	\\
+0		&			& a_{nn}\end{pmatrix}\]
+
+es la matriz que consta sólo de los elementos de la diagonal de $A$,
+
+\[L = \begin{pmatrix}
+0 		& 			& 0	\\
+		& \ddots		& 	\\
+-a_{ij}	&			& 0\end{pmatrix}\]
+
+es la matriz que consta de los elementos debajo de la diagonal de $A$ negados, y
+
+\[U = \begin{pmatrix}
+0	 	& 			& -a_{ij}	\\
+		& \ddots		& 	\\
+0		&			& 0\end{pmatrix}\]
+
+es la matriz que consta de los elementos encima de la diagonal de $A$ negados. Por hipótesis, $D$ es inversible, pues todos los elementos de la diagonal son no nulos. Se tiene $Ax = b \Leftrightarrow (D - L - U)x = b \Leftrightarrow Dx - (L + U)x = b \Leftrightarrow Dx = b + (L + U)x \Leftrightarrow x = D^{-1}b + D^{-1}(L + U)x$. Esta igualdad motiva la definición de la iteración
+
+\[x^{(k)} = D^{-1}b + D^{-1}(L + U)x^{(k - 1)}\]
+
+que en caso de converger, lo hace a una solución de $Ax = b$.
+
+\begin{obs}
+Podemos pensar esto como un problema de punto fijo. Si definimos la función $g(x) = D^{-1}b + D^{-1}(L + U)x$, entonces estamos buscando un punto fijo de $g$, utilizando la iteración $x^{(k)} = g(x^{(k - 1)})$. 
+\end{obs}
+
+Calculemos $x^{(k)}$ en términos de los elementos de $A$ y $B$ y veamos que coincide con el algoritmo de Jacobi. Se tiene
+
+\[D^{-1}b = \begin{pmatrix}
+\frac{1}{a_{11}} 	& 			& 0	\\
+		& \ddots		& 	\\
+0		&			& \frac{1}{a_{nn}}\end{pmatrix}
+\begin{pmatrix}
+b_1 \\ \vdots \\ b_n
+\end{pmatrix} = \begin{pmatrix}
+\frac{b_1}{a_{11}} \\ \vdots \\ \frac{b_n}{a_{nn}}
+\end{pmatrix}\]
+
+\[D^{-1}(L + U) = \underbrace{
+\begin{pmatrix}
+\frac{1}{a_{11}} 	& 			& 0	\\
+		& \ddots		& 	\\
+0		&			& \frac{1}{a_{nn}}\end{pmatrix}
+}_{\text{multiplica la fila } i \text{ por } 1/a_{ii}}
+\begin{pmatrix}
+0	 	& 			& -a_{ij}	\\
+		& \ddots		& 	\\
+-a_{ij}		&			& 0\end{pmatrix} =
+\begin{pmatrix}
+0 & -\frac{a_{12}}{a_{11}} & \cdots & -\frac{a_{1n}}{a_{11}}\\
+-\frac{a_{21}}{a_{22}} & 0 & \cdots & -\frac{a_{2n}}{a_{22}}\\
+\vdots & & \ddots & \vdots\\
+-\frac{a_{n1}}{a_{nn}} & -\frac{a_{n2}}{a_{nn}} & \cdots & 0\\
+\end{pmatrix}
+\]
+
+Entonces 
+
+\[x^{(k)} = D^{-1}b + D^{-1}(L + U)x^{(k - 1)} = 
+\begin{pmatrix}
+\frac{1}{a_{11}}\left(b_1 - \sum_{j \neq 1}^{n}a_{1j}x_j^{(k - 1)}\right) \\
+\vdots \\
+\frac{1}{a_{nn}}\left(b_n - \sum_{j \neq n}^{n}a_{nj}x_j^{(k - 1)}\right) \\
+\end{pmatrix}\]
+
+como queríamos ver.
+%\begin{algorithm}
+%\caption[]{Método de Jacobi}
+%Definir $x^{(0)}$;\\
+%\For{$k = 1$ to $N$}{
+%	$x^{(k)} = D^{-1}(L + U)x^{(k - 1)} + D^{-1}b$;\\
+%}
+%\end{algorithm}
+
+\subsection{Método de Gauss - Seidel}
+
+Construimos la iteración en forma análoga a Jacobi, con la única diferencia de que para calcular $x_i^{(k)}$ usamos las coordenadas $x_1^{(k)}, \cdots, x_{i - 1}^{(k)}$ ya calculadas:
+
+\[x_i^{(k)} = \frac{1}{a_{ii}}\left(b_i - \sum_{j = 1}^{i - 1}a_{ij}x_j^{(k)} - \sum_{j = i + 1}^{n} a_{ij}x_j^{(k - 1)}\right)\]
+
+\begin{algorithm}
+\caption[]{Método de Gauss - Seidel}
+Definir $x^{(0)}$;\\
+\For{$k = 1$ to $N$}{
+		\For{$i = 1$ to $n$}{
+			$x_i^{(k)} = \frac{1}{a_{ii}}\left(b_i - \sum_{j = 1}^{i - 1}a_{ij}x_j^{(k)} - \sum_{j = i + 1}^{n} a_{ij}x_j^{(k - 1)}\right)$;\\
+		}
+}
+\end{algorithm}
+
+\subsubsection{Forma matricial}
+
+Se tiene $Ax = b \Leftrightarrow (D - L - U) x = b \Leftrightarrow (D - L)x - Ux = b \Leftrightarrow (D - L)x = b + Ux \Leftrightarrow x = (D - L)^{-1}b + (D - L)^{-1}Ux$. Esta última equivalencia vale debido a que $D - L$ es inversible, pues $D$ es inversible. Definimos entonces la iteración
+
+\[x^{(k)} = (D - L)^{-1}b + (D - L)^{-1}Ux^{(k - 1)}\]
+
+Veamos que esta definición coincide con el algoritmo de Gauss - Seidel. Vamos a despejar las componentes de $x^{(k)}$ a partir de la igualdad $(D - L)x^{(k)} = b + Ux^{(k - 1)}$. Tenemos
+
+\[b + Ux^{(k - 1)} = \begin{pmatrix}
+b_1 \\ \vdots \\ b_n
+\end{pmatrix} + \begin{pmatrix}
+0	 	& 			& -a_{ij}	\\
+		& \ddots		& 	\\
+0		&			& 0\end{pmatrix} \begin{pmatrix}
+x_1^{(k - 1)} \\ \vdots \\ x_n^{(k - 1)}
+\end{pmatrix} = \begin{pmatrix}
+b_1 - \sum_{j = 2}^n a_{1j}x_j^{(k - 1)}\\
+b_2 - \sum_{j = 3}^n a_{2j}x_j^{(k - 1)}\\
+\vdots \\
+b_n
+\end{pmatrix}\]
+
+Entonces
+
+\begin{align*}
+(D - L)x^{(k)} = b + Ux^{(k - 1)} &\Leftrightarrow 
+\begin{pmatrix}
+a_{11} & & 0\\
+\vdots & \ddots & \\
+a_{n1} & \cdots & a_{nn}
+\end{pmatrix}x^{(k)} = \begin{pmatrix}
+b_1 - \sum_{j = 2}^n a_{1j}x_j^{(k - 1)}\\
+b_2 - \sum_{j = 3}^n a_{2j}x_j^{(k- 1)}\\
+\vdots \\
+b_n
+\end{pmatrix}\\
+& \Leftrightarrow 
+x^{(k)} = \begin{pmatrix}
+\frac{1}{a_{11}}\left(b_1 - \sum_{j = 2}^n a_{1j} x_j^{(k - 1)}\right)\\
+\frac{1}{a_{22}}\left(b_2 - a_{21}x_1^{(k)} - \sum_{j = 3}^n a_{2j} x_j^{(k - 1)}\right) \\
+\vdots\\
+\frac{1}{a_{nn}}\left(b_n - \sum_{j = 1}^{n - 1}a_{nj} x_j^{(k)}\right)
+\end{pmatrix}
+\end{align*}
+
+que es lo que queríamos ver.
+
+%\begin{algorithm}
+%\caption[]{Método de Gauss - Seidel}
+%Definir $x^0$;\\
+%\For{$k = 1$ to $N$}{
+%	$x^{(k)} = (D - L)^{-1}Ux^{(k - 1)} + (D - L)^{-1}b$;\\
+%}
+%\end{algorithm}
+
+\subsection{Análisis de convergencia}
+
+Hasta ahora propusimos dos iteraciones distintas, aunque nunca probamos que efectivamente convergieran a una solución. Observemos que tanto Jacobi como Gauss - Seidel, son iteraciones del tipo
+
+\[x^{(k)} = Tx^{(k - 1)} + c\]
+
+donde $T \in \mathbb{R}^{n \times n}$ y $c \in \mathbb{R}^{n}$ están fijos. A continuación proveemos una condición necesaria y suficiente sobre estas matrices-coeficientes para asegurar la convergencia.
+
+\begin{propo}
+Consideremos el sistema lineal $x = Tx + c$ y sea $x^*$ una solución del mismo. Sea $\{x^{(k)}\}_{k \in \mathbb{N}_0}$ una sucesión de vectores tal que
+
+\[x^{(k)} = Tx^{(k - 1)} + c\]
+
+para todo $k > 0$. Entonces $\{x^{(k)}\}_k$ converge a $x^*$ para todo $x^{(0)}$ si y sólo si $T$ es convergente.
+
+\begin{proof}
+Sea $r_k = x^* - x^{(k)}$. Queremos probar que $r_k \xrightarrow[k \to \infty]{} 0$ para todo $x^{(0)}$ si y sólo si $T$ converge.
+
+($\Leftarrow$) Notemos que $r_k = x^* - x^{(k)} = (Tx^* + c) - (Tx^{(k - 1)} + c) = Tx^* - Tx^{(k - 1)} = T(x^* - x^{(k - 1)}) = Tr_{k - 1}$, con lo cual $r_k = T^{k}r_0 = T^k(x^* - x^{(0)})$. Pero entonces $r_k \xrightarrow[k \to \infty]{} 0 \Leftrightarrow T^k(x^* - x^{(0)}) \xrightarrow[k \to \infty]{} 0$. Es claro que si $T$ converge vale lo anterior.\\[0.25cm]
+
+($\Rightarrow$) Recíprocamente, si $T^k(x^* - x^{(0)}) \xrightarrow[k \to \infty]{} 0$ para todo $x^{(0)}$, podemos elegir $x^{(0)}$ de modo tal que $x^* - x^{(0)} = e_i$ y por lo tanto $T^k(x^* - x^{(0)}) = T^ke_i = col_i(T^k) \xrightarrow[k \to \infty]{} 0$, y como $i$ es cualquiera resulta que $T$ converge.
+\end{proof}
+\end{propo}
+
+\begin{coro}
+$\{x^{(k)}\}_k$ converge a $x^*$ para todo $x^{(0)}$ si y sólo si $\rho(T) < 1$.
+\end{coro}
+
+Este corolario nos brinda un criterio útil para determinar la convergencia de una iteración. Recordemos que Jacobi usaba $T = D^{-1}(L + U)$ mientras que Gauss - Seidel tomaba $T = (D - L)^{-1}U$, de modo tal que, fijada $A$, basta determinar si el radio espectral de la respectiva $T$ es o no menor que 1.
+
+\subsection{Familias de matrices que aseguran la convergencia}
+
+\begin{propo}
+Si $A \in \mathbb{R}^{n \times n}$ es e. d. d. f. entonces Jacobi converge.
+
+\begin{proof}
+Sea $T = D^{-1}(L + U)$ la matriz de la iteración de Jacobi. Queremos ver que $\rho(T) < 1$. Como $\norm{\cdot}_{\infty}$ es consistente, basta probar que $\norm{T}_{\infty} < 1$. Usando la Proposición \ref{propo:normainf}, tenemos que
+
+\[\norm{T}_{\infty} = \max\limits_{1 \leq i \leq n}\norm{fil_i(T)}_1\\ = \max\limits_{1 \leq i \leq n}\sum_{\substack{j = 1\\j \neq i}}^n \left|-\frac{a_{ij}}{a_{ii}}\right| = \max\limits_{1 \leq i \leq n}\frac{\sum_{\substack{j = 1\\j \neq i}}^n |a_{ij}|}{|a_{ii}|}\]
+
+Como $A$ es e. d. d. f. entonces $\frac{\sum_{\substack{j = 1\\j \neq i}}^n |a_{ij}|}{|a_{ii}|} < 1$ para todo $i$. Luego $\norm{T}_{\infty} < 1$.
+
+\end{proof}
+\end{propo}
+
+\begin{propo}
+Si $A \in \mathbb{R}^{n \times n}$ es e. d. d. f. entonces Gauss - Seidel converge.
+
+\begin{proof}
+Sea $T = (D - L)^{-1} U$ la matriz de la iteración de Gauss - Seidel. Veamos que todo autovalor de $T$ tiene módulo menor que 1. Sea $\lambda \in \mathbb{C}$ un autovector de $T$ y sea $v \in \mathbb{C}^n$ un autovalor asociado, tal que $\norm{v}_{\infty} = 1$. Entonces 
+
+\[Tv = \lambda v \Rightarrow (D - L)^{-1}Uv = \lambda v \Rightarrow Uv = \lambda(D - L)v\]
+
+En la última igualdad, miramos una fila $1 \leq i \leq n$ arbitraria,
+
+\[-\sum_{j = i + 1}^n a_{ij}v_j = \lambda \sum_{j = 1}^i a_{ij} v_j \Rightarrow \lambda a_{ii}v_i = - \lambda \sum_{j = 1}^{i - 1} a_{ij} v_j - \sum_{j = i + 1}^n a_{ij} v_j \]
+
+Sea $i_0$ una coordenada de $v$ tal que $|v_{i_0}| = 1$. Tomando módulo en la expresión anterior,
+
+\[|\lambda| |a_{i_0i_0}| |v_{i_0}| = \left| - \lambda \sum_{j = 1}^{i_0 - 1} a_{ij} v_j - \sum_{j = i_0 + 1}^n a_{ij} v_j \right|\]
+\begin{align*}
+\Rightarrow |\lambda| |a_{i_0i_0}| & \leq |\lambda| \sum_{j = 1}^{i_0 - 1}|a_{i_0j}| |v_j| + \sum_{j = i_0 + 1}^n |a_{i_0j}| |v_j|\\
+& \leq |\lambda| \sum_{j = 1}^{i_0 - 1}|a_{i_0j}| + \sum_{j = i_0 + 1}^n |a_{i_0j}|\\
+\end{align*}
+\[\Rightarrow |\lambda| \left(|a_{i_0i_0}| - \sum_{j = 1}^{i_0 - 1} |a_{i_0j}|\right) \leq  \sum_{j = i_0 + 1}^n |a_{i_0j}|\]
+
+Como $A$ es e. d. d. f. entonces $|a_{i_0i_0}| - \sum_{j = 1}^{i_0 - 1} |a_{i_0j}| > 0$, y por ende
+
+\[\Rightarrow |\lambda| \leq \frac{\sum_{j = i_0 + 1}^n |a_{i_0j}|}{|a_{i_0i_0}| - \sum_{j = 1}^{i_0 - 1} |a_{i_0j}|}\]
+
+Usando nuevamente que $A$ es e. d. d. f., el lado derecho de la desigualdad debe ser menor que 1, y así concluimos que $|\lambda| < 1$.
+
+\end{proof}
+\end{propo}
+
+\begin{propo}
+Si $A \in \mathbb{R}^{n \times n}$ es simétrica definida positiva entonces Gauss - Seidel converge.
+\end{propo}
+
+\begin{obs}
+Si $A \in \mathbb{R}^{n \times n}$ es simétrica definida positiva entonces Jacobi \textbf{no necesariamente} converge.
+\end{obs}
+
+\subsection{Comparación entre los métodos}
+El método de Gauss - Seidel tiene dos ventajas sobre el método de Jacobi:
+\begin{itemize}
+\item Tiene un menor requerimiento espacial. Notar que es posible usar un sólo arreglo para almacenar las sucesivas iteraciones (uno que contiene parte de la iteración actual y parte de la anterior), a diferencia de Jacobi que necesita dos (uno para el actual y otro para el anterior).
+
+\item Se conocen más familias de matrices convergentes.
+\end{itemize}
+
+La ventaja de Jacobi es su mayor simplicidad.
