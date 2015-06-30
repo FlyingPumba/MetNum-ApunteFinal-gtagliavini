@@ -1,0 +1,363 @@
+\section{Cuadrados mínimos lineales}
+
+\subsection{Problema}
+
+Supongamos que disponemos de una muestra de valores provenientes de un experimento
+
+\begin{center}
+\begin{tabular}{c|c}
+$x$ & $y$\\
+\hline
+$x_1$ & $y_1$\\
+$x_2$ & $y_2$\\
+$\vdots$ & $\vdots$\\
+$x_m$ & $y_m$
+\end{tabular}
+\end{center}
+
+y queremos encontrar una relación entre los valores de $x$ e $y$. Tenemos dos opciones:
+
+\begin{enumerate}
+\item Encontrar una función $f$ tal que $f(x_i) = y_i$ para todo $i = 1, \cdots, m$.
+\item Encontrar una función $f$ tal que $f(x_i) \approx y_i$ para todo $i = 1, \cdots, m$.
+\end{enumerate}
+
+Cuando tratamos con muestras observadas, en general estamos lidiando con valores que ya poseen un error, proveniente de la medición. Esto implica que buscar relaciones exactas (del tipo 1) pierda sentido pues en realidad sólo conocemos aproximaciones de los valores reales. Por este motivo, nos concentraremos en la opción 2.
+
+Suponiendo que contamos con una familia de funciones $\mathcal{F}$ de la cual queremos extraer una de ellas, necesitamos un criterio para comparar funciones que contiene. Tres criterios posibles son:
+
+\begin{itemize}
+\item $\min\limits_{f \in \mathcal{F}}\max\limits_{1 \leq i \leq m} |f(x_i) - y_i|$
+
+Minimiza el máximo error en un punto. La desventaja de este criterio es que es muy susceptible a la presencia de outliers (valores atípicos).
+
+\item $\min\limits_{f \in \mathcal{F}} \sum_{i = 1}^m |f(x_i) - y_i|$
+
+Minimiza el error. Este criterio sobrepasa el problema de los outliers. La desventaja que tiene es que queremos encontrar el mínimo de una función que involucra un valor absoluto, que sabemos que no es derivable en el origen, lo cual dificulta la tarea.
+
+\item $\min\limits_{f \in \mathcal{F}} \sum_{i = 1}^m (f(x_i) - y_i)^2$
+
+Minimiza el error cuadrático. Este criterio no padece de ninguno de los problemas anteriores.
+\end{itemize}
+
+Utilizaremos este último criterio. La familia de funciones que vamos a considerar es
+
+\[\mathcal{F} = \{a_1 \phi_1 + \cdots + a_n \phi_n : a_1, \cdots, a_n \in \mathbb{R}\}\]
+
+donde las funciones reales $\phi_1, \cdots, \phi_n$ están fijas. En otras palabras, estamos considerando el subespacio de funciones
+
+\[\mathcal{F} = \langle\phi_1, \cdots, \phi_n\rangle_{\mathbb{R}}\]
+
+Entonces el problema es encontrar los coeficientes $a_1, \cdots, a_n$ que realizan el mínimo
+
+\[\min\limits_{a_1, \cdots, a_n \in \mathbb{R}} \sum_{i = 1}^m (a_1 \phi_1(x_i) + \cdots + a_n \phi_n(x_i) - y_i)^2\]
+
+Consideremos
+
+\[A = \begin{pmatrix}
+\phi_1(x_1) & \cdots & \phi_n(x_1) \\
+\phi_1(x_2) & \cdots & \phi_n(x_2) \\
+\vdots		&		&	\vdots		\\
+\phi_1(x_n)	& \cdots & \phi_n(x_n)
+\end{pmatrix} 
+\hspace{1cm}
+x = \begin{pmatrix}
+a_1 \\
+\vdots \\
+a_n
+\end{pmatrix}
+\hspace{1cm}
+b = \begin{pmatrix}
+y_1\\
+\vdots\\
+y_m
+\end{pmatrix}
+\]
+
+Entonces el mínimo a calcular lo podemos escribir como
+
+\[\min \limits_{x \in \mathbb{R}^n} \norm{Ax - b}_2^2\]
+
+\begin{obs}
+\hspace{1cm}
+\begin{enumerate}
+\item No necesitamos conocer el valor de las $\phi_i$ en todo su dominio, sino sólo en los puntos $x_1, \cdots, x_m$.
+\item Para que el problema tenga sentido necesitamos más datos que incógnitas, i.e., $m \geq n$.
+\end{enumerate}
+\end{obs}
+
+Abstrayéndonos de las funciones $\phi_1, \cdots, \phi_n$ y de las muestras $(x_1, y_1), \cdots, (x_m, y_m)$, definimos el problema de cuadrados mínimos lineales del siguiente modo. Dadas $A \in \mathbb{R}^{m \times n}$ y $b \in \mathbb{R}^m$, hallar $x \in \mathbb{R}^{n}$ que minimice $\norm{Ax - b}_2^2$.
+
+Lo estudiaremos y atacaremos desde un punto de vista puramente algebraico.
+
+\subsection{Intuición geométrica}
+
+En primer lugar, observemos que si el sistema $Ax = b$ tiene solución, entonces cualquiera de ellas realiza el mínimo, que es 0.
+
+Si $Ax = b$ no tiene solución, entonces es evidente que el mínimo es mayor que 0. Para entender cómo elegir un vector $x$ que lo realice, pensemos en $Ax$ y $b$ como vectores en $\mathbb{R}^m$. El mínimo se alcanza cuando la distancia euclídea entre estos dos vectores es mínima. Pero el único de estos dos vectores que se mueve es $Ax$, con lo cual hay que elegirlo de modo tal que esté lo más cerca posible de $b$. Recordemos que el conjunto de valores que puede tomar $Ax$ es el subespacio $\text{Im}(A) = \{Ax : x\in \mathbb{R}^n\}$. Luego, queremos encontrar la distancia del punto $b$ al subespacio $\text{Im}(A)$, y es sabido que el punto sobre el subespacio que realiza la distancia es la proyección ortogonal de $b$ sobre $\text{Im}(A)$.
+
+\begin{figure}[h]
+\centering
+\input{imagenes/proyeccion.pdf_tex}
+\end{figure}
+
+En la figura, $b_1 = \text{proy}_{\text{Im}(A)}(b)$ es el punto que realiza la distancia, $b_2 = \text{proy}_{\text{Im}(A)^{\perp}}(b)$, y $x_1$ y $x_2$ son soluciones.
+
+\subsection{Solución}
+
+Como $\mathbb{R}^m = \text{Im}(A) \oplus \text{Im}(A)^{\perp}$ entonces $b$ se escribe en forma única como $b = b_1 + b_2$ con $b_1 \in \text{Im}(A)$ y $b_2 \in \text{Im}(A)^{\perp}$. Recordemos que $b_1$ es la proyección ortogonal de $b$ sobre $\text{Im}(A)$ y $b_2$ es la proyección ortogonal de $b$ sobre $\text{Im}(A)^{\perp}$.
+
+\begin{propo}
+Sea $b = b_1 + b_2$ la escritura en forma única como $b_1 \in \text{Im}(A)$ y $b_2 \in \text{Im}(A)^{\perp}$. Entonces el mínimo $\min\limits_{x \in  \mathbb{R}^n}\norm{Ax - b}_2^2$ se realiza únicamente cuando $Ax = b_1$.
+
+\begin{proof}
+\begin{align*}
+\norm{Ax - b}_2^2 &= \norm{Ax - (b_1 + b_2)}_2^2				&\\
+				&= \norm{(Ax - b_1) + b_2}_2^2				&\\
+				&= \norm{Ax - b_1}_2^2 + \norm{b_2}_2^2		&\text{(por Pitágoras)}\\
+				&\geq \norm{b_2}_2^2
+\end{align*}
+
+Entonces el mínimo se realiza sí y sólo si $\norm{Ax - b_1}_2^2 = 0 \Leftrightarrow Ax = b_1$.
+
+\end{proof}
+\end{propo}
+
+Observemos que como $b_1 \in \text{Im}(A)$ entonces siempre existe un vector $x$ que realiza el mínimo. Es decir, cuadrados mínimos lineales siempre tiene solución. Estudiemos ahora la unicidad de la misma.
+
+Es importante notar que la unicidad no depende del conjunto $\text{Im}(A)$ si no de cómo la matriz $A$ transforma los vectores. Más precisamente, existe único $x \in \mathbb{R}^n$ tal que $Ax = b_1$ si y sólo si la transformación lineal $f_A(x) = Ax$ es un monomorfismo. En términos de los elementos de la matriz, tenemos el siguiente resultado,
+
+\begin{propo}
+La solución de cuadrados mínimos lineales es única si y sólo si $A$ es inversible.
+
+\begin{proof}
+Existirá un único $x \in \mathbb{R}^n$ tal que $Ax = b_1$ si y sólo si la matriz $A$ es inversible.
+\end{proof}
+\end{propo}
+
+\subsection{Ecuaciones normales}
+
+Nuestro próximo objetivo es caracterizar la solución en términos de $A$ y de $b$.
+
+\begin{lema}
+$\text{Im}(A)^{\perp} = \text{Nu}(A^t)$.
+
+\begin{proof}
+($\subseteq$) Sea $v \in \text{Im}(A)^{\perp}$, entonces $\langle w, v \rangle_2 = 0$ para todo $w \in \text{Im}(A)$. Queremos ver que $v \in \text{Nu}(A^t)$.
+
+Se tiene
+
+\[A^tv = \begin{pmatrix}
+fil_1(A^t)v\\
+\vdots\\
+fil_n(A^t) v
+\end{pmatrix} = \begin{pmatrix}
+col_1(A)^t v\\
+\vdots\\
+col_n(A)^t v
+\end{pmatrix} = \begin{pmatrix}
+\langle col_1(A), v \rangle_2\\
+\vdots\\
+\langle col_n(A), v \rangle_2
+\end{pmatrix} = 0\]
+
+pues $col_i(A) \in \text{Im}(A)$ para todo $i$.\\[0.25cm]
+
+($\supseteq$) Sea $v \in \text{Nu}(A^t)$, entonces $A^tv = 0$. Sea $w \in \text{Im}(A)$, queremos ver que $\langle w, v \rangle_2 = 0$.
+
+Como $w \in \text{Im}(A)$, entonces $Az = w$ para algún $z \in \mathbb{R}^n$. Luego $w^t = z^tA^t$ con lo cual $\langle w, v \rangle_2 = w^tv = z^tA^tv = 0$. 
+\end{proof}
+\end{lema}
+
+\begin{propo}
+$x \in \mathbb{R}^{n}$ es solución de cuadrados mínimos lineales si y sólo si $A^tAx = A^tb$.
+
+\begin{proof}
+($\Rightarrow$) Sea $x$ una solución. Escribamos $b = b_1 + b_2$ con $b_1 \in \text{Im}(A)$ y $b_2 \in \text{Im}(A)^{\perp}$. Entonces $Ax = b_1 \Rightarrow A^tAx = A^tb_1$. Como $\text{Im}(A)^{\perp} = \text{Nu}(A^t)$ entonces $A^tb_2 = 0$, con lo cual $A^tAx = A^tb_1 = A^tb_1 + A^tb_2 = A^t(b_1 + b_2) = A^tb$.\\[0.25cm]
+
+($\Leftarrow$) Sea $x$ tal que $A^tAx = A^tb = A^t(b_1 + b_2) = A^tb_1 \Rightarrow A^tAx - A^tb_1 = 0 \Rightarrow A^t(Ax - b_1) = 0 \Rightarrow Ax - b_1 \in \text{Nu}(A^t) = \text{Im}(A)^{\perp}$. Entonces $Ax - b_1 \in \text{Nu}(A^t) = \text{Im}(A)^{\perp} \cap \text{Im}(A) = \{0\} \Rightarrow Ax = b_1$ entonces $x$ es solución de cuadrados mínimos lineales.
+\end{proof}
+\end{propo}
+
+Entonces resolver cuadrados mínimos equivale a resolver el sistema $A^tAx = A^tb$. Este sistema de ecuaciones recibe el nombre de \textit{ecuaciones normales}. Sin embargo, la resolución vía este sistema puede no ser númericamente estable, pues la matriz $A^tA$ suele estar mal condicionada aún estando $A$ bien condicionada. Por ejemplo,
+
+\[A = \begin{pmatrix}
+1 & 1\\
+\varepsilon & 0 \\
+0 & \varepsilon
+\end{pmatrix}
+\hspace{1cm}
+A^tA = \begin{pmatrix}
+1 + \varepsilon^2 & 1\\
+1 & 1 + \varepsilon^2
+\end{pmatrix}\]
+
+En este caso $A^tA$ está muy mal condicionada. Si $\varepsilon$ es chico, entonces $\varepsilon^2$ es despreciable, y en un contexto de aritmética finita puede ser absorbido en la suma, obteniéndose $fl(fl(1) + fl(\varepsilon^2)) = 1$. Con este redondeo resulta que $A^tA = \begin{pmatrix}1 & 1 \\ 1 & 1 \end{pmatrix}$ de modo que las ecuaciones normales tendrán infinitas soluciones. Sin embargo $A$ tiene columnas l. i. con lo cual la solución de cuadrados mínimos es única.
+
+\subsection{Resolución por QR}
+
+Sean $A \in \mathbb{R}^{m \times n}$ y $b \in \mathbb{R}^m$ y supongamos sin pérdida de generalidad que $m \geq n$ (si no fuera este el caso, agregamos filas de 0 en $A$ y $b$). Sea $A = QR$ su factorización QR. Como $Q^t$ preserva norma 2 entonces
+
+\[\norm{Ax - b}_2^2 = \norm{Q^t(Ax - b)}_2^2 = \norm{Q^t(QRx - b)}_2^2 = \norm{Rx - Q^tb}_2^2\]
+
+Tenemos dos casos:
+\begin{itemize}
+\item Las columnas de $A$ son l. i.:
+
+Como $Q$ es inversible entonces $\text{rg}(A) = \text{rg}(R)$. Entonces, en este caso, las columnas de $R$ también son l. i. y por lo tanto tiene la forma
+
+\[R = \begin{pmatrix}
+& 		& \\
+& R_1	& \\
+& 	 & \\
+0& \cdots & 0 \\
+\vdots & \ddots & \vdots \\
+0 & \cdots & 0
+\end{pmatrix}\]
+
+con $R_1 \in \mathbb{R}^{n \times n}$ triangular superior. Escribamos además
+
+\[Q^tb = \begin{pmatrix}
+c 	\\
+d	\\
+\end{pmatrix}\]
+
+con $c \in \mathbb{R}^{n}$ y $d \in \mathbb{R}^{m - n}$. Entonces
+
+\[\norm{Ax - b}_2^2 = \norm{\begin{pmatrix}
+R_1x 	\\
+0		\\
+\end{pmatrix} - \begin{pmatrix}
+c 	\\
+d	\\
+\end{pmatrix}}_2^2 = \norm{\begin{pmatrix}
+R_1x - c 	\\
+-d			\\
+\end{pmatrix}}_2^2 = \norm{R_1 x - c}_2^2 + \norm{d}_2^2\]
+
+Entonces el mínimo se realiza si y sólo si $R_1x = c$ y este sistema tiene solución única pues $R_1$ es una matriz cuadrada de rango máximo.
+
+\item Las columnas de $A$ no son l. i.:
+
+Entonces las columnas de $R$ no son l. i., y si $\text{rg}(A) = r < n$ entonces
+
+\[R = \begin{pmatrix}
+		&			&		\\
+		& R_1		& R_2 	\\
+		&			& 		\\
+0		& \cdots 	& 0		\\
+\vdots	& \ddots		& \vdots\\
+0		& \cdots 	& 0 		\\
+\end{pmatrix}\]
+
+con $R_1 \in \mathbb{R}^{r \times r}$ triangular superior y $R_2 \in \mathbb{R}^{r \times (n - r)}$. Además escribimos
+
+\[Q^tb = \begin{pmatrix}
+c 	\\
+d	\\
+\end{pmatrix} \hspace{1cm}
+x = \begin{pmatrix}
+x_1 \\
+x_2
+\end{pmatrix}
+\]
+
+ahora con $c \in \mathbb{R}^r$, $d \in \mathbb{R}^{m - r}$, $x_1 \in \mathbb{R}^r$ y $x_2 \in \mathbb{R}^{n - r}$. Luego
+
+\[\norm{Ax - b}_2^2 = \norm{\begin{pmatrix}
+R_1 x_1 + R_2 x_2 - c\\
+-d
+\end{pmatrix}}_2^2 = 
+\norm{R_1 x_1 + R_2 x_2 - c}_2^2 + \norm{d}_2^2
+\]
+
+Entonces el mínimo se realiza si y sólo si $R_1 x_1 + R_2 x_2 = c$. Este sistema (de $r$ ecuaciones y $n > r$ incógnitas) tiene infinitas soluciones, que se obtienen fijando $x_2 = \overline{x}_2$ y resolviendo $R_1 x_1 = c - R_2 \overline{x}_2$ que tiene solución única por ser $R_1$ cuadrada y de rango máximo.
+
+\end{itemize}
+
+\subsection{Resolución por SVD}
+
+Consideremos ahora la descomposición en valores singulares $A = U \Sigma V^t$. Sean $\sigma_1, \cdots, \sigma_r$ los valores singulares. Tenemos que
+
+\[\norm{Ax - b}_2^2 = \norm{U^t(Ax - b)}_2^2 = \norm{U^t(U\Sigma V^tx - b)}_2^2 = \norm{\Sigma V^t x - U^t b}_2^2\]
+
+Como $V^t$ es inversible entonces sustituyendo $y = V^tx$: 
+
+\[\min\limits_{x \in \mathbb{R}^n} \norm{Ax - b}_2^2 = \min\limits_{x \in \mathbb{R}^n} \norm{\Sigma V^t x - U^t b}_2^2  = \min \limits_{y \in \mathbb{R}^n} \norm{\Sigma y - U^tb}_2^2\]
+
+Separemos en los mismos dos casos de antes:
+
+\begin{itemize}
+\item Las columnas de $A$ son l. i.:
+
+Notemos que como $U$ y $V$ son inversibles entonces $\text{rg}(A) = \text{rg}(\Sigma) = r$. Entonces, en este caso, $r = n$ y $\Sigma$ tiene la forma
+
+\[\Sigma = \begin{pmatrix}
+\sigma_1 	& 			& 		\\
+			& \ddots 	& 		\\
+			&			&\sigma_n \\
+0			& \cdots		& 0\\
+\vdots		& \ddots		& \vdots\\
+0			& \cdots		& 0
+\end{pmatrix}\]
+
+Escribiendo
+
+\[U^t b = \begin{pmatrix}
+c \\ d
+\end{pmatrix}\]
+
+con $c \in \mathbb{R}^n$ y $d \in \mathbb{R}^{m - n}$, tenemos
+
+\[\norm{\Sigma y - U^tb}_2^2 = \norm{\begin{pmatrix}
+\sigma_1 y_1 \\
+\vdots \\
+\sigma_n y_n \\
+0 \\
+\vdots \\
+0
+\end{pmatrix} - \begin{pmatrix}
+c \\
+d
+\end{pmatrix}}_2^2 = \norm{\begin{pmatrix}
+\sigma_1 y_1 - c_1\\
+\vdots \\
+\sigma_n y_n - c_n
+\end{pmatrix}}_2^2 + \norm{d}_2^2
+\]
+
+Entonces el mínimo se alcanza si y sólo si $y = \begin{pmatrix}c_1 / \sigma_1 \\ \vdots \\ c_n / \sigma_n \end{pmatrix}$. Lo que resta es encontrar el único $x$ tal que $V^t x = y$.
+
+\item Las columnas de $A$ no son l. i.:
+
+En este caso hay $r < n$ valores singulares en la diagonal de $\Sigma$. Escribiendo
+
+\[U^tb = \begin{pmatrix}
+c \\ d
+\end{pmatrix}\]
+
+con $c \in \mathbb{R}^{r}$ y $d \in \mathbb{R}^{m - r}$, tenemos
+
+\[\norm{\Sigma y - U^tb}_2^2 = \norm{\begin{pmatrix}
+\sigma_1 y_1 \\
+\vdots \\
+\sigma_r y_r \\
+0 \\
+\vdots \\
+0
+\end{pmatrix} - \begin{pmatrix}
+c \\
+d
+\end{pmatrix}}_2^2 = 
+\norm{\begin{pmatrix}
+\sigma_1 y_1 - c_1\\
+\vdots \\
+\sigma_r y_n - c_r
+\end{pmatrix}}_2^2 + \norm{d}_2^2
+\]
+
+Entonces el mínimo se alcanza si y sólo si $y = \begin{pmatrix}
+c_1 / \sigma_1 \\ \vdots \\ c_r / \sigma_r \\ y_{r + 1} \\ \vdots \\ y_n
+\end{pmatrix}$ siendo $y_{r + 1}, \cdots, y_n \in \mathbb{R}$ arbitrarios. Las infinitas soluciones provienen de la libertad de elección para $y_i$ con $i > r$.
+
+\end{itemize}

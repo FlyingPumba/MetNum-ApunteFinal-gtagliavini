@@ -1,2 +1,2 @@
 # MetNum-ApunteFinal-gtagliavini
-Apunte de Métodos Numéricos de Guido Tagliavini
+Apunte de Métodos Numéricos de Guido Tagliavini Ponce.

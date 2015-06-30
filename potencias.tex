@@ -1,0 +1,118 @@
+\section{Cálculo de autovalores y autovectores}
+
+\subsection{Problema}
+Dada $A \in \mathbb{R}^{n \times n}$ queremos calcular su \textit{autovalor principal} (aquel de módulo máximo) y un autovector asociado. Para esto, vamos a construir una sucesión $\{a_k\}_k$ de números reales convergente al autovalor principal, y una sucesión $\{z^{(k)}\}_k$ de vectores convergente a un autovector asociado.
+
+\subsection{Método de las potencias}
+
+Supongamos que existe una base $\{v_1, \cdots, v_n\}$ de $\mathbb{R}^n$ formada por autovectores de $A$ (i. e. $A$ es diagonalizable) y sean $\lambda_1, \cdots, \lambda_n \in \mathbb{C}$ los autovalores asociados. Notar que estos son todos los autovalores de $A$ (con posibles repeticiones). Supongamos que $A$ tiene un único autovalor de módulo máximo. Sin pérdida de generalidad, podemos suponer
+
+\[|\lambda_1| > |\lambda_2| \geq \cdots \geq |\lambda_n|\]
+
+Nuestro objetivo es calcular $|\lambda_1|$. Sea $x \in \mathbb{R}^n$ cualquiera, con componente en la dirección de $v_1$, el autovector de la base asociado al autovalor principal (de ahora en más simplemente \textit{autovector principal}), no nula. Entonces existen $\alpha_1, \cdots, \alpha_n \in \mathbb{C}$, $\alpha_1 \neq 0$, tales que
+
+\[x = \sum_{i = 1}^n \alpha_i v_i\]
+
+Multiplicando por $A^k$ en ambos miembros:
+
+\begin{align*}
+A^k x &= \sum_{i = 1}^n \alpha_i A^k v_i\\
+	&= \sum_{i = 1}^n \alpha_i \lambda_i^k v_i\\
+	&= \lambda_1^k \left(\alpha_1 v_1 + \alpha_2 \left(\frac{\lambda_2}{\lambda_1}\right)^k v_2 + \cdots + 
+	\alpha_n \left(\frac{\lambda_n}{\lambda_1}\right)^k v_n\right)
+\end{align*}
+
+Consideremos $\phi:\mathbb{R}^n \to \mathbb{R}$ una función contínua, que a lo sumo se anula en 0, y que saca escalares afuera (i. e. $\phi(\lambda v) = |\lambda| \phi(v)$). Ejemplos de funciones que cumplen esto son todas las normas en $\mathbb{R}^n$. Entonces
+
+\begin{align*}
+\frac{\phi(A^k x)}{\phi(A^{k - 1} x)} &= 
+\frac{|\lambda_1^k| \phi \left(\alpha_1 v_1 + \alpha_2 \left(\frac{\lambda_2}{\lambda_1}\right)^k v_2 + \cdots + \alpha_n \left(\frac{\lambda_n}{\lambda_1}\right)^k v_n\right)}
+{|\lambda_1^{k - 1}|\phi\left(\alpha_1 v_1 + \alpha_2 \left(\frac{\lambda_2}{\lambda_1}\right)^{k - 1} v_2 + \cdots + 
+\alpha_n \left(\frac{\lambda_n}{\lambda_1}\right)^{k - 1} v_n\right)} \\
+&= |\lambda_1|\frac{\phi \left(\alpha_1 v_1 + \alpha_2 \left(\frac{\lambda_2}{\lambda_1}\right)^k v_2 + \cdots + \alpha_n \left(\frac{\lambda_n}{\lambda_1}\right)^k v_n\right)}
+{\phi\left(\alpha_1 v_1 + \alpha_2 \left(\frac{\lambda_2}{\lambda_1}\right)^{k - 1} v_2 + \cdots + 
+\alpha_n \left(\frac{\lambda_n}{\lambda_1}\right)^{k - 1} v_n\right)} 
+\end{align*}
+
+Como $|\frac{\lambda_i}{\lambda_1}| < 1$ para todo $i > 1$ entonces $\left(\frac{\lambda_i}{\lambda_1}\right)^k \xrightarrow[k \to \infty]{} 0$, y en definitiva
+
+\[\frac{\phi(A^k x)}{\phi(A^{k - 1} x)} \xrightarrow[k \to \infty]{} |\lambda_1| \frac{\phi(\alpha_1 v_1)}{\phi(\alpha_1 v_1)} = |\lambda_1|\]
+
+Esto último vale por ser $\phi$ contínua, y además como a lo sumo se anula en 0 entonces $\phi(\alpha_1 v_1) \neq 0$ pues $\alpha_1 \neq 0$ y $v_1 \neq 0$. Hemos probado que,
+
+\begin{propo}
+Sea $A \in \mathbb{R}^{n \times n}$ diagonalizable y con un autovalor principal $\lambda_1$. Sea $\phi : \mathbb{R}^n \to \mathbb{R}^n$ como antes. Sea $x \in \mathbb{R}^n$ cualquiera, con componente no nula en la dirección de un autovector principal. Entonces $\left\lbrace\frac{\phi(A^k x)}{\phi(A^{k - 1} x)}\right\rbrace_{k \in \mathbb{N}}$ converge a $|\lambda_1|$.
+\end{propo}
+
+
+Definimos las sucesiones $\{a_k\}_k$ y $\{x^{(k)}\}_k$ como sigue. El término inicial $x^{(0)}$ lo elegimos arbitrariamente pero con componente en la dirección de un autovector principal no nula, y además
+
+\[x^{(k)} = Ax^{(k - 1)}\]
+
+Se tiene entonces $x^{(k)} = A^kx^{(0)}$. Por otra parte, definimos
+
+\[a_k = \frac{\phi(x^{(k)})}{\phi(x^{(k - 1)})}\]
+
+Entonces
+
+\[a_k = \frac{\phi(A^k x^{(0)})}{\phi(A^{k - 1}x^{(0)})}\]
+
+Por la proposición anterior, esta sucesión converge a $|\lambda_1|$. Utilizando estas dos sucesiones obtenemos el siguiente algoritmo:
+
+\begin{algorithm}
+\caption[]{Método de las potencias}
+Definir $x^{(0)}$;\\
+\For{$k = 1$ to $N$}{
+	$x^{(k)} = Ax^{(k - 1)}$;\\
+	$a_k = \frac{\phi(x^{(k)})}{\phi(x^{(k - 1)})}$;\\
+}
+\end{algorithm}
+
+\begin{obs}
+En la práctica es difícil escoger un $x^{(0)}$ cuya componente en la dirección de un autovector principal sea no nula. En general no conocemos una base de autovectores sin antes calcular los autovalores asociados, con lo cual se hace imposible la escritura de un vector en la base de autovectores.
+Por este motivo $x^{(0)}$ se suele elegir en forma completamente arbitraria y se ejecuta el método. En caso de que no converja, se elige nuevamente el término inicial. Repetimos este proceso sucesivamente hasta lograr la convergencia. Se puede probar que si el método converge lo hace necesariamente a  $|\lambda_1|$.
+\end{obs}
+
+\subsection{Cálculo de un autovector asociado}
+
+Para calcular un autovector principal, observemos que como
+
+\[A^k x = \lambda_1^k \left(\alpha_1 v_1 + \alpha_2 \left(\frac{\lambda_2}{\lambda_1}\right)^k v_2 + \cdots + \alpha_n \left(\frac{\lambda_n}{\lambda_1}\right)^k v_n\right)\]
+
+entonces si $k$ es suficientemente grande
+
+\[A^k x \approx \lambda_1^k \alpha_1 v_1\]
+
+En otras palabras, si $k$ es grande, $A^k x$ es un múltiplo del autovector principal $v_1$. Entonces $\frac{A^kx}{\norm{A^kx}}$ es aproximadamente un múltiplo normalizado del autovector principal $v_1$. Esta normalización es conveniente por cuestiones numéricas, al evitar que las componentes del vector crezcan desmedidamente.
+
+Definida la sucesión $\{x^{(k)}\}_k$ como antes, definimos una nueva sucesión $\{z^{(k)}\}_k$ con la siguiente regla,
+
+\[z^{(k)} = \frac{x^{(k)}}{\norm{x^{(k)}}}\]
+
+Pero entonces
+
+\[z^{(k)} = \frac{A^k x^{(0)}}{\norm{A^k x^{(0)}}}\]
+
+Luego, por lo anterior, para $k$ grande $z^{(k)}$ se aproxima a un múltiplo de $v_1$ de norma igual a 1. Esta idea da lugar a una segunda versión del Método de las potencias, más completa.
+
+\begin{algorithm}
+\caption[]{Método de las potencias}
+Definir $x^{(0)}$;\\
+\For{$k = 1$ to $N$}{
+	$x^{(k)} = Ax^{(k - 1)}$;\\
+	$z^{(k)} = \frac{x^{(k)}}{\norm{x^{(k)}}}$;\\
+	$a_k = \frac{\phi(x^{(k)})}{\phi({x^{(k - 1)}})}$;\\
+}
+\end{algorithm}
+
+\subsection{Método de las potencias inversas}
+
+Supongamos que ahora los autovalores son tales que
+
+\[|\lambda_1| \geq \cdots \geq |\lambda_{n - 1}| > |\lambda_n|\]
+
+y deseamos calcular el autovalor de módulo mínimo $|\lambda_n|$. Notemos que
+
+\[\left|\frac{1}{\lambda_n}\right| > \left|\frac{1}{\lambda_{n - 1}}\right| \geq \cdots \geq \left|\frac{1}{\lambda_1}\right| \]
+
+Recordemos que si $A$ es una matriz inversible y $\lambda \in \mathbb{C}$ no nulo es autovalor de $A$ con autovector asociado $v$, entonces $\frac{1}{\lambda}$ es autovalor de $A^{-1}$ con el mismo autovector $v$. Por lo tanto, aplicando el Método de las potencias para $A^{-1}$ podemos calcular el autovalor de módulo máximo $\left|\frac{1}{\lambda_n}\right|$.

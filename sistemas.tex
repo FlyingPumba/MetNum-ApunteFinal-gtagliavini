@@ -1,0 +1,678 @@
+\section{Sistemas de ecuaciones lineales}
+
+\subsection{Problema}
+
+Dadas $n$ ecuaciones, cada una con $n$ incógnitas
+
+\[\begin{cases}
+a_{11} x_1 + \cdots + a_{1n} x_n = b_1 \\
+\hspace{1.45cm}\vdots \\ 
+a_{1n} x_1 + \cdots + a_{nn} x_n = b_n 
+\end{cases}\]
+
+con coeficientes reales, queremos hallar valores de $x_1, \cdots, x_n$ que satisfagan todas las ecuaciones simultaneamente. En forma matricial escribimos el problema definiendo
+
+\[A = \begin{pmatrix}
+a_{11} & \cdots & a_{1n}\\
+\vdots & \ddots & \vdots\\
+a_{n1} & \cdots & a_{nn}
+\end{pmatrix}
+\hspace{1cm}
+x = \begin{pmatrix}
+x_1 \\
+\vdots \\
+x_n
+\end{pmatrix}
+\hspace{1cm}
+b = \begin{pmatrix}
+b_1 \\
+\vdots \\
+b_n
+\end{pmatrix}\]
+
+de modo tal que buscamos soluciones de la ecuación $Ax = b$.
+
+\subsection{Existencia y unicidad de la solución}
+
+Notemos que 
+
+\[
+Ax = b \Leftrightarrow x_1 \begin{pmatrix} a_{11}\\ \vdots\\ a_{n1}\end{pmatrix} + \cdots + x_n \begin{pmatrix} a_{1n}\\ \vdots\\ a_{nn}\end{pmatrix} = \begin{pmatrix} b_{1}\\ \vdots\\ b_{n}\end{pmatrix}
+\]
+
+En otras palabras, $Ax = b$ tiene solución si y sólo si $b$ es combinación lineal de las columnas de $A$. Usando esto podemos separar en casos:
+
+\begin{itemize}
+	\item Si las columnas de $A$ son linealmente independientes, entonces forman una base de $\mathbb{R}^n$ (porque son $n$), y en consecuencia la combinación lineal existe y es única.
+	\item Si las columnas de $A$ no son linealmente independientes, entonces una tal combinación lineal puede existir como no. Si existe alguna entonces hay infinitas combinaciones lineales que cumplen la condición.
+\end{itemize}
+
+En definitiva $Ax = b$ tiene solución única si y sólo si las columnas de $A$ son l. i. Si no son l. i. entonces hay inifinitas soluciones o no hay ninguna.
+
+\subsection{Resolución de un sistema lineal}
+
+\begin{enumerate}
+\item \textbf{Caso $A$ diagonal}. El sistema tiene la forma
+
+\[\begin{cases}
+a_{11} x_1 \hspace{2.3cm} = b_1 \\
+\hspace{1.35cm}\ddots \\ 
+\hspace{2.2cm} a_{nn} x_n = b_n 
+\end{cases}\]
+
+Pueden pasar dos cosas:
+
+\begin{itemize}
+\item Si $a_{ii} \neq 0$ para todo $i$, entonces la única solución es $x_i = \frac{b_i}{a_{ii}}$, $i = 1, \cdots, n$.
+\item Si no, existe $i_0 \in \{1, \cdots, n\}$ tal que $a_{i_0i_0} = 0$. Entonces la ecuación $a_{i_0i_0} x_{i_0} = b_{i_0}$ es equivalente a $b_{i_0} = 0$.
+\begin{itemize}
+\item Si $b_{i_0} \neq 0$ entonces tenemos una contradicción y el sistema no tiene solución.
+\item Si $b_{i_0} = 0$ entonces la ecuación se cumple para cualquier $x_{i_0}$. Si existe solución (depende de lo que suceda con las restantes ecuaciones) entonces habrá infinitas.
+\end{itemize}
+\end{itemize}
+
+El costo del cómputo en este caso es claramente $\mathcal{O}(n)$.
+
+\item \textbf{Caso $A$ triangular superior}. El sistema tiene la forma
+
+\[\begin{cases}
+a_{11} x_1 + a_{12} x_2 + \cdots + a_{1n} x_n = b_1 \\
+\hspace{1.26cm} a_{22} x_2 + \cdots + a_{2n} x_n = b_2 \\
+\hspace{2.5cm}\vdots \\ 
+\hspace{3.35cm} a_{nn} x_n = b_n
+\end{cases}\]
+
+Pueden pasar dos cosas:
+
+\begin{itemize}
+\item Si $a_{ii} \neq 0$ para todo $i$, entonces las columnas de $A$ son l. i. y la solución es única. Más aún, es
+
+\begin{align}
+x_n &= \frac{b_n}{a_{nn}}	\nonumber\\
+x_{n - 1} &= \frac{b_{n - 1} - a_{(n-1)n} x_n}{a_{(n-1)(n-1)}}	\nonumber\\
+&\vdots \nonumber\\
+x_1 &= \frac{b_1 - a_{12}x_2 - a_{13}x_3 - \cdots - a_{1n} x_n}{a_{11}}	\nonumber
+\end{align}
+
+Este algoritmo para computar las soluciones de un sistema de ecuaciones triangular superior determinado, recibe el nombre de \textit{backward substitution}. Cuando el sistema es triangular inferior determinado, la sustitución se realiza comenzando desde la primer ecuación, y recibe el nombre de \textit{forward substitution}.
+
+\item Si no, existe $i_0 \in \{1, \cdots, n\}$ tal que $a_{i_0i_0} = 0$. Entonces la ecuación $a_{i_0i_0} x_{i_0} = b_{i_0} - a_{i_0(i_0 + 1)} x_{i_0+1} - \cdots - a_{i_0n} x_n$ es equivalente a $0 = b_{i_0} - a_{i_0(i_0 + 1)} x_{i_0+1} - \cdots - a_{i_0n} x_n$.
+\begin{itemize}
+\item Si el lado derecho es distinto de 0 entonces tenemos una contradicción y el sistema no tiene solución.
+\item Si no, la ecuación se cumple para cualquier $x_{i_0}$. Si existe solución (depende de lo que suceda con las restantes ecuaciones) entonces habrá infinitas.
+\end{itemize}
+
+
+\end{itemize}
+
+El costo del cómputo en este caso es $\mathcal{O}(n^2)$, pues para la incógnita $x_i$ ($i = 1, \cdots, n$) se realizan $\mathcal{O}(n)$ operaciones, y son $n$ incógnitas en total.
+
+\item \textbf{Caso general}. Para resolver el problema para una matriz $A$ cualquiera, la transformaremos mediante operaciones elementales de filas y luego usaremos backward substitution. El algoritmo para transformar el sistema en uno triangular superior se conoce como \textit{eliminación gaussiana}.\\
+
+\end{enumerate}
+
+\subsection{Eliminación gaussiana sin pivoteo}
+
+El algoritmo opera sobre la matriz ampliada del sistema. Llamamos
+
+\[M^{(k)} = \left(\begin{array}{ccc|c}
+a_{11}^{(k)} & \cdots & a_{1n}^{(k)} & b_1^{(k)}\\
+\vdots & \ddots & \vdots & \vdots\\
+a_{n1}^{(k)} & \cdots & a_{nn}^{(k)} & b_n^{(k)}
+\end{array}\right)\]
+
+a la matriz ampliada luego de $k$ pasos del algoritmo. Inicialmente, asumamos que $a_{(k+1)(k+1)}^{(k)} \neq 0$ para todo $k$. La entrada es $M^{(0)} = \left(\begin{array}{c|c}A & b\end{array}\right)$. En el primer paso, el algoritmo de eliminación gaussiana fuerza, mediante operaciones de filas, la aparición de ceros en la primer columna, debajo de la diagonal,
+
+\texttt{Paso 1:} $F_i \leftarrow F_i - \frac{a_{i1}^{(0)}}{a_{11}^{(0)}}F_1$ para $i = 2, \cdots, n$
+
+\texttt{Paso 2:} $F_i \leftarrow F_i - \frac{a_{i2}^{(1)}}{a_{22}^{(1)}}F_2$ para $i = 3, \cdots, n$
+
+En el paso $k < n$, colocamos ceros en la columna $k$, debajo de la diagonal,
+
+\texttt{Paso k:} $F_i \leftarrow F_i - \frac{a_{ik}^{(k - 1)}}{a_{kk}^{(k - 1)}}F_k$ para $i = k + 1, \cdots, n$
+
+El último será el
+
+\texttt{Paso n - 1:} $F_i \leftarrow F_i - \frac{a_{i(n-1)}^{(n-2)}}{a_{(n-1)(n-1)}^{(n-2)}}F_{n - 1}$ para $i = n$
+
+El invariante fundamental de este proceso es que al principio del paso $k$, las primeras $k - 1$ columnas tienen únicamente ceros debajo de la diagonal. Al concluir los $n - 1$ pasos obtendremos la matriz $M^{(n - 1)}$ que es triangular superior.
+ 
+\begin{algorithm}
+\dontprintsemicolon
+%\SetKwInOut{Input}{input}
+%\SetKwInOut{Output}{output}
+%\Input{$A \in \mathbb{R}^{n \times n}$ matriz del sistema
+%\\$b \in \mathbb{R}^n$ vector de términos independientes}
+%\Output{Un sistema equivalente con matriz triangular superior}
+
+\For{$k$ = 1 \KwTo $n - 1$}{
+	\For{$i$ = $k + 1$ \KwTo $n$}{
+		$m_{ik} = \frac{a_{ik}}{a_{kk}}$\;
+		$F_i \leftarrow F_i - m_{ik} F_k$\;
+	}
+}
+\caption[]{Eliminación gaussiana sin pivoteo}
+\end{algorithm}
+
+La complejidad del algoritmo es claramente $\mathcal{O}(n^3)$, pues para cada una de las $n$ columnas se hacen $\mathcal{O}(n)$ operaciones de fila, y cada una de estas operaciones de fila son $\mathcal{O}(n)$ operaciones escalares. Un análisis más fino muestra que la cantidad de operaciones de punto flotante que realiza la eliminación gaussiana es aproximadamente $\frac{1}{3}n^3$.
+
+\subsection{Eliminación gaussiana con pivoteo}
+
+Se llama \textit{pivote} al elemento $a^{(k - 1)}_{kk}$ de cada iteración del algoritmo, utilizado para computar los coeficientes $m_{ik}$ e introducir ceros debajo de la diagonal. Puede suceder que al principio de cierto paso de la eliminación gaussiana, digamos el $k$, el elemento $a^{(k - 1)}_{kk}$ sea 0. En este caso no podemos usar $a^{(k-1)}_{kk}$ como pivote. Tenemos dos posibilidades:
+
+\begin{itemize}
+\item Si $a^{(k-1)}_{ik} = 0$ para todo $i = k + 1, \cdots, n$, entonces la columna $k$ ya tiene todos ceros debajo de la diagonal, y por lo tanto no es necesario realizar ninguna acción en este paso.
+\item Si no, debemos intercambiar la fila $k$ por alguna otra fila $i_0 > k$ tal que $a^{(k-1)}_{i_0k} \neq 0$, y continuar con la eliminación normalmente.
+\end{itemize}
+
+Repitiendo esto cada vez que ocurra el problema a lo largo de la ejecución del algoritmo, llegaremos nuevamente a una matriz triangular inferior. 
+
+\begin{obs}{
+\label{obs:sistemas1}
+Si ahora esas mismas permutaciones de filas fueran realizadas en el mismo orden sobre $A$, entonces se puede probar que la matriz que se obtiene admite eliminación gaussiana sin pivoteo. En términos matriciales, existe una matriz $P \in \mathbb{R}^{n \times n}$ que es producto de matrices elementales de permutación tal que $PA$ admite eliminación gaussiana sin pivoteo.
+}\end{obs}
+
+\begin{obs}{
+Toda matriz $A \in \mathbb{R}^{n \times n}$ admite eliminación gaussiana con pivoteo, aunque no necesariamente sin pivoteo.
+}\end{obs}
+
+\subsection{Pivoteo parcial}
+
+Los coeficientes $m_{ik}$ de cada paso dependen de $a_{ik}^{(k - 1)}$ y $a_{kk}^{(k - 1)}$ que son resultados de operaciones realizadas a lo largo de las iteraciones $1, \cdots, k - 1$ y que, en consecuencia, acarrean un error de redondeo. Si al computar el cociente $\frac{a_{ik}^{(k - 1)}}{a_{kk}^{(k - 1)}}$ resulta que el divisor $a_{kk}^{(k - 1)}$ es un número con valor absoluto pequeño, el error que acumulaba $a_{ik}$ se ve amplificado. Por esta razón, es deseable que $a_{kk}$ tenga valor absoluto lo más grande posible. Con este objetivo se implementa la estrategia de \emph{pivoteo parcial}: al comienzo del $k$-ésimo paso, se permuta la fila $k$ con alguna fila $i_0 \geq k$ tal que $|a_{i_0k}^{(k - 1)}| = \max\limits_{k \leq i \leq n} |a_{ik}^{(k - 1)}|$.
+
+Cuanto mayor sea el pivote, más pequeño será $m_{ik}$ y en consecuencia la operación  $F_i \leftarrow F_i - m_{ik}F_k$ sobre la matriz ampliada del sistema no hará variar sus entradas en gran medida. Intuitivamente, la variación del valor absoluto de los elementos de la matriz ampliada a lo largo de las iteraciones es una medida de la efectividad del pivoteo parcial. En este sentido definimos lo siguiente.
+
+\begin{defi}
+Sea $A \in \mathbb{R}^{n \times n}$. Como antes, sea $A^{(k)}$ la matriz ampliada de un sistema que tiene a $A$ como matriz, luego de $k$ pasos de eliminación gaussiana con pivoteo parcial. Sea $a_k = \max\limits_{1 \leq i, j \leq n} |a_{ij}^{(k)}|$. Definimos el factor de crecimiento de $A$ como
+
+\[
+\rho = \frac{\max\limits_{1\leq k \leq n - 1}a_k}{a_0}
+\]
+\end{defi}
+
+Por lo dicho arriba, es conveniente que $\rho$ sea lo más pequeño posible. El siguiente resultado establece una cota para este factor en ciertos tipos de matrices.
+
+\begin{propo} Sea $A \in \mathbb{R}^{n \times n}$.
+\begin{itemize}
+\item Si $A$ es una matriz arbitraria entonces $\rho \leq 2^{n - 1}$.
+\item Si $A$ es una matriz de Hessemberg (sus coeficientes debajo de la primer subdiagonal son nulos) entonces $\rho \leq n$.
+\item Si $A$ es una matriz tridiagonal entonces $\rho \leq 2$.
+\end{itemize}
+\end{propo}
+
+Si bien en una matriz arbitraria el factor de crecimiento es a lo sumo $2^{n - 1}$, este máximo ocurre rara vez y, en general, la estrategia de pivoteo parcial es una estrategia numéricamente estable.
+
+\subsection{Factorización LU}
+
+\begin{defi}
+Sea $A \in \mathbb{R}^{n \times n}$. Se llama factorización LU de A a una escritura de la forma $A = LU$ con $L \in \mathbb{R}^{n \times n}$ triangular inferior con unos en la diagonal y $U \in \mathbb{R}^{n \times n}$ triangular superior.
+\end{defi}
+
+Veamos cómo calcular la factorización LU de una matriz $A$. Supongamos que $A$ admite eliminación gaussiana sin pivoteo. Notemos que en el paso $k$ de la eliminación se realizan las operaciones de fila $F_i = F_i - m_{ik} F_k$ para $i = k + 1, \cdots, n$. En términos matriciales esto es multiplicar $A^{(k)}$ a izquierda por las matrices de elementales
+
+\[
+M_k = 
+\begin{pmatrix} 
+1 		& \cdots 	& 0 				& \cdots 	& 0 \\
+0 		& \ddots 	& 0 				& \cdots 	& 0 \\
+\vdots 	& 			& 1 				& 			& \vdots\\
+0		& \cdots		& -m_{(k+1)k} 	& \cdots		& 0\\
+\vdots	& 			& \vdots		 	& \ddots		& \vdots\\
+0		& \cdots		& 0				& \cdots		& 1\\
+\end{pmatrix}
+\cdots
+\begin{pmatrix} 
+1 		& \cdots 	& 0 				& \cdots 	& 0 \\
+0 		& \ddots 	& 0 				& \cdots 	& 0 \\
+\vdots 	& 			& 1 				& 			& \vdots\\
+0		& \cdots		& 0 	& \cdots		& 0\\
+\vdots	& 			& \vdots		 	& \ddots		& \vdots\\
+0		& \cdots		& -m_{nk}	& \cdots		& 1\\
+\end{pmatrix}
+=
+\begin{pmatrix} 
+1 		& \cdots 	& 0 				& \cdots 	& 0 \\
+0 		& \ddots 	& 0 				& \cdots 	& 0 \\
+\vdots 	& 			& 1 				& 			& \vdots\\
+0		& \cdots		& -m_{(k+1)k} 	& \cdots		& 0\\
+\vdots	& 			& \vdots		 	& \ddots		& \vdots\\
+0		& \cdots		& -m_{nk}	& \cdots		& 1\\
+\end{pmatrix}
+\]
+
+Al cabo de los $n - 1$ pasos de eliminación gaussiana tendremos que $M_{n - 1} \cdots M_1 A = U$ con $U$ triangular superior. 
+
+Observemos que $M_k$ es inversible para cada $k$, puesto que $M_k$ es triangular inferior con unos en la diagonal. Entonces podemos escribir $A = M_1^{-1}\cdots M_{n - 1}^{-1} U = LU$, con $L = M_1^{-1}\cdots M_{n - 1}^{-1}$. Si bien ya hemos llegado a la factorización LU de $A$, podemos simplificar la expresión de $L$. Notemos que $M_k = I_n - m_k e_k^t$ con $m_k = \begin{pmatrix}0\\ \vdots \\ 0 \\ m_{(k+1)k} \\ \vdots \\ m_{nk}\end{pmatrix}$ y $e_k$ el $k$-ésimo vector canónico de $\mathbb{R}^n$. Usando esta escritura es fácil ver que $M_k^{-1} = I_n + m_k e_k^t$, ya que
+
+\begin{align*}
+(I_n - m_k e_k^t)(I_n + m_k e_k^t) & = I_n^2 + m_k e_k^t - m_k e_k^t - m_k e_k^t m_k e_k^t &\\
+& = I_n^2 - m_k e_k^t m_k e_k^t &\\
+& = I_n & \text{(pues } e_k^t m_k = 0\text{)}
+\end{align*}
+
+Luego,
+
+\begin{align*}
+L & = M_1^{-1} \cdots M_{n - 1}^{-1} &\\
+	& = (I_n + m_1 e_1^t) \cdots (I_n + m_{n - 1} e_{n - 1}^t) &\\
+	& = I_n + m_1 e_1^t + \cdots + m_{n - 1} e_{n - 1}^t & \text{(pues } e_i^t m_j = 0 \text{ si } i \leq j \text{)}
+\end{align*}
+
+En definitiva $A = LU$ con $L = \begin{pmatrix} 
+1 			& \cdots 	& 0 				& \cdots 	& 0 \\
+m_{21} 		& \ddots 	& 0 				& \cdots 	& 0 \\
+\vdots 		& 			& 1 				& 			& \vdots\\
+m_{(k+1)1}	& \cdots		& m_{(k+1)k} 	& \cdots		& 0\\
+\vdots		& 			& \vdots		 	& \ddots		& \vdots\\
+m_{n1}		& \cdots		& m_{nk}		& \cdots		& 1\\
+\end{pmatrix}$.
+
+Debido a lo inherente que es la factorización LU al proceso de eliminación gaussiana el costo de computar esta factorización es claramente $\mathcal{O}(n^3)$.
+
+\subsubsection{Existencia y unicidad de la factorización LU}
+
+Hemos probado lo siguiente,
+
+\begin{propo}
+Sea $A \in \mathbb{R}^{n \times n}$. Si $A$ admite eliminación gaussiana sin pivoteo entonces $A$ tiene factorización LU.
+\end{propo}
+
+\begin{obs}
+La recíproca no es cierta. Por ejemplo, la matriz nula tiene factorización LU pero obviamente no admite eliminación gaussiana sin pivoteo.
+\end{obs}
+
+\begin{obs}
+No toda matriz tiene factorización LU. Si $A \in \mathbb{R}^{2 \times 2}$ tiene factorización LU entonces existen $a, b, c, d \in \mathbb{R}$ tal que
+
+\[A = \begin{pmatrix}1 & 0\\a & 1\end{pmatrix} \begin{pmatrix}b & c\\0 & d\end{pmatrix} = \begin{pmatrix}
+b & c\\ab & ac + d
+\end{pmatrix}\]
+
+Teniendo en cuenta esta condición necesaria, es fácil ver que la matriz $\begin{pmatrix}
+0 & 0\\1 & 0
+\end{pmatrix}$ no tiene factorización LU.
+
+\end{obs}
+
+\begin{obs}
+Remitiéndonos a la Observación \ref{obs:sistemas1}, deducimos que existe $P \in \mathbb{R}^{n \times n}$ producto de matrices de permutación tal que $PA$ tiene factorización LU. Pero $P$ es producto de matrices inversibles, con lo cual existe $P^{-1}$, y llegamos a la escritura $A = P^{-1}LU$, que se llama factorización PLU. Observemos que como una tal matriz $P$ siempre existe entonces también existirá siempre una factorización PLU.
+\end{obs}
+
+Con respecto a la unicidad, se tiene el siguiente resultado,
+
+\begin{propo}
+Sea $A \in \mathbb{R}^{n \times n}$ inversible. Si $A$ tiene factorización LU entonces dicha escritura es única.
+
+\begin{proof}
+Sean $A = L_1 U_1 = L_2 U_2$ dos escrituras LU de $A$. Como $A$, $L_1$ y $L_2$ son inversibles, entonces $U_1$ y $U_2$ también lo son. Luego $L_1 U_1 = L_2 U_2 \Rightarrow U_1 U_2^{-1} = L_1^{-1} L_2$. Como $U_2$ es triangular superior entonces $U_2^{-1}$ también lo es. Como producto de matrices triangulares superiores es triangular superior, entonces $U_1 U_2^{-1}$ es triangular superior. Análogamente $L_1^{-1} L_2$ resulta triangular inferior. Sin embargo este último producto tiene una característica distintiva. Como $L_1$ tiene unos en la diagonal, $L_1^{-1}$ los preserva, y como $L_2$ también tiene unos en la diagonal, entonces el producto $L_1^{-1} L_2$ también tiene unos en la diagonal.
+
+Entonces $U_1 U_2^{-1} = L_1^{-1} L_2$, siendo $U_1 U_2^{-1}$ triangular superior y $L_1^{-1} L_2$ triangular inferior. Luego, ambos productos deben ser una matriz diagonal. Más aún, como $L_1^{-1} L_2$ tiene unos en la diagonal, entonces esta matriz diagonal es la identidad. Finalmente, $U_1 U_2^{-1} = I_n \Rightarrow U_1 = U_2$ y $L_1^{-1}L_2 = I_n \Rightarrow L_1 = L_2$, es decir, las escrituras son idénticas.
+
+\end{proof}
+\end{propo}
+
+\begin{obs}
+En general, la factorización LU de una matriz no es única. Por ejemplo, la matriz nula admite infinitas factorizaciones LU.
+\end{obs}
+
+\subsubsection{Aplicación}
+Supongamos que dada una matriz $A$ con factorización LU y vectores $b_1, \cdots, b_k$ queremos calcular una solución de $Ax = b_i$ para cada $i = 1, \cdots, k$. Si usáramos el algoritmo de eliminación gaussiana junto con backward substitution para resolver cada uno de los sistemas, tendríamos un costo de $\mathcal{O}(n^3)$ por cada sistema.
+
+Por otro lado, factoricemos $A = LU$. Esta escritura se puede calcular, como dijimos antes, en $\mathcal{O}(n^3)$. Para cada sistema $Ax = b_i$ hacemos:
+\begin{itemize}
+\item Calculamos una solución de $Ly = b_i$, mediante forward substitution.
+\item Calculamos una solución de $Ux = y$, mediante backward substitution.
+\end{itemize}
+
+Esto requiere tiempo $\mathcal{O}(n^2)$. Notemos que como $L$ es inversible, $Ux = y \Leftrightarrow LUx = Ly \Leftrightarrow Ax = b_i$. En definitiva, podemos resolver $Ax = b_i$ en $\mathcal{O}(n^2)$, para cada $i$, pagando una única vez, inicialmente, un costo de $\mathcal{O}(n^3)$.
+
+\subsubsection{Familias de matrices que admiten factorización LU}
+
+\begin{defi}
+Una matriz $A \in \mathbb{R}^{n \times n}$ se dice estrictamente diagonal dominante por filas si
+
+\[
+|a_{ii}| > \sum_{\substack{j = 1\\ j \neq i}}^n |a_{ij}|
+\]
+
+para todo $i = 1, \cdots, n$.
+\end{defi}
+
+\begin{propo}
+Si $A \in \mathbb{R}^{n \times n}$ es e. d. d. f. entonces $A$ admite factorización LU.
+
+\begin{proof}
+Lo probamos por inducción en $n \in \mathbb{N}$. Escribamos $A = (a_{ij})_{i, j}$.
+
+Si $n = 1$ la factorización es trivial.
+
+Sea $n > 1$. Escribimos la matriz $A$ por bloques en la forma
+
+\[A = \left(\begin{array}{c|c}
+a_{11} & v^t\\ \hline
+u & A_{n - 1}
+\end{array}\right)\]
+
+donde $u = \begin{pmatrix}a_{21} \\ \vdots \\ a_{n1} \end{pmatrix}$, $v^t = (a_{12} \text{ } \cdots \text{ } a_{1n})$ y $A_{n - 1}$ es la submatriz que se obtiene sacandole la primera fila y columna a $A$. Como $a_{11} \neq 0$, podemos aplicar el primer paso de eliminación gaussiana sin pivoteo,
+
+\[\left(\begin{array}{c|c}
+1 & 0 \cdots 0\\ \hline
+-u / a_{11} & I_{n - 1} 
+\end{array}\right)
+\left(\begin{array}{c|c}
+a_{11} & v^t\\ \hline
+u & A_{n - 1}
+\end{array}\right) =
+\left(\begin{array}{c|c}
+a_{11} & v^t\\ \hline
+0 & \\
+\vdots & -uv^t / a_{11} + A_{n - 1}\\
+0 & 
+\end{array}\right)\]
+
+Veamos que el bloque $B = -uv^t / a_{11} + A_{n - 1}$ es una matriz e. d. d. f. Por comodidad supondremos que los índices de las matrices de dimensión $(n - 1) \times (n - 1)$ que estamos considerando corren de 2 hasta $n$. Si $2 \leq i, j \leq n$ son cualesquiera entonces
+
+\begin{align*}
+B_{ij} & = (-uv^t / a_{11} + A_{n - 1})_{ij} \\
+& = (-uv^t / a_{11})_{ij} + (A_{n - 1})_{ij}\\
+& = -1 / a_{11} (uv^t)_{ij} + a_{ij}\\
+& = a_{ij} - \frac{a_{i1}a_{1j}}{a_{11}}
+\end{align*}
+
+Luego,
+
+\begin{align*}
+\sum_{\substack{j = 2\\ j \neq i}}^n |B_{ij}| & = \sum_{\substack{j = 2\\ j \neq i}}^n \left|a_{ij} - \frac{a_{i1}a_{1j}}{a_{11}}\right|\\
+& \leq \sum_{\substack{j = 2\\ j \neq i}}^n |a_{ij}| + \sum_{\substack{j = 2\\ j \neq i}}^n \left|\frac{a_{i1}a_{1j}}{a_{11}}\right|\\
+& = \sum_{\substack{j = 2\\ j \neq i}}^n |a_{ij}| + \left|\frac{a_{i1}}{a_{11}}\right| \sum_{\substack{j = 2\\ j \neq i}}^n \left|a_{1j}\right|\\
+\end{align*}
+
+Pero $\sum_{\substack{j = 2\\ j \neq i}}^n |a_{ij}| = \sum_{\substack{j = 1\\ j \neq i}}^n |a_{ij}| - |a_{i1}| < |a_{ii}| - |a_{i1}|$, esto último por ser $A$ estrictamente diagonal dominante por filas. Por la misma razón se tiene $\sum_{\substack{j = 2\\ j \neq i}}^n |a_{1j}| = \sum_{j = 2}^n |a_{1j}| - |a_{1i}| < |a_{11}| - |a_{1i}|$. Entonces,
+
+\begin{align*}
+\sum_{\substack{j = 2\\ j \neq i}}^n |B_{ij}| & < |a_{ii}| - |a_{i1}| + \left|\frac{a_{i1}}{a_{11}}\right|(|a_{11}| - |a_{1i}|)\\
+& = |a_{ii}| - |a_{i1}| + |a_{i1}| - \left|\frac{a_{i1} a_{1i}}{a_{11}}\right|\\
+& = |a_{ii}| - \left|\frac{a_{i1} a_{1i}}{a_{11}}\right|
+\end{align*}
+
+Finalmente, como $|a_{ii}| - \left|\frac{a_{i1} a_{1i}}{a_{11}}\right| \leq \left|a_{ii} - \frac{a_{i1} a_{1i}}{a_{11}}\right|$,
+
+\[\sum_{\substack{j = 2\\ j \neq i}}^n |B_{ij}| < \left|a_{ii} - \frac{a_{i1} a_{1i}}{a_{11}}\right|\\
+= |B_{ii}|\]
+Que es lo que queríamos probar. Entonces, por hipótesis inductiva, $B$ admite factorización LU. Sea $B = L_{n - 1} U_{n - 1}$ una tal escritura. Sean
+
+\[L = \left(\begin{array}{c|c}
+1 & 0 \cdots 0\\ \hline
+v / a_{11} & L_{n - 1} 
+\end{array}\right)
+\hspace{0.5cm}
+U = \left(\begin{array}{c|c}
+a_{11} & u^t\\ \hline
+0 & \\
+\vdots & U_{n - 1}\\
+0 &
+\end{array}\right)
+\]
+
+Notemos que $L$ es triangular inferior con unos en la diagonal y $U$ es triangular superior. Se puede ver, haciendo el producto por bloques, que $A = LU$, con lo cual esta es la factorización LU de $A$. Esto concluye el paso inductivo.
+
+\end{proof}
+\end{propo}
+
+\begin{propo}
+\label{propo:lu}
+
+Sea $A \in \mathbb{R}^{n \times n}$ inversible. Entonces $A$ tiene factorización LU si y sólo si sus $n$ menores principales son no nulos.
+
+\begin{proof}
+Denotamos $A_i$ a la submatriz de $A$ formada por las primeras $i$ filas e $i$ columnas.\\[0.25cm]
+($\Rightarrow$) Queremos ver que $\det(A_i) \neq 0$ para todo $i = 1, \cdots, n$. Procedemos por inducción en $n \in \mathbb{N}$.
+
+Si $n = 1$ entonces $A = \begin{pmatrix} a \end{pmatrix}$ para cierto $a \in \mathbb{R}$, que es no nulo puesto que $A$ es inversible. Entonces $\det(A) = \det(A_1) \neq 0$.
+
+Sea $n > 1$. Como $A$ es inversible entonces $\det(A) = \det(A_n) \neq 0$. Sea $A = LU$ una factorización LU de $A$. Descomponemos a $L$ y $U$ en bloques del siguiente modo,
+
+\[L = \left(\begin{array}{c|c}
+ & 0 \\
+L_{n - 1} & \vdots \\
+ & 0 \\ \hline
+v^t & 1
+\end{array}\right)
+\hspace{0.5cm}
+U = \left(\begin{array}{c|c}
+ &  \\
+U_{n - 1} & u \\
+ &  \\ \hline
+0 \cdots 0 & x
+\end{array}\right)
+\]
+
+con $L_{n - 1}, U_{n - 1} \in \mathbb{R}^{(n - 1) \times (n - 1)}$, $v, u \in \mathbb{R}^{n - 1}$ y $x \in \mathbb{R}$. Entonces
+
+\[A = LU = \left(\begin{array}{c|c}
+L_{n - 1} U_{n - 1} & L_{n - 1}u\\ \hline
+v^t U_{n - 1} & v^tu + x
+\end{array}\right)\]
+
+Por lo tanto $A_{n - 1} = L_{n - 1}U_{n - 1}$, es decir que esta submatriz tiene factorización LU. Veamos que, además, es inversible. Por un lado, como $L_{n - 1}$ es triangular inferior con unos en la diagonal, entonces es inversible. Por otro lado, como $A$ y $L$ son inversibles, entonces $U$ es inversible. Luego $0 \neq \det U = \det(U_{n - 1}) \det(x)$, con lo cual $\det(U_{n - 1}) \neq 0$, es decir, $U_{n - 1}$ es inversible. Por ende $L_{n - 1}$ y $U_{n - 1}$ son inversibles, y en consecuencia $A_{n - 1}$ también lo es.
+
+Todo esto hace que valga la hipótesis inductiva sobre $A_{n - 1}$, y por lo tanto sus $n - 1$ menores principales son no nulos. Pero estos menores principales son exactamente $\det(A_1), \cdots, \det(A_{n - 1})$.\\[0.25cm]
+
+($\Leftarrow$) Inducción en $n \in \mathbb{N}$.
+
+Si $n = 1$ la factorización LU de $A$ es trivial.
+
+Sea $n > 1$. Por hipótesis, la submatriz $A_{n - 1}$ tiene todos sus menores principales no nulos. Entonces, por hipótesis inductiva, admite una factorización LU que la escribimos $A_{n - 1} = L_{n - 1}U_{n - 1}$. Descomponemos $A$ en bloques del siguiente modo
+
+\[A = \left(\begin{array}{c|c}
+L_{n - 1} U_{n - 1} & u\\ \hline
+v^t & a
+\end{array}\right)\]
+
+Definimos los vectores $\alpha, \beta \in \mathbb{R}^{n - 1}$ como
+
+\[\alpha = (L_{n - 1})^{-1}u\]
+\[\beta = (U_{n - 1}^t)^{-1} v\]
+
+Esto es posible gracias a que las dimensiones son adecuadas y las matrices $L_{n - 1}$ y $U_{n - 1}^t$ son inversibles, por ser $A_{n - 1}$ inversible. Finalmente definimos el número real
+
+\[x = a - \beta^t \alpha\]
+
+A partir de estos elementos vamos a obtener la factorización LU de $A$. Sean
+
+\[
+L = \left(\begin{array}{c|c}
+ & 0 \\
+L_{n - 1} & \vdots \\
+ & 0 \\ \hline
+\beta^t & 1
+\end{array}\right)
+\hspace{0.5cm}
+U = \left(\begin{array}{c|c}
+ &  \\
+U_{n - 1} & \alpha \\
+ &  \\ \hline
+0 \cdots 0 & x
+\end{array}\right)\]
+
+Haciendo la multiplicación es fácil ver que $A = LU$, que es lo que queríamos probar.
+
+\end{proof}
+\end{propo}
+
+\subsection{Matrices simétricas definidas positivas y factorización de Cholesky}
+
+\subsubsection{Matrices simétricas y definidas positivas}
+
+\begin{defi}
+Una matriz $A \in \mathbb{R}^{n \times n}$ se dice definida positiva si $x^tAx > 0$ para todo $x \neq 0$.
+\end{defi}
+
+\begin{propo}
+Si $A \in \mathbb{R}^{n \times n}$ es definida positiva entonces es inversible.
+
+\begin{proof}
+Veamos el contrarrecíproco. Si $A$ no es inversible entonces existe $x \in \mathbb{R}^n$ no nulo tal que $Ax = 0$. Entonces $x^t A x = 0$, y como $x \neq 0$ esto implica que $A$ no es definida positiva.
+\end{proof}
+\end{propo}
+
+\begin{propo}
+\label{propo:defpos}
+Si $A \in \mathbb{R}^{n \times n}$ es definida positiva entonces sus submatrices principales son definidas positivas e inversibles.
+
+\begin{proof}
+Sea $1 \leq k \leq n$ cualquiera. Sea $A_k$ la submatriz $A$ formada por sus primeras $k$ filas y $k$ columnas, queremos ver que $A_k$ es definida positiva e inversible. Si $k = n$ no hay nada que ver. Supongamos $k < n$. Sea $x_k \in \mathbb{R}^k$ no nulo. A partir de este vector construimos un nuevo vector $x \in \mathbb{R}^n$ agregando ceros, es decir,
+
+\[x = \begin{pmatrix}
+x_k\\
+0 \\
+\vdots \\
+0
+\end{pmatrix}\]
+
+Multiplicando por bloques se puede ver que $x^t A x = x_k^t A x_k$. Como $x_k \neq 0$ entonces $x \neq 0$, y como $A$ es definida positiva entonces $x^t A x > 0$. Luego $x_k^t A_k x_k > 0$. Dado que $x_k$ es cualquiera, concluimos que $A_k$ es definida positiva, como queríamos.
+
+La inversibilidad de $A_k$ se deduce inmediatamente de la proposición anterior.
+
+\end{proof}
+\end{propo}
+
+\begin{coro}
+Si $A \in \mathbb{R}^{n \times n}$ es definida positiva entonces admite factorización LU y es única.
+\begin{proof}
+Por la última proposición, todas las submatrices principales son inversibles. Pero vimos que toda matriz que cumple esto, admite factorización LU. Además por ser $A$ inversible, la escritura es única.
+\end{proof}
+\end{coro}
+
+\begin{defi}
+Una matriz $A \in \mathbb{R}^{n \times n}$ se dice simétrica si $A = A^t$.
+\end{defi}
+
+\begin{propo}
+\label{propo:ldl}
+Sea $A \in \mathbb{R}^{n \times n}$ inversible y simétrica, que admite factorización LU. Entonces existen matrices $L \in \mathbb{R}^{n \times n}$ triangular inferior con unos en la diagonal y $D \in \mathbb{R}^{n \times n}$ diagonal tal que $A = LDL^t$. Esta escritura se conoce como \textit{factorización LDL}.
+
+\begin{proof}
+Sea $A = LU$ una factorización LU. Como $A$ es simétrica entonces $A = A^t \Rightarrow LU = (LU)^t = U^t L^t$. Por definición $L$ es inversible. Como $A$ es inversible, $U$ resulta inversible. Entonces $(U^t)^{-1}L = L^t U^{-1}$. Como $U$ es triangular superior, entonces $U^t$ es triangular inferior y $(U^t)^{-1}$ también. Análogamente, como $L$ es triangular inferior, $L^t$ es triangular superior. Además $U^{-1}$ es triangular superior. Luego $(U^t)^{-1}L$ es triangular inferior y $L^t U^{-1}$ es triangular superior, con lo cual ambas matrices resultan ser diagonales. Sea $L^t U^{-1} = D$ diagonal. Como $L^t$ y $U^{-1}$ son inversibles, entonces $D$ también lo es. Luego $D^{-1}L^t = U$, y reemplazando en la factorización original queda $A = LU = LD^{-1}L^t$. Como $D^{-1}$ también es diagonal, esta es la escritura buscada.
+\end{proof}
+\end{propo}
+
+\begin{coro}
+\label{coro:ldl}
+Si $A \in \mathbb{R}^{n \times n}$ es simétrica y tiene todos sus menores principales no nulos, entonces admite factorización LDL.
+
+\begin{proof}
+Por la Proposición \ref{propo:lu}, $A$ admite factorización LU. Además es inversible. Luego, por la Proposición \ref{propo:ldl}, $A$ admite factorización LDL.
+\end{proof}
+\end{coro}
+
+\subsubsection{Factorización de Cholesky}
+
+\begin{defi}
+Sea $A \in \mathbb{R}^{n \times n}$. Se llama factorización de Cholesky de $A$ a una escritura de la forma $A = LL^t$ con $L$ una matriz triangular inferior con elementos en la diagonal positivos.
+\end{defi}
+
+\begin{propo}
+Sea $A \in \mathbb{R}^{n \times n}$. Entonces $A$ es simétrica definida positiva si y sólo si admite factorización de Cholesky.
+
+\begin{proof}
+($\Rightarrow$) Como $A$ es definida positiva entonces, por la Proposición \ref{propo:defpos}, todos los menores principales de $A$ son no nulos. Como además $A$ es simétrica, por el Corolario \ref{coro:ldl}, $A$ tiene factorización LDL. Sea $A = LDL^t$ una tal escritura.
+
+Veamos que todos los elementos de la diagonal de $D$ son positivos. Sea $1 \leq i \leq n$ arbitrario. Como $L^t$ es inversible, existe $x \in \mathbb{R}^n$ tal que $L^tx = e_i$, y que necesariamente es no nulo. Como $x \neq 0$ entonces $x^t A x > 0$. Luego
+
+\[0 < x^t A x = x^t (LDL^t) x = (x^tL) D (L^tx) = e_i^t D e_i = D_{ii}\]
+
+En definitiva $D_{ii} > 0$ y como $i$ es cualquiera, todos los elementos de la diagonal de $D$ son positivos. Definimos
+
+\[\sqrt{D} = \begin{pmatrix}
+\sqrt{D_{11}} & & 0\\
+ & \ddots & \\
+0 & & \sqrt{D_{nn}}
+\end{pmatrix}\]
+
+Notemos que $D = \sqrt{D} \sqrt{D}$, con lo cual $A = LDL^t = L\sqrt{D}\sqrt{D}L^t = L\sqrt{D}\sqrt{D}^tL^t = (L \sqrt{D}) (L \sqrt{D})^t$. Pero $L \sqrt{D}$ sigue siendo triangular inferior y, más aún, los elementos de su diagonal son positivos, pues tanto los de $L$ como los de $\sqrt{D}$ lo son. Así llegamos a la factorización deseada.\\[0.25cm]
+
+($\Leftarrow$) Sea $A = LL^t$ una factorización de Cholesky. Sea $x \neq 0$, queremos ver que $x^t A x > 0$. Se tiene que $x^t A x = x^t LL^t x = (L^tx)^t(L^tx) = \norm{L^tx}_2^2$ y esta norma es estrictamente mayor que cero, ya que como $L^t$ es triangular con diagonal no nula y $x$ es no nulo, entonces $L^tx \neq 0$.
+
+\end{proof}
+\end{propo}
+
+Supongamos que $A$ tiene factorización de Cholesky, de modo tal que podemos escribir
+
+\[
+A = \begin{pmatrix}
+a_{11} & \cdots & a_{n1} \\
+\vdots & \ddots & \vdots \\
+a_{n1} & \cdots & a_{nn}
+\end{pmatrix} = 
+\begin{pmatrix}
+\ell_{11} & 0 & \cdots & 0 \\
+\ell_{21} & \ell_{22} & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+\ell_{n1} & \ell_{n2} & \cdots & \ell_{nn}
+\end{pmatrix}
+\begin{pmatrix}
+\ell_{11} 	& \ell_{21}	& \cdots & \ell_{n1} \\
+0		 	& \ell_{22} 	& \cdots & \ell_{n2} \\
+\vdots 		& \vdots 	& \ddots & \vdots \\
+0		 	& 0			& \cdots & \ell_{nn}
+\end{pmatrix} = LL^t
+\]
+
+con $\ell_{ii} > 0$ para todo $i$. Para calcular el coeficiente de la fila $i$ y columna $j$ ($j \leq i$), computamos el producto de la fila $i$ de $L$ contra la columna $j$ de $L^t$:
+
+\[a_{ij} = \begin{pmatrix}
+\ell_{i1} & \cdots & \ell_{ij} & \cdots & \ell_{ii} & 0 & \cdots & 0
+\end{pmatrix}
+\begin{pmatrix}
+\ell_{j1} \\
+\vdots \\
+\ell_{jj} \\
+0 \\
+\vdots \\
+0
+\end{pmatrix} = \ell_{i1}\ell_{j1} + \cdots + \ell_{ij}\ell_{jj} = \sum_{k = 1}^j \ell_{ik}\ell_{jk}\]
+
+Usando esta ecuación se deduce que:
+
+\begin{itemize}
+\item Si $j = i = 1$ entonces
+
+\[a_{11} = \ell_{11}^2 \Leftrightarrow \ell_{11} = \sqrt{a_{11}}\]
+
+\item Si $j = 1 < i$ entonces
+
+\[a_{i1} = \ell_{i1}\ell_{11} \Leftrightarrow \ell_{i1} = \frac{a_{i1}}{\ell_{11}}\]
+
+\item Si $1 < j = i$ entonces
+
+\[a_{jj} = \ell_{j1}^2 + \cdots + \ell_{jj}^2 \Leftrightarrow \ell_{jj} = \sqrt{a_{jj} - \sum_{k = 1}^{j - 1}\ell_{jk}^2}\]
+
+\item Si $1 < j < i$ entonces
+
+\[a_{ij} = \ell_{i1}\ell_{j1} + \cdots + \ell_{ij}\ell_{jj} \Leftrightarrow \ell_{ij} = \frac{1}{\ell_{jj}}\left(a_{ij} - \sum_{k = 1}^{j - 1}\ell_{ik}\ell_{jk}\right)\]
+
+\end{itemize}
+
+Para calcular cada una de las entradas de la descomposición procedemos por columnas, primero calculando los coeficientes $\ell_{i1}$, luego los $\ell_{i2}$ y así sucesivamente. Se puede ver que de esta forma respetamos las dependencias entre las ecuaciones anteriores.
+
+Esto nos da un algoritmo para computar la matriz $L$ de la factorización. Más aún, como cada $\ell_{ij}$ está unívocamente determinado, hemos probado que la factorización de Cholesky es única.
+
+\begin{algorithm}
+\caption[]{Factorización de Cholesky}
+$\ell_{11} = \sqrt{a_{11}}$;\\
+\For{$i = 2$ to $n$}{
+	$\ell_{i1} = \frac{a_{i1}}{\ell_{11}}$;\\
+}
+\For{$j = 2$ to $n$}{
+	$\ell_{jj} = \sqrt{a_{jj} - \sum_{k = 1}^{j - 1}\ell_{jk}^2}$;\\
+	\For{$i = j + 1$ to $n$}{
+		$\ell_{ij} = \frac{1}{\ell_{jj}}\left(a_{ij} - \sum_{k = 1}^{j - 1}\ell_{ik}\ell_{jk}\right)$;\\
+	}
+}
+\end{algorithm}
+
+La complejidad del algoritmo es cúbica, que es la misma que la de LU. Sin embargo, en términos prácticos el cómputo de la factorización de Cholesky resulta ser el doble de rápido que el de LU. Además, al igual que LU, permite resolver eficientemente el problema de la resolución sucesiva de sistemas de misma matriz $A$.
+
+\subsection{Estabilidad numérica de Cholesky}
+A diferencia de LU, Cholesky no depende de pivoteos, manteniendo así el error acotado. El único problema que puede sufrir esta escritura es la presencia del cómputo de raíces cuadradas. Si bien los números a los que se les toma raíz son siempre positivos, si éstos son suficientemente pequeños se pueden tornar negativos a lo largo del cómputo, debido al error de redondeo, siendo imposible continuar con el algoritmo. Pese a que ésto sólo sucede en matrices muy mal condicionadas, para evitarlo puede optarse por sumarle a la matriz $A$ otra matriz diagonal con entradas de valor absoluto chico, y así reforzar su condición de definida positiva. La desventaja en este caso es que se pierde precisión en el resultado.
