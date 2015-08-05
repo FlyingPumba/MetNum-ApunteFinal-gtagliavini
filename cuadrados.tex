@@ -125,10 +125,10 @@ Entonces el mínimo se realiza sí y sólo si $\norm{Ax - b_1}_2^2 = 0 \Leftrigh
 
 Observemos que como $b_1 \in \text{Im}(A)$ entonces siempre existe un vector $x$ que realiza el mínimo. Es decir, cuadrados mínimos lineales siempre tiene solución. Estudiemos ahora la unicidad de la misma.
 
-Es importante notar que la unicidad no depende del conjunto $\text{Im}(A)$ si no de cómo la matriz $A$ transforma los vectores. Más precisamente, existe único $x \in \mathbb{R}^n$ tal que $Ax = b_1$ si y sólo si la transformación lineal $f_A(x) = Ax$ es un monomorfismo. En términos de los elementos de la matriz, tenemos el siguiente resultado,
+Es importante notar que la unicidad no depende del conjunto $\text{Im}(A)$ si no de cómo la matriz $A$ transforma los vectores. En términos de los elementos de la matriz, tenemos el siguiente resultado,
 
 \begin{propo}
-La solución de cuadrados mínimos lineales es única si y sólo si $A$ es inversible.
+La solución de cuadrados mínimos lineales es única si y sólo el rango columna de $A$ es completo, es decir, sus columnas son LI. Notar que en caso de ser cuadrada esto implica que $A$ tiene que ser inversible, pero en ese caso $b \in Im(A)$ y podemos usar otro método para resolver el sistema.
 
 \begin{proof}
 Existirá un único $x \in \mathbb{R}^n$ tal que $Ax = b_1$ si y sólo si la matriz $A$ es inversible.
