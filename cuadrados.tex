@@ -59,7 +59,7 @@ Consideremos
 \phi_1(x_2) & \cdots & \phi_n(x_2) \\
 \vdots		&		&	\vdots		\\
 \phi_1(x_n)	& \cdots & \phi_n(x_n)
-\end{pmatrix} 
+\end{pmatrix}
 \hspace{1cm}
 x = \begin{pmatrix}
 a_1 \\
@@ -125,10 +125,10 @@ Entonces el mínimo se realiza sí y sólo si $\norm{Ax - b_1}_2^2 = 0 \Leftrigh
 
 Observemos que como $b_1 \in \text{Im}(A)$ entonces siempre existe un vector $x$ que realiza el mínimo. Es decir, cuadrados mínimos lineales siempre tiene solución. Estudiemos ahora la unicidad de la misma.
 
-Es importante notar que la unicidad no depende del conjunto $\text{Im}(A)$ si no de cómo la matriz $A$ transforma los vectores. En términos de los elementos de la matriz, tenemos el siguiente resultado,
+Es importante notar que la unicidad no depende del conjunto $\text{Im}(A)$ si no de cómo la matriz $A$ transforma los vectores. Más precisamente, existe único $x \in \mathbb{R}^n$ tal que $Ax = b_1$ si y sólo si la transformación lineal $f_A(x) = Ax$ es un monomorfismo. En términos de los elementos de la matriz, tenemos el siguiente resultado,
 
 \begin{propo}
-La solución de cuadrados mínimos lineales es única si y sólo el rango columna de $A$ es completo, es decir, sus columnas son LI. Notar que en caso de ser cuadrada esto implica que $A$ tiene que ser inversible, pero en ese caso $b \in Im(A)$ y podemos usar otro método para resolver el sistema.
+La solución de cuadrados mínimos lineales es única si y sólo el rango columna de $A$ es completo, es decir, sus columnas son l. i. Notar que en caso de ser cuadrada esto implica que $A$ tiene que ser inversible, pero en ese caso $b \in Im(A)$ y podemos usar otro método para resolver el sistema.
 
 \begin{proof}
 Existirá un único $x \in \mathbb{R}^n$ tal que $Ax = b_1$ si y sólo si la matriz $A$ es inversible.
@@ -165,7 +165,7 @@ pues $col_i(A) \in \text{Im}(A)$ para todo $i$.\\[0.25cm]
 
 ($\supseteq$) Sea $v \in \text{Nu}(A^t)$, entonces $A^tv = 0$. Sea $w \in \text{Im}(A)$, queremos ver que $\langle w, v \rangle_2 = 0$.
 
-Como $w \in \text{Im}(A)$, entonces $Az = w$ para algún $z \in \mathbb{R}^n$. Luego $w^t = z^tA^t$ con lo cual $\langle w, v \rangle_2 = w^tv = z^tA^tv = 0$. 
+Como $w \in \text{Im}(A)$, entonces $Az = w$ para algún $z \in \mathbb{R}^n$. Luego $w^t = z^tA^t$ con lo cual $\langle w, v \rangle_2 = w^tv = z^tA^tv = 0$.
 \end{proof}
 \end{lema}
 
@@ -267,7 +267,7 @@ ahora con $c \in \mathbb{R}^r$, $d \in \mathbb{R}^{m - r}$, $x_1 \in \mathbb{R}^
 \[\norm{Ax - b}_2^2 = \norm{\begin{pmatrix}
 R_1 x_1 + R_2 x_2 - c\\
 -d
-\end{pmatrix}}_2^2 = 
+\end{pmatrix}}_2^2 =
 \norm{R_1 x_1 + R_2 x_2 - c}_2^2 + \norm{d}_2^2
 \]
 
@@ -281,7 +281,7 @@ Consideremos ahora la descomposición en valores singulares $A = U \Sigma V^t$. 
 
 \[\norm{Ax - b}_2^2 = \norm{U^t(Ax - b)}_2^2 = \norm{U^t(U\Sigma V^tx - b)}_2^2 = \norm{\Sigma V^t x - U^t b}_2^2\]
 
-Como $V^t$ es inversible entonces sustituyendo $y = V^tx$: 
+Como $V^t$ es inversible entonces sustituyendo $y = V^tx$:
 
 \[\min\limits_{x \in \mathbb{R}^n} \norm{Ax - b}_2^2 = \min\limits_{x \in \mathbb{R}^n} \norm{\Sigma V^t x - U^t b}_2^2  = \min \limits_{y \in \mathbb{R}^n} \norm{\Sigma y - U^tb}_2^2\]
 
@@ -348,7 +348,7 @@ con $c \in \mathbb{R}^{r}$ y $d \in \mathbb{R}^{m - r}$, tenemos
 \end{pmatrix} - \begin{pmatrix}
 c \\
 d
-\end{pmatrix}}_2^2 = 
+\end{pmatrix}}_2^2 =
 \norm{\begin{pmatrix}
 \sigma_1 y_1 - c_1\\
 \vdots \\
