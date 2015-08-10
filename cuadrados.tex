@@ -108,7 +108,7 @@ En la figura, $b_1 = \text{proy}_{\text{Im}(A)}(b)$ es el punto que realiza la d
 Como $\mathbb{R}^m = \text{Im}(A) \oplus \text{Im}(A)^{\perp}$ entonces $b$ se escribe en forma única como $b = b_1 + b_2$ con $b_1 \in \text{Im}(A)$ y $b_2 \in \text{Im}(A)^{\perp}$. Recordemos que $b_1$ es la proyección ortogonal de $b$ sobre $\text{Im}(A)$ y $b_2$ es la proyección ortogonal de $b$ sobre $\text{Im}(A)^{\perp}$.
 
 \begin{propo}
-Sea $b = b_1 + b_2$ la escritura en forma única como $b_1 \in \text{Im}(A)$ y $b_2 \in \text{Im}(A)^{\perp}$. Entonces el mínimo $\min\limits_{x \in  \mathbb{R}^n}\norm{Ax - b}_2^2$ se realiza únicamente cuando $Ax = b_1$.
+Sea $b = b_1 + b_2$ la escritura en forma única como $b_1 \in \text{Im}(A)$ y $b_2 \in \text{Im}(A)^{\perp}$. Entonces el mínimo $\min\limits_{x \in  \mathbb{R}^n}\norm{Ax - b}_2^2$ se realiza si y s'olo si $Ax = b_1$.
 
 \begin{proof}
 \begin{align*}
@@ -118,22 +118,40 @@ Sea $b = b_1 + b_2$ la escritura en forma única como $b_1 \in \text{Im}(A)$ y $
 				&\geq \norm{b_2}_2^2
 \end{align*}
 
-Entonces el mínimo se realiza sí y sólo si $\norm{Ax - b_1}_2^2 = 0 \Leftrightarrow Ax = b_1$.
+Entonces $\min\limits_{x \in  \mathbb{R}^n}\norm{Ax - b}_2^2 \geq \norm{b_2}_2^2$.
+
+Por otro lado, notemos que $\norm{Ax - b_1}_2^2 = 0 \Leftrightarrow Ax = b_1$, y como $b_1 \in \text{Im}(A)$ entonces existe un cierto $x \in \mathbb{R}^n$ tal que $Ax = b_1$. Para este valor de $x$, tendremos $\norm{Ax - b}_2^2 = \norm{b_2}_2^2$. Luego, $\min\limits_{x \in  \mathbb{R}^n}\norm{Ax - b}_2^2 \leq \norm{b_2}_2^2$.
+
+En definitiva, el m'inimo es exactamente $\norm{b_2}_2^2$ y es realizado si y s'olo si $\norm{Ax - b_1}_2^2 + \norm{b_2}_2^2 = \norm{b_2}_2^2$, o sea, $Ax = b_1$.
 
 \end{proof}
 \end{propo}
 
 Observemos que como $b_1 \in \text{Im}(A)$ entonces siempre existe un vector $x$ que realiza el mínimo. Es decir, cuadrados mínimos lineales siempre tiene solución. Estudiemos ahora la unicidad de la misma.
 
-Es importante notar que la unicidad no depende del conjunto $\text{Im}(A)$ si no de cómo la matriz $A$ transforma los vectores. Más precisamente, existe único $x \in \mathbb{R}^n$ tal que $Ax = b_1$ si y sólo si la transformación lineal $f_A(x) = Ax$ es un monomorfismo. En términos de los elementos de la matriz, tenemos el siguiente resultado,
+Es importante notar que la unicidad no depende del conjunto $\text{Im}(A)$ si no de cómo la matriz $A$ transforma los vectores. Es por esto que la transformaci'on lineal $f_A(x) = Ax$ juega un rol fundamental aqu'i.
+
+\begin{lema}
+	La soluci'on de cuadrados m'inimos es 'unica si y s'olo si $f_A$ es monomorfismo.
+	
+\begin{proof}
+	($\Leftarrow$) Si $f_A$ es monomorfismo, existir'a un 'unico $x \in \mathbb{R}^n$ tal que $Ax = f_A(x) = b_1$.
+	 
+	($\Rightarrow$) Sea $x_0$ la 'unica soluci'on de cuadrados m'inimos. Para llegar a una contradicc'on, supongamos que $f_A$ no es monomorfismo. Entonces existen $x_1 \neq x_2$ tal que $f_A(x_1) = f_A(x_2)$, de modo que $A(x_1 - x_2) = 0$. Pero entonces $A(x_1 - x_2 + x_0) = b_1$, es decir que $x_1 - x_2 + x_0$ es una soluci'on de cuadrados m'inimos distinta de $x_0$. Absurdo.
+\end{proof}
+\end{lema}
+
+En términos de los elementos de la matriz, tenemos el siguiente resultado,
 
 \begin{propo}
-La solución de cuadrados mínimos lineales es única si y sólo el rango columna de $A$ es completo, es decir, sus columnas son l. i. Notar que en caso de ser cuadrada esto implica que $A$ tiene que ser inversible, pero en ese caso $b \in Im(A)$ y podemos usar otro método para resolver el sistema.
+La solución de cuadrados mínimos lineales es única si y sólo el rango columna de $A$ es completo, es decir, sus columnas son l. i.
 
 \begin{proof}
-Existirá un único $x \in \mathbb{R}^n$ tal que $Ax = b_1$ si y sólo si la matriz $A$ es inversible.
+Se desprende del lema previo, y dado que $f_A$ es monomorfismo si y s'olo si las columnas de $A$ son l. i.
 \end{proof}
 \end{propo}
+
+Notar que en caso de ser $A$ cuadrada, si tiene rango columna completo entonces tambi'en es inversible, con lo cual $b \in \text{Im}(A)$ y el problema equivale a resolver un sistema de ecuaciones, para lo cual ya hemos estudiado diversos m'etodos.
 
 \subsection{Ecuaciones normales}
 
