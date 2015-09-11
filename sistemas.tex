@@ -283,7 +283,7 @@ m_{(k+1)1}	& \cdots		& m_{(k+1)k} 	& \cdots		& 0\\
 m_{n1}		& \cdots		& m_{nk}		& \cdots		& 1\\
 \end{pmatrix}$.
 
-($\Rightarrow$) Repetimos exactamente los mismos pasos, ahora hacia atr'as. Partiendo de una descomposici'on $A = LU$, se tiene que $L = M_1^{-1}\cdots M_{n - 1}^{-1}$, con cada $M_k$ definida como antes, con lo cual $M_n \cdots M_1 A = U$. Recordemos que $M_k$ representa la operaci'on de fila $F_i = F_i - m_{ik}F_i$ para $i = k + 1, \dots, n$. Por lo tanto, $M_1A$, $M_2 M_1 A$, $\cdots$, $M_{n - 1} \cdots M_1 A$ representan cada uno de los $n - 1$ pasos de la eliminaci'on gaussiana sobre $A$.
+($\Rightarrow$) Repetimos exactamente los mismos pasos, ahora hacia atr'as. Partiendo de una descomposici'on $A = LU$, se tiene que $L = M_1^{-1}\cdots M_{n - 1}^{-1}$, con cada $M_k$ definida como antes, con lo cual $M_n \cdots M_1 A = U$. Recordemos que $M_k$ representa la operaci'on de fila $F_i = F_i - m_{ik}F_i$ para $i = k + 1, \dots, n$. Por lo tanto, $M_1A$, $M_2 M_1 A$, $\cdots$, $M_{n - 1} \cdots M_1 A$ representan cada uno de los $n - 1$ pasos de la eliminaci'on gaussiana sin pivoteo sobre $A$.
 
 	\end{proof}
 \end{propo}
