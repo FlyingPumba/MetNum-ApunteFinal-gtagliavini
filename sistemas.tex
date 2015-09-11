@@ -136,19 +136,28 @@ El último será el
 \texttt{Paso n - 1:} $F_i \leftarrow F_i - \frac{a_{i(n-1)}^{(n-2)}}{a_{(n-1)(n-1)}^{(n-2)}}F_{n - 1}$ para $i = n$
 
 El invariante fundamental de este proceso es que al principio del paso $k$, las primeras $k - 1$ columnas tienen únicamente ceros debajo de la diagonal. Al concluir los $n - 1$ pasos obtendremos la matriz $M^{(n - 1)}$ que es triangular superior.
+
+Podemos relajar levemente la hip'otesis $a_{(k+1)(k+1)}^{(k)} \neq 0$ para cada $k$, notando que si en el paso $k$ se tiene $a_{(k+1)(k+1)}^{(k)} = 0$ pero todos los valores de la columna $k$ debado de esta entrada tambi'en son nulos, podemos pasar inmediatamente al siguiente paso del proceso, y el invariante se mantiene. El algoritmo de eliminaci'on gaussiana requiere que la matriz de entrada cumpla esta propiedad, y de lo contrario falla.
  
 \begin{algorithm}
 \DontPrintSemicolon
-%\SetKwInOut{Input}{input}
+\SetKwInOut{Input}{input}
+\SetKw{error}{error}
 %\SetKwInOut{Output}{output}
-%\Input{$A \in \mathbb{R}^{n \times n}$ matriz del sistema
+%\Input{$A \in \mathbb{R}^{n \times n}$}
 %\\$b \in \mathbb{R}^n$ vector de términos independientes}
 %\Output{Un sistema equivalente con matriz triangular superior}
 
 \For{$k$ = 1 \KwTo $n - 1$}{
-	\For{$i$ = $k + 1$ \KwTo $n$}{
-		$m_{ik} = \frac{a_{ik}}{a_{kk}}$\;
-		$F_i \leftarrow F_i - m_{ik} F_k$\;
+	\eIf {$a_{kk} = 0$}{
+		\If {$a_{ik} \neq 0$ para alg'un $k < i \leq n$}{
+			\error
+		}
+	}{
+		\For{$i$ = $k + 1$ \KwTo $n$}{
+			$m_{ik} = \frac{a_{ik}}{a_{kk}}$\;
+			$F_i \leftarrow F_i - m_{ik} F_k$\;
+		}
 	}
 }
 \caption[]{Eliminación gaussiana sin pivoteo}
@@ -208,7 +217,14 @@ Si bien en una matriz arbitraria el factor de crecimiento es a lo sumo $2^{n - 1
 Sea $A \in \mathbb{R}^{n \times n}$. Se llama factorización LU de A a una escritura de la forma $A = LU$ con $L \in \mathbb{R}^{n \times n}$ triangular inferior con unos en la diagonal y $U \in \mathbb{R}^{n \times n}$ triangular superior.
 \end{defi}
 
-Veamos cómo calcular la factorización LU de una matriz $A$. Supongamos que $A$ admite eliminación gaussiana sin pivoteo. Notemos que en el paso $k$ de la eliminación se realizan las operaciones de fila $F_i = F_i - m_{ik} F_k$ para $i = k + 1, \cdots, n$. En términos matriciales esto es multiplicar $A^{(k)}$ a izquierda por las matrices de elementales
+Como muestra el siguiente resultado, esta forma de escribir a una matriz no es m'as que una s'intesis del procedimiento de triangulaci'on descripto previamente. La demostraci'on de la existencia de la escritura es constructiva, exhibiendo un procedimiento para calcularla.
+
+\begin{propo}
+	Sea $A \in \mathbb{R}^{n \times n}$. Entonces $A$ tiene factorizaci'on LU si y s'olo si admite eliminaci'on gaussiana sin pivoteo.
+	
+	\begin{proof}
+	
+($\Leftarrow$) Supongamos que $A$ admite eliminación gaussiana sin pivoteo, y veamos cómo calcular la factorización LU de una matriz $A$. Notemos que en el paso $k$ de la eliminación se realizan las operaciones de fila $F_i = F_i - m_{ik} F_k$ para $i = k + 1, \cdots, n$, salvo que el elemento de la diagonal sea nulo, en cuyo caso podemos pensar que $m_{ik} = 0$. En términos matriciales esto es multiplicar $A^{(k)}$ a izquierda por las matrices de elementales
 
 \[
 M_k = 
@@ -267,19 +283,16 @@ m_{(k+1)1}	& \cdots		& m_{(k+1)k} 	& \cdots		& 0\\
 m_{n1}		& \cdots		& m_{nk}		& \cdots		& 1\\
 \end{pmatrix}$.
 
-Debido a lo inherente que es la factorización LU al proceso de eliminación gaussiana el costo de computar esta factorización es claramente $\mathcal{O}(n^3)$.
+($\Rightarrow$) Repetimos exactamente los mismos pasos, ahora hacia atr'as. Partiendo de una descomposici'on $A = LU$, se tiene que $L = M_1^{-1}\cdots M_{n - 1}^{-1}$, con cada $M_k$ definida como antes, con lo cual $M_n \cdots M_1 A = U$. Recordemos que $M_k$ representa la operaci'on de fila $F_i = F_i - m_{ik}F_i$ para $i = k + 1, \dots, n$. Por lo tanto, $M_1A$, $M_2 M_1 A$, $\cdots$, $M_{n - 1} \cdots M_1 A$ representan cada uno de los $n - 1$ pasos de la eliminaci'on gaussiana sobre $A$.
 
-\subsubsection{Existencia y unicidad de la factorización LU}
-
-Hemos probado lo siguiente,
-
-\begin{propo}
-Sea $A \in \mathbb{R}^{n \times n}$. Si $A$ admite eliminación gaussiana sin pivoteo entonces $A$ tiene factorización LU.
+	\end{proof}
 \end{propo}
 
-\begin{obs}
-La recíproca no es cierta. Por ejemplo, la matriz nula tiene factorización LU pero obviamente no admite eliminación gaussiana sin pivoteo.
-\end{obs}
+
+
+Debido a lo inherente que es la factorización LU al proceso de eliminación gaussiana, el costo de computar esta factorización es claramente $\mathcal{O}(n^3)$.
+
+\subsubsection{Existencia y unicidad de la factorización LU}
 
 \begin{obs}
 No toda matriz tiene factorización LU. Si $A \in \mathbb{R}^{2 \times 2}$ tiene factorización LU entonces existen $a, b, c, d \in \mathbb{R}$ tal que
