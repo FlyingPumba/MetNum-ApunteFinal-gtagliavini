@@ -1,0 +1,446 @@
+\section{Elementos de Álgebra Lineal}
+
+Esta sección provee nociones básicas de Álgebra Lineal necesarias para el curso,
+pero no se pretende profundizar demasiado, ya que no es una materia especifica de Álgebra Lineal.
+
+\subsection{Espacio y Subespacio Vectorial}
+\begin{defi}
+	Un Espacio Vectorial $(V, +, \bullet , K)$ es una estructura algebraica creada sobre
+	el conjunto no vacio $V$, con una operación interna llamada \textit{suma} definida
+	para los elementos del conjunto $V$ y una operación externa llamada \textit{producto} definida
+	entre los elementos del conjunto $V$ y el conjunto $K$, que debe tener estructura
+	de cuerpo. Dicha estructura debe cumplir las siguientes 8 propiedades:
+	\begin{enumerate}
+		\item La \textit{suma} debe ser conmutativa, es decir: $ u + v = v + u \quad \forall\ u,v \in V$
+		\item La \textit{suma} debe ser asociativa, es decir: $ u + (v + w) = (u + v) + w \quad \forall\ u,v,w \in V$
+		\item La \textit{suma} debe tener elemento neutro, es decir: $\exists\ 0 \in V : u + 0 = u \quad \forall\ u \in V$
+		\item La \textit{suma} debe tener elemento inverso, es decir: $\forall\ u \in V,\ \exists\ -u \in V : u + (-u) = 0$
+		\item El \textit{producto} debe ser asociativo, es decir: $ a \cdot (b \cdot u) = (a \cdot b) \cdot u \quad \forall\ a,b \in K,\ \forall\ u \in V$
+		\item El \textit{producto} debe tener elemento neutro, es decir: $\exists\ 1 \in K : 1 \cdot u = u \quad \forall\ u \in V$
+		\item El \textit{producto} debe ser distributivo respecto la \textit{suma} de vectores, es decir: $ a \cdot (u + v) = a \cdot u + a \cdot v \quad \forall\ a \in K,\ \forall\ u,v \in V$
+		\item El \textit{producto} debe ser distributivo respecto la \textit{suma} de escalares, es decir: $ (a + b) \cdot u = a \cdot u + b \cdot u \quad \forall\ a,b \in K,\ \forall\ u \in V$
+	\end{enumerate}
+\end{defi}
+
+\begin{defi}
+	Si $\V$ es un Espacio Vectorial y $\S \subset \V$, decimos que
+	$\S$ es un Subespacio Vectorial de $\V$ si:
+	\begin{itemize}
+		\item $0 \in \S$ (o que $\S \neq \emptyset$).
+		\item $u,v \in \S \implies u + v \in \S$
+		\item $u \in \S,\ \lambda \in K \implies \lambda \cdot u \in \S$
+	\end{itemize}
+\end{defi}
+
+De ahora en más vamos a suponer que el conjunto $V$ es, por ejemplo, $\R^{n}$ y el cuerpo $K$ es $\R$.
+
+\subsection{Combinación e Independencia Lineal}
+Sea $\V$ un Espacio Vectorial y sean $\{v_1, \dots, v_k\} \subset \V$.
+\begin{defi}
+	Decimos que $w \in \V$ es \textit{combinación lineal} de $\{v_1, \dots, v_k\}$ si
+	$\exists \lambda_1, \dots, \lambda_k \in \R / w = \lambda_1 v_1 + \dots + \lambda_k v_k$
+\end{defi}
+
+\begin{defi}
+	Decimos que $\{v_1, \dots, v_k\}$ es \textit{linealmente independiente} si
+	la única combinación lineal de ellos igualada a $0 \in \V$ es la combinación
+	lineal ``trivial'' (coeficientes nulos)
+	$$\lambda_1 v_1 + \dots + \lambda_k v_k = 0 \implies \lambda_1 = \lambda_2 = \dots = \lambda_k = 0$$
+\end{defi}
+
+\subsection{Conjunto de Generadores de un Espacio Vectorial}
+Sea $\V$ un Espacio Vectorial y sean $\{v_1, \dots, v_k\} \subset \V$.
+\begin{defi}
+Decimos que $\langle v_1, \dots, v_k \rangle$ es un \textit{conjunto generador}
+y genera el conjunto de todas las combinaciones lineales de $\{v_1, \dots, v_k\}$, o lo que es lo mismo:
+	$$\langle v_1, \dots, v_k \rangle = \{\lambda_1 v_1 + \dots + \lambda_k v_k / \lambda_1, \dots, \lambda_k \in \R \}$$
+\end{defi}
+
+\subsection{Base de un Espacio Vectorial}
+Sea $\V$ un Espacio Vectorial y sean $\{v_1, \dots, v_k\} \subset \V$, un conjunto
+de generadores linealmente independientes.
+\begin{defi}
+	Decimos que $\{v_1, \dots, v_k\}$ forman una \textit{Base} de $\V$ y todo
+	elemento de $\V$ se puede escribir como combinación lineal de $v_1, \dots, v_k$.
+\end{defi}
+
+\subsection{Dimensión de un Espacio Vectorial}
+Sea $\V$ un Espacio Vectorial y sean $\{v_1, \dots, v_k\} \subset \V$ una Base de $\V$.
+\begin{defi}
+	La \textit{dimensión} de $\V$ es la cantidad de vectores en la Base, es decir $k$,
+	y se denota $dim(\V)$.
+\end{defi}
+
+\subsection{Matrices: definición y propiedades}
+\begin{defi}
+	Una \textbf{matriz} A de $m \x n$ es un arreglo de $m$ filas y $n$ columnas. \\
+	\begin{center}
+		$\begin{bmatrix}
+			a_{1,1} & a_{1,2} & a_{1,3} & \cdots & a_{1,n} \\
+			a_{2,1} & a_{2,2} & a_{2,3} & \cdots & a_{2,n} \\
+			a_{3,1} & a_{3,2} & a_{3,3} & \cdots & a_{3,n} \\
+			\vdots & \vdots & \vdots & \ddots & \vdots \\
+			a_{m,1} & a_{m,2} & a_{m,3} & \cdots & a_{m,n}
+		\end{bmatrix}$
+	\end{center}
+\end{defi}
+
+\subsubsection{Rango}
+El rango de una matriz es el número de filas (o columnas) linealmente independientes.
+
+\subsubsection{Inversibilidad}
+Sea $A \rn{n}{n}$. Se dice que $A$ es inversible sii $\exists\ B\rn{n}{n} / A\cdot B = B\cdot A = I$.
+
+$B$ se nota como $A^{-1}$
+
+\underline{Obs:}
+\begin{itemize}
+	\item Si $\exists A^{-1}$ entonces es única
+\end{itemize}
+
+\underline{Nomenclatura:} Si $A$ es inversible, se dice \textbf{no singular}. Si es \textbf{singular}, es no inversible.
+
+\subsubsection{Determinante}
+Sea $A \rn{m}{n}$. $det(A)\in\R$\\
+\underline{Obs:}
+\begin{itemize}
+	\item $det(A\cdot B) = det(A) \cdot det(B)$
+	\item $det(A^{-1}) = \displaystyle \frac{1}{det(A)}$
+	\item $det(A)\neq 0 \Leftrightarrow \exists A^{-1}$
+\end{itemize}
+
+\subsubsection{Traza}
+Sea $A \rn{m}{n}$.
+
+\begin{defi}
+	Definimos la \textit{traza} de $A$ como la suma de los elementos de la diagonal:
+	$$tr(A) = \sum_{i=1}^{min(m,n)}{a_{ii}}$$
+\end{defi}
+
+\subsection{Operaciones sobre matrices}
+Sobre las matrices se pueden aplicar las siguientes operaciones:
+
+\subsubsection{Suma}
+$A + B = C$ sii $A$ y $B$ tienen la misma dimesión (i.e., $A$,$B \in \R^{m\x n} \Rightarrow C \in R^{m\x n}$).
+	\begin{center}
+		$a_{i,j} + b_{i,j} = c_{i,j} \tab \forall i=1\cdots m \; \forall j = 1\cdots n$
+	\end{center}
+
+\subsubsection{Igualdad}
+A=B sii $A$ y $B$ tienen la misma dimensión.
+	\begin{center}
+		$a_{i,j} = b_{i,j} \tab \forall i=1\cdots m \; \forall j = 1\cdots n$
+	\end{center}
+
+\subsubsection{Producto por escalar}
+Sea $\lambda \in \R$. $\lambda \cdot A = B$ ($A\in\R^{m\x n} \Rightarrow B \in \R^{m\x n}$)
+	\begin{center}
+		$\lambda \cdot a_{i,j} = b_{i,j}\tab \forall i = 1 \cdots m , j = 1 \cdots n$
+	\end{center}
+
+\subsubsection{Producto} $A\cdot B = C$ sii $A\in\R^{m\x n}$ y $B\in\R^{n\x p} \Rightarrow C\in\R^{m\x p}$
+	\begin{center}
+		$c_{i,j} = \displaystyle \sum_{k=1}^n a_{i,k}\cdot b_{k,j}$
+	\end{center}
+	Observar que no necesariamente vale que $AxB = BxA$.
+
+\subsubsection{Inversa}
+Sea $A\in\R^{n\x n}$ inversible y $B\in\R^{n\x n}$ dicha matriz inversa, entonces:
+$A^{-1} = B$
+
+\underline{Obs:}
+\begin{itemize}
+	\item $(A^{-1})^{-1} = A$
+	\item Sean $A$ y $B \in \R^{n\x n}$ inversibles. Entonces $(A\cdot B)^{-1} = B^{-1} \cdot A^{-1}$
+\end{itemize}
+
+\subsubsection{Transpuesta}
+	Sea $A\rn{m}{n}$. Se define $A^t\rn{n}{m}$ como
+	\begin{center}
+		$(A^t)_{i,j} = A_{j,i} \tab \forall i=1\cdots n,j=1\cdots m$
+	\end{center}
+
+	\underline{Obs:}
+	\begin{itemize}
+		\item $(A+B)^t = A^t+B^t$
+		\item $(A\cdot B)^t = B^t\cdot A^t$
+		\item $(A^{-1})^t = (A^t)^{-1}$
+	\end{itemize}
+
+
+\subsection{Matrices Elementales}
+
+\subsubsection{Identidad} $I$ matriz identidad. $I \in R^{n\x n}$
+	\begin{center}$I_{i,j} =
+		\fdos
+		{1}	{i=j}
+		{0}	{i\neq j} \tab \forall i,j=1\cdots n$
+	\end{center}
+	Consecuentemente, la forma de la matriz identidad de $\R^{n\x n}$ es:
+	\begin{center}
+		$\begin{bmatrix}
+			1 & 0 & 0 & \cdots & 0 \\
+			0 & 1 & 0 & \cdots & 0 \\
+			0 & 0 & 1 & \cdots & 0 \\
+			\vdots & \vdots & \vdots & \ddots & \vdots \\
+			0 & 0 & 0 & \cdots & 1
+		\end{bmatrix}$
+	\end{center}
+
+\underline{Obs:} $I \cdot A = A \cdot I = A \tab \forall A\in\R^{n\x n}$
+
+\subsubsection{Matrices de permutación}
+Una matriz de permutación $P$ es una matriz que permite permutar filas o columnas de una matriz $A$ al realizar:
+\begin{itemize}
+	\item $P \cdot A$ permuta las filas de $A$
+	\item $A \cdot P$ permuta las columnas de $A$
+\end{itemize}
+
+La matriz $P$ se obtiene permutando las columnas de la matriz identidad $(I)$. Observemos en un ejemplo de $3 \x 3$ en el que llamamos $1$, $2$ y $3$ a las columnas de la matriz identidad de la siguiente forma:
+\begin{center}
+	$I = \begin{bmatrix}
+		1&0&0\\
+		0&1&0\\
+		0&0&1
+	\end{bmatrix} = (1,2,3)$
+\end{center}
+
+Si permutamos, por ejemplo, las filas $1$ y $2$, obtenemos la siguiente matriz de permutación $P$:
+\begin{center}
+	$P=\begin{bmatrix}
+		0&1&0\\
+		1&0&0\\
+		0&0&1
+	\end{bmatrix} = (2,1,3)$
+\end{center}
+
+Si multiplicamos a izquierda esta matriz con cualquier otra, el resultado será esa misma matriz pero con la primer y segunda fila cambiadas de lugar (pues obtuvimos $P$ permutando la primer y segunda columnas de la identidad).
+
+~\newline
+
+\underline{Obs:} esta notación con índices permite almacenar una matriz de permutación $P\rn{n}{n}$ en sólamente $n$ elementos, en lugar de en los $n^2$ que normalmente tomaría.
+
+\subsubsection{Triangular}
+Una matriz es Triangular si los elementos por debajo o por arriba de la diagonal principal son cero.
+
+En el primer caso, decimos que es Triangular Superior:
+
+\begin{equation*}
+	U =
+	\left [ \begin{array}{ccccccc}
+	  u_{11} & u_{12} & u_{13} & . & . & .& u_{1n}\\
+	  0 & u_{22} & u_{23} & . & . & .& u_{2n}\\
+	  0 & 0 & u_{33} & . & . & .& u_{3n}\\
+	. & . & .. & . & . & .& .\\
+	. & . & . & . & . & .& .\\
+	. & . & . & . & . & .& .\\
+	0 & 0 & 0 & . & . & .& u_{nn}\\
+	\end{array} \right ]
+\end{equation*}
+
+Análogamente, en el segundo caso decimos que es Triangular Inferior:
+
+\begin{equation*}
+	L =
+	\left [ \begin{array}{ccccccc}
+	  l_{11} & 0 & 0 & . & . & .& 0\\
+	  l_{21} & l_{22} & 0 & . & . & .& 0\\
+	  l_{31} & l_{32} & l_{33} & . & . & .& 0\\
+	. & . & . & . & . & .& .\\
+	. & . & . & . & . & .& .\\
+	. & . & . & . & . & .& .\\
+	l_{n1} & l_{n2} & l_{n3} & . & . & .& l_{nn}\\
+	\end{array} \right ]
+\end{equation*}
+
+\subsubsection{Diagonal}
+Una matriz es Diagonal cuando los únicos elementos distintos de cero son los elementos
+de la diagonal principal:
+\begin{equation*}
+	D =
+	\left [ \begin{array}{ccccccc}
+	  d_{11} & 0 & 0 & . & . & .& 0\\
+	  0 & d_{22} & 0 & . & . & .& 0\\
+	  0 & 0 & d_{33} & . & . & .& 0\\
+	  . & . & . & . & . & .& .\\
+	  . & . & . & . & . & .& .\\
+	  . & . & . & . & . & .& .\\
+	  0 & 0 & 0 & . & . & .& d_{nn}\\
+	\end{array} \right ]
+\end{equation*}
+
+\underline{Obs:} dicha matriz es a la vez Triangular Superior e Inferior.
+
+\subsubsection{Otras}
+\subsubsection{(????)}
+
+Una matriz de (????) $E$ es una matriz que permite multiplicar toda una fila o columna de una matriz $A$ por un escalar dado, al realizar:
+\begin{itemize}
+	\item $E\cdot A$ multiplica una fila de $A$ por un escalar $\lambda$.
+	\item $A\cdot E$ multiplica una columna de $A$ por un escalar $\lambda$.
+\end{itemize}
+
+Dado el escalar $\lambda$, definimos la matriz $E$ de la forma:
+\begin{center}
+	$E=\begin{bmatrix}
+		1 & \cdots & 0 & \cdots & 0 \\
+		\vdots  & \ddots &   &        & \vdots  \\
+		0 & \cdots & \lambda & \cdots & 0\\
+		\vdots & & &\ddots & \vdots \\
+		0&\cdots & 0 & \cdots & 1
+	\end{bmatrix} \tab$ con $\lambda\in\R$
+\end{center}
+
+
+Si $\lambda$ está en la fila $s$ de la matriz $E$, entonces la fila $s$ de la matriz $B = E \cdot A$ es la fila $s$ de la matriz $A$ multiplicada por $\lambda$. Las restantes filas quedan iguales.
+
+Ejemplos en $4\x 4$:
+\begin{center}
+	$\begin{bmatrix}
+		1&0&0&0 \\
+		0&1&0&0 \\
+		0&0&\lambda&0 \\
+		0&0&0&1
+	\end{bmatrix} \cdot
+	\begin{bmatrix}
+		1&5&9&13 \\
+		2&6&10&14 \\
+		3&7&11&15 \\
+		4&8&12&16
+	\end{bmatrix} =
+	\begin{bmatrix}
+		1&5&9&13 \\
+		2&6&10&14 \\
+		3\cdot\lambda&7\cdot\lambda&11\cdot\lambda&15\cdot\lambda \\
+		4&8&12&16
+	\end{bmatrix}
+	$
+\end{center}
+
+\begin{center}
+	$\begin{bmatrix}
+		1&5&9&13 \\
+		2&6&10&14 \\
+		3&7&11&15 \\
+		4&8&12&16
+	\end{bmatrix} \cdot
+	\begin{bmatrix}
+			1&0&0&0 \\
+			0&1&0&0 \\
+			0&0&\lambda&0 \\
+			0&0&0&1
+		\end{bmatrix} =
+	\begin{bmatrix}
+		1&5&9\cdot\lambda&13 \\
+		2&6&10\cdot\lambda&14 \\
+		3&7&11\cdot\lambda&15 \\
+		4&8&12\cdot\lambda&16
+	\end{bmatrix}
+	$
+\end{center}
+
+
+\subsubsection{(????)}
+Una matriz de (????) $E$ es una matriz que permite sumar dos filas o columnas de una matriz $A$, multiplicando una de ellas por un escalar dado.
+
+Dado el escalar $\lambda$, se define $E$ como:
+\begin{center}
+	$E = \begin{bmatrix}
+		1 & & & & \\
+		& \ddots & & & \\
+		& & 1 & & \\
+		& & \lambda & \ddots & \\
+		& & & & 1
+	\end{bmatrix}$
+\end{center}
+
+(Observar que es la matriz identidad con $\lambda$ en algún lugar de algún $0$).
+
+Suponiendo que $\lambda$ está en la fila $i$ y columna $j$, vale que
+\begin{itemize}
+	\item $E \x A$ multiplica la $j$-ésima fila de $A$ por $\lambda$ y se la suma a la $i$-ésima fila de $A$.
+	\item $A \x E$ multiplica la $j$-ésima columna de $A$ por $\lambda$ y se la suma a la $i$-ésima columna de $A$.
+\end{itemize}
+
+\underline{Ejemplo:}
+\begin{center}
+	$\begin{bmatrix}
+		1&0&0\\
+		0&1&0\\
+		0&\lambda&1
+	\end{bmatrix}\x
+	\begin{bmatrix}
+		1&4&-7\\
+		2&5&8\\
+		3&6&9
+	\end{bmatrix} =
+	\begin{bmatrix}
+		1&4&7\\
+		2&5&8\\
+		2\cdot\lambda+3 & 5\cdot\lambda + 6 & 8\cdot\lambda +9
+	\end{bmatrix}$
+\end{center}
+
+\subsection{Transformaciones lineales}
+Sean $\V$, $\W$ dos Espacios Vectoriales con cuerpo en $\R$
+\begin{defi}
+	Una función $f: \V \to \W$ se llama \textit{trasnformación lineal} si respeta
+	las operaciones:
+	\begin{itemize}
+		\item $f(u + v) = f(u) + f(v) \quad \forall u,v \in \V$
+		\item $f(\lambda \cdot u) = \lambda \cdot f(u) \quad \forall u \in \V,\ \forall \lambda \in \R$
+	\end{itemize}
+\end{defi}
+
+\begin{teo}
+	Si $f: \V \to \W$ es una transformación lineal $\implies f(0) = 0$
+\end{teo}
+
+\begin{teo}
+	Si $A \rn{m}{n}$ y definimos $f: \R^{n} \to \R^{m}$ con la forma $f(x) = Ax$.
+
+	Entonces, $f$ es una transformación lineal y lo llamamos transformación lineal
+	asociada a $A$.
+\end{teo}
+
+\begin{propi}
+	Si $f$ es transformación lineal asociada a una matriz $A$, entonces
+	\begin{center}
+		$A$ es inversible $\iff$ $f$ es biyectiva
+	\end{center}
+	\underline{Obs:} La matriz asociada a $f^{-1}$ es $A^{-1}$.
+\end{propi}
+
+\subsection{Imagen y Nucleo}
+Sea $f: \V \to \W$ una transformación lineal y $A \rn{m}{n}$. Entonces,
+
+\begin{defi} Definimos el \textit{Nucleo} (Nu) como
+	\begin{itemize}
+		\item $Nu(f) = \{v \in \V : f(v) = 0\}$ subespacio de $\V$
+		\item $Nu(A) = \{x \in \R^{n} : Ax = 0 \in \R^{m}\}$ subespacio de $\R^{n}$
+	\end{itemize}
+\end{defi}
+
+\begin{defi} Definimos la \textit{Imagen} (Im) como
+	\begin{itemize}
+		\item $Im(f) = \{f(v) /\ v \in \V\}$ subespacio de $\W$
+		\item $Im(A) = \{Ax /\ x \in \R^{n}\}$ subespacio de $\R^{m}$
+	\end{itemize}
+\end{defi}
+
+\underline{Obs:} $Im(A)$ es igual al espacio generado por las columnas de $A$.
+
+\subsection{Teorema de la Dimensión}
+\begin{teo} Sea $A \rn{m}{n}$, y su transformación lineal asociada $f: \R^{n} \to \R^{m}$. Entonces,
+	$$dim(Nu(A)) + dim(Im(A)) = dim(\R^{n}) = n$$
+\end{teo}
+
+\underline{Obs:} $dim(Im(A))$ es igual al rango columna de $A$, que a su vez es
+igual a la cantidad de columnas linealmente independientes de $A$ (rango columna) y la cantidad de
+filas linealmente independientes de $A$ (rango fila).
+
+\subsection{Ortogonalidad}
+
+\subsection{Normas: definición y propiedades}
+
+\subsection{Diagonalización y Autovalores}

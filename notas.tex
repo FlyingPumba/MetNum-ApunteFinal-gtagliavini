@@ -22,6 +22,7 @@
 
 \newtheorem{teo}{Teorema}[section]
 \newtheorem{propo}{Proposici\'{o}n}[section]
+\newtheorem{propi}{Propiedad}[section]
 \newtheorem{lema}{Lema}[section]
 \newtheorem{coro}{Corolario}[section]
 
@@ -33,6 +34,37 @@
 
 \providecommand{\norm}[1]{\left\lVert#1\right\rVert}
 \providecommand{\bold}[1]{{\boldsymbol #1}}
+
+\newcommand{\tab}[0]{\hspace{2cm}}
+\newcommand{\fdos}[4]{
+	\left\{
+		\begin{array}{lll}
+			#1 & \mbox{si } #2 \\
+			#3 & \mbox{si } #4
+		\end{array}
+	\right.
+}
+
+\newcommand{\ftres}[6]{
+	\left\{
+		\begin{array}{lll}
+			#1 & \mbox{if } #2 \\
+			#3 & \mbox{if } #4 \\
+			#5 & \mbox{if } #6
+		\end{array}
+	\right.
+}
+
+\def\N{\mathbb{N}}
+\def\R{\mathbb{R}}
+\def\Z{\mathbb{Z}}
+\def\Q{\mathbb{Q}}
+\def\C{\mathbb{C}}
+\def\S{\mathbb{S}}
+\def\V{\mathbb{V}}
+\def\W{\mathbb{W}}
+\def\x{\times}
+\newcommand{\rn}[2]{\in\R^{#1\x #2}}
 
 \graphicspath{{imagenes/}}
 
@@ -47,6 +79,8 @@
 
 \input{caratula}
 \tableofcontents
+\newpage
+\input{algebra}
 \newpage
 \input{aritmetica}
 \newpage
