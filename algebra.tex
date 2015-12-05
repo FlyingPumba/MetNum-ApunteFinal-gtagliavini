@@ -271,7 +271,6 @@ de la diagonal principal:
 
 \underline{Obs:} dicha matriz es a la vez Triangular Superior e Inferior.
 
-\subsubsection{Otras}
 \subsubsection{(????)}
 
 Una matriz de (????) $E$ es una matriz que permite multiplicar toda una fila o columna de una matriz $A$ por un escalar dado, al realizar:
@@ -439,8 +438,106 @@ Sea $f: \V \to \W$ una transformación lineal y $A \rn{m}{n}$. Entonces,
 igual a la cantidad de columnas linealmente independientes de $A$ (rango columna) y la cantidad de
 filas linealmente independientes de $A$ (rango fila).
 
-\subsection{Ortogonalidad}
+\subsection{Matrices ortogonales}
 
-\subsection{Normas: definición y propiedades}
+\begin{defi}
+Una matriz $Q \in \mathbb{R}^{n \times n}$ se dice ortogonal si $Q^{-1} = Q^t$.
+\end{defi}
 
-\subsection{Diagonalización y Autovalores}
+\begin{obs}
+Si $Q$ es ortogonal entonces $Q^t = Q^{-1}$ también, pues $((Q^t)^{-1})^t = ((Q^t)^t)^{-1} = Q^{-1} = Q^t$.
+\end{obs}
+
+En lo que sigue, $Q$ es una matriz ortogonal de $n \times n$.
+
+\begin{lema}
+$Q$ preserva norma 2, i. e., $\norm{Qx}_2 = \norm{x}_2$.
+\end{lema}
+
+\begin{lema}
+$\norm{Q}_2 = 1$.
+\end{lema}
+
+\begin{coro}
+$\kappa_2(Q) = 1$.
+\end{coro}
+
+Esto nos dice que las matrices ortogonales son estables, lo cual se condice con el hecho de que preservan norma 2, es decir, que no deforman vectores, haciendo que el error de las componentes escalares no sea amplificado. Este motivo hace a las matrices ortogonales atractivas desde el punto de vista numérico. Además, el cómputo de su inversa no requiere más que una transposición de elementos, y por lo tanto no introduce error.
+
+\subsection{Autovalores}
+\begin{defi}
+	Decimos que $\lambda \in \R$ es un \textit{autovalor} de $A \rn{m}{n}$ sii $\exists\ x\neq 0\ /\ Ax = \lambda x$,
+	y $x$ se llama \textit{autovector} asociado a $\lambda$.
+\end{defi}
+
+\begin{coro}
+	Equivalentemente, $\lambda \in \R$ es un \textit{autovalor} de $A\rn{m}{n}$ sii
+	\begin{equation*}
+		\begin{aligned}
+			Ax = \lambda x &\iff Ax - \lambda x = 0		\\
+			 			   &\iff Ax - \lambda I x = 0	\\
+						   &\iff (A - \lambda I)x = 0	\\
+						   &\iff det(A - \lambda I) = 0	\\
+						   &\iff P(\lambda) = 0	\\
+		\end{aligned}
+	\end{equation*}
+	Con P el polinomio característico de A, cuyas raices son los autovalores de A.
+\end{coro}
+
+\begin{propi}
+	Sean $\lambda_1, \dots, \lambda_k$ autovalores distintos de $A \rn{m}{n} \implies v_1, \dots, v_k$
+	autovectores asociados son linealmente independientes.
+\end{propi}
+
+Las siguientes propiedades valen si $A \rn{n}{n}$ simetrica.
+
+\begin{propi}
+	$A$ tiene autovalores y autovectores reales.
+\end{propi}
+
+\begin{propi}
+	$A$ tiene autovalores y autovectores reales.
+\end{propi}
+
+\begin{propi}
+	Sean $(\lambda, u)$ y $(\alpha, v)$ dos autovalores de $A$
+	con un autovector asociado, y $\lambda \neq \alpha$ $\implies$ $u \perp v$.
+\end{propi}
+
+\begin{propi}
+	$\lambda$ autovalor de $A$ $\iff$ $\lambda$ autovalor de $QAQ^{t}$, con $Q$ ortogonal.
+\end{propi}
+
+\begin{propi}
+	$\exists\ Q$ ortogonal / $QAQ^{t} = T$ triangular superior, o inferior.
+\end{propi}
+
+\begin{propi}
+	$\exists\ Q$ ortogonal / $QAQ^{t} = D$ diagonal, y las filas de $Q$ son autovectores
+	de $A$.
+\end{propi}
+
+\begin{coro}
+	$A$ tiene base de autovectores ortonormal.
+\end{coro}
+
+\subsection{Diagonalización}
+Sean $A \rn{m}{n}$, $B \rn{m}{n}$.
+
+\begin{defi}
+	Decimos que $A$ y $B$ son \textit{semejantes} si $\exists\ P$ matriz inversible tal que
+	$A = P^{-1}BP$
+\end{defi}
+
+\begin{propi}
+	Si $A$ y $B$ son semejantes $\implies$ tienen mismos autovalores.
+\end{propi}
+
+\begin{defi}
+	Decimos que $A$ es \textit{diagonalizable por semejanza} si es semejante a una
+	matriz diagonal $D$, es decir $A = P^{-1}DP$
+\end{defi}
+
+\begin{propi}
+	$A$ es diagonalizable por semejanza $\iff$ tiene base de autovectores.
+\end{propi}

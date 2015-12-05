@@ -1,33 +1,7 @@
 \section{Factorización QR}
 
-\subsection{Matrices ortogonales}
-
 \begin{defi}
-Una matriz $Q \in \mathbb{R}^{n \times n}$ se dice ortogonal si $Q^{-1} = Q^t$.
-\end{defi}
-
-\begin{obs}
-Si $Q$ es ortogonal entonces $Q^t = Q^{-1}$ también, pues $((Q^t)^{-1})^t = ((Q^t)^t)^{-1} = Q^{-1} = Q^t$.
-\end{obs}
-
-En lo que sigue, $Q$ es una matriz ortogonal de $n \times n$.
-
-\begin{lema}
-$Q$ preserva norma 2, i. e., $\norm{Qx}_2 = \norm{x}_2$.
-\end{lema}
-
-\begin{lema}
-$\norm{Q}_2 = 1$.
-\end{lema}
-
-\begin{coro}
-$\kappa_2(Q) = 1$.
-\end{coro}
-
-Esto nos dice que las matrices ortogonales son estables, lo cual se condice con el hecho de que preservan norma 2, es decir, que no deforman vectores, haciendo que el error de las componentes escalares no sea amplificado. Este motivo hace a las matrices ortogonales atractivas desde el punto de vista numérico. Además, el cómputo de su inversa no requiere más que una transposición de elementos, y por lo tanto no introduce error.
-
-\begin{defi}
-Sea $A \in \mathbb{R}^{n \times n}$. Se llama factorización QR de $A$ a una escritura de la forma $A = QR$ con $Q \in \mathbb{R}^{n \times n}$ una matriz ortogonal y $R \in \mathbb{R}^{n \times n}$ triangular superior. 
+Sea $A \in \mathbb{R}^{n \times n}$. Se llama factorización QR de $A$ a una escritura de la forma $A = QR$ con $Q \in \mathbb{R}^{n \times n}$ una matriz ortogonal y $R \in \mathbb{R}^{n \times n}$ triangular superior.
 \end{defi}
 
 Notemos que de tener la factorización QR, tenemos la cadena de equivalencias $Ax = b \Leftrightarrow QR x = b \Leftrightarrow Rx = Q^t b$ y este último sistema se puede resolver mediante backward substitution, con error mínimo.
@@ -50,16 +24,16 @@ Se puede probar que esto vale para cualquier $\theta \in \mathbb{R}$ (separando 
 
 Supongamos que dado $v = \begin{pmatrix}v_1 \\ v_2 \end{pmatrix} \in \mathbb{R}^2$ no nulo, queremos encontrar una rotación $W : \mathbb{R}^2 \to \mathbb{R}^2$ que rote $v$ sobre el eje positivo de las abscisas, es decir, tal que $Wv = \begin{pmatrix}\norm{v}_2 \\ 0\end{pmatrix}$. Usando la forma de una rotación en $\mathbb{R}^2$, tenemos que
 
-\[Wv = \begin{pmatrix}\norm{v}_2 \\ 0\end{pmatrix} \Leftrightarrow 
+\[Wv = \begin{pmatrix}\norm{v}_2 \\ 0\end{pmatrix} \Leftrightarrow
 \begin{pmatrix}
 \cos \theta & \sin \theta \\
 -\sin \theta & \cos \theta
-\end{pmatrix} \begin{pmatrix}v_1 \\ v_2\end{pmatrix} = 
-\begin{pmatrix}\norm{v}_2 \\ 0\end{pmatrix} \Leftrightarrow 
+\end{pmatrix} \begin{pmatrix}v_1 \\ v_2\end{pmatrix} =
+\begin{pmatrix}\norm{v}_2 \\ 0\end{pmatrix} \Leftrightarrow
 \begin{cases}
 v_1 \cos \theta  + v_2 \sin \theta  = \norm{v}_2 \\
 -v_1 \sin \theta  + v_2 \cos \theta  = 0
-\end{cases}\] 
+\end{cases}\]
 
 Tomemos $\theta$ tal que $\cos \theta = \frac{v_1}{\norm{v}_2}$ y  $\sin \theta = \frac{v_2}{\norm{v}_2}$. Este $\theta$ existe y es único ($\cos \theta$ y $\sin \theta$ se pueden pensar como las coordenadas $x$ e $y$ respectivamente de un punto sobre la circunferencia unitaria), y se puede verificar que así tomado satisface las ecuaciones previas. De este modo, hemos probado lo siguiente,
 
@@ -75,7 +49,7 @@ Sea $v = \begin{pmatrix}v_1 \\ v_2 \end{pmatrix} \in \mathbb{R}^2$ un vector no 
 Sea ahora $A = \begin{pmatrix}
 a_{11} & a_{12}\\
 a_{21} & a_{22}
-\end{pmatrix}$ cualquiera y pongamos $v = \begin{pmatrix}a_{11} \\ a_{21}\end{pmatrix}$. Si $v = 0$ entonces $A$ es triangular superior y por lo tanto $I_2 A$ es una factorización QR de $A$. Si $v \neq 0$ construimos, usando la proposición anterior, una rotación $W$ tal que $Wv = \begin{pmatrix}\norm{v}_2 \\ 0\end{pmatrix}$, con lo cual 
+\end{pmatrix}$ cualquiera y pongamos $v = \begin{pmatrix}a_{11} \\ a_{21}\end{pmatrix}$. Si $v = 0$ entonces $A$ es triangular superior y por lo tanto $I_2 A$ es una factorización QR de $A$. Si $v \neq 0$ construimos, usando la proposición anterior, una rotación $W$ tal que $Wv = \begin{pmatrix}\norm{v}_2 \\ 0\end{pmatrix}$, con lo cual
 
 \[WA = \begin{pmatrix}
 \norm{v}_2 & * \\
@@ -101,7 +75,7 @@ I_{(i-1)}	&												&			&															& \\
 		&												&			&		 &	 &												& I_{(n - j)}
 \end{pmatrix}\]
 
-Los espacios en blanco representan ceros. Es fácil ver que estas matrices siempre son ortogonales. 
+Los espacios en blanco representan ceros. Es fácil ver que estas matrices siempre son ortogonales.
 
 Sea $A = (a_{ij})_{i, j} \in \mathbb{R}^{n \times n}$. Vamos a ir multiplicando sucesivamente a izquierda la matriz $A$ por matrices ortogonales $W_{ij}$, de modo tal de colocar ceros en la primer columna, luego en la segunda, y así continuando. Escribamos $A^{(k)} = (a^{(k)}_{ij})_{i, j}$ a la matriz que se obtiene luego de $k$ multiplicaciones sobre $A$. A cada una de estas matrices $A^{(k)}$ la llamamos \textit{matriz transitoria}.
 
@@ -139,7 +113,7 @@ a_{11}^{(n - 1)} 	& * & \cdots & * \\
 
 Si en alguno de los pasos resulta que $v = 0$ entonces no es necesario multiplicar por ninguna matriz para colocar un cero en una determinada posición, y podemos saltar al paso siguiente.
 
-Análogamente, para poner ceros en la segunda columna definimos $W_{2j}$, $j = 3, \cdots, n$. En general, al poner ceros en la columna $i$ definimos $W_{ij}$, $j = i + 1, \cdots, n$. Notar que al multiplicar por las matrices $W_{ij}$, las columnas $1, \cdots, i - 1$ no son modificadas. 
+Análogamente, para poner ceros en la segunda columna definimos $W_{2j}$, $j = 3, \cdots, n$. En general, al poner ceros en la columna $i$ definimos $W_{ij}$, $j = i + 1, \cdots, n$. Notar que al multiplicar por las matrices $W_{ij}$, las columnas $1, \cdots, i - 1$ no son modificadas.
 
 El último paso será el
 
@@ -256,5 +230,3 @@ Por otra parte, a lo largo del desarrollo hemos pedido que la matriz $A$ fuese c
 \begin{propo}
 Si $A \in \mathbb{R}^{m \times n}$ entonces existen $Q \in \mathbb{R}^{m \times m}$ ortogonal y $R \in \mathbb{R}^{m \times n}$ triangular superior, tal que $A = QR$.
 \end{propo}
-
-
