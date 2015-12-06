@@ -3,18 +3,19 @@
 \subsection{Definiciones}
 
 \begin{defi}
-Una función $f : \mathbb{R}^n \to \mathbb{R}$ es una norma vectorial si cumple:
+Si $\V$ es un Espacio Vectorial (en $\R$), una función
+$|| \bullet || : \V \to \mathbb{R}$ es una norma vectorial si cumple:
 \begin{enumerate}
-\item $f(x) > 0$ para todo $x \neq 0$ y $f(0) = 0$.
-\item $f(\lambda x) = |\lambda| f(x)$.
-\item $f(x + y) \leq f(x) + f(y)$.
+\item $||v|| \geq 0 \quad \forall\ v \in \V$ y $||v|| = 0 \iff v = 0$.
+\item $||\lambda v|| = |\lambda|\ ||v|| \quad \forall\ v \in \V,\ \forall\ \lambda \in \R$.
+\item $||v + w|| \leq ||v|| + ||w|| \quad \forall\ v,w \in \V$.
 \end{enumerate}
 \end{defi}
 
 Algunos ejemplos de normas vectoriales son:
 \begin{itemize}
-\item $\norm{x}_1 = \sum_{i = 1}^{n} |x_i|$
-\item $\norm{x}_2 = \left(\sum_{i = 1}^{n} x_i^2\right)^{1/2}$
+\item $\norm{x}_1 = |x_1| + |x_2| + \dots + |x_n| = \sum_{i = 1}^{n} |x_i|$
+\item $\norm{x}_2 = \sqrt{(x_1)^2 + (x_2)^2 + \dots + (x_n)^2} = \left(\sum_{i = 1}^{n} (x_i)^2\right)^{1/2}$
 \item $\norm{x}_{\infty} = \max\limits_{1 \leq i \leq n}|x_i|$
 \end{itemize}
 
@@ -47,7 +48,7 @@ para todas $A, B \in \mathbb{R}^{n \times n}$.
 Otra propiedad notable de las normas es la de consistencia.
 
 \begin{defi}
-Si $F : \mathbb{R}^{n \times n} \to \mathbb{R}$ es una norma matricial y $f : \mathbb{R}^n \to \mathbb{R}$ es una norma vectorial, $F$ se dice consistente con $f$ si 
+Si $F : \mathbb{R}^{n \times n} \to \mathbb{R}$ es una norma matricial y $f : \mathbb{R}^n \to \mathbb{R}$ es una norma vectorial, $F$ se dice consistente con $f$ si
 
 \[f(Ax) \leq F(A)f(x)\]
 
@@ -116,7 +117,7 @@ Como $j$ es cualquiera, resulta que $\norm{A}_1 \geq \max\limits_{1 \leq j \leq 
 & \leq \max\limits_{x : \norm{x}_1 = 1} \sum_{j = 1}^n |x_j| \left(\max\limits_{1 \leq k \leq n} \sum_{i = 1}^n |a_{ik}|\right)\\
 & = \max\limits_{x : \norm{x}_1 = 1} \left(\max\limits_{1 \leq k \leq n} \sum_{i = 1}^n |a_{ik}|\right)\left(\sum_{j = 1}^n |x_j|\right)\\
 & = \max\limits_{x : \norm{x}_1 = 1} \left(\max\limits_{1 \leq k \leq n} \norm{col_k(A)}_1\right) \norm{x}_1\\
-& = \max \limits_{1 \leq j \leq n}\norm{col_j(A)}_1 
+& = \max \limits_{1 \leq j \leq n}\norm{col_j(A)}_1
 \end{align*}
 
 \end{proof}
@@ -130,11 +131,11 @@ Sea $A \in \mathbb{R}^{n \times n}$. Entonces
 
 \begin{proof} Si $A = 0$ no hay nada que ver. Supongamos $A \neq 0$.
 
-($\geq$) Sea $i_0$ la fila de $A$ con norma 1 máxima. Definimos el vector $\alpha \in \mathbb{R}^n$ de modo tal que $\alpha_j = \text{sgn}(A_{i_0j})$ para todo $j = 1, \cdots, n$. Entonces 
+($\geq$) Sea $i_0$ la fila de $A$ con norma 1 máxima. Definimos el vector $\alpha \in \mathbb{R}^n$ de modo tal que $\alpha_j = \text{sgn}(A_{i_0j})$ para todo $j = 1, \cdots, n$. Entonces
 
 \[fil_{i_0}(A)\alpha = \sum_{j = 1}^n A_{i_0j}\alpha_j = \sum_{j = 1}^n \text{sgn}(A_{i_0j})A_{i_0j} = \sum_{j = 1}^n |A_{i_0j}| = \norm{fil_{i_0}(A)}_1\]
 
-y si $i$ es una fila cualquiera de $A$ entonces 
+y si $i$ es una fila cualquiera de $A$ entonces
 
 \[|fil_{i}(A)\alpha| = \left|\sum_{j = 1}^n A_{ij}\alpha_j\right| \leq \sum_{j = 1}^n |A_{ij}||\alpha_j| \leq \sum_{j = 1}^n |A_{ij}| = \norm{fil_{i}(A)}_1\]
 
@@ -146,7 +147,7 @@ Por otro lado, como $A \neq 0$ entonces $fil_{i_0}(A) \neq 0$ con lo cual $\alph
 
 \[\norm{A}_{\infty} = \max\limits_{x : \norm{x}_{\infty} = 1} \norm{Ax}_{\infty} \geq \norm{A\alpha}_{\infty} = \max\limits_{1 \leq i \leq n} |fil_i(A)\alpha| = \max\limits_{1 \leq i \leq n} \norm{fil_i(A)}_1\]
 \\[0.25cm]
-($\leq$) 
+($\leq$)
 
 \begin{align*}
 \norm{A}_{\infty} = &\max\limits_{x : \norm{x}_{\infty} = 1} \norm{Ax}_{\infty}\\
