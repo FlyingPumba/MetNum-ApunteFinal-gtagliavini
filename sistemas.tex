@@ -2,12 +2,12 @@
 
 \subsection{Problema}
 
-Dadas $n$ ecuaciones, cada una con $n$ incógnitas
+Dadas $n$ ecuaciones lineales, cada una con $n$ incógnitas
 
 \[\begin{cases}
 a_{11} x_1 + \cdots + a_{1n} x_n = b_1 \\
-\hspace{1.45cm}\vdots \\ 
-a_{1n} x_1 + \cdots + a_{nn} x_n = b_n 
+\hspace{1.45cm}\vdots \\
+a_{1n} x_1 + \cdots + a_{nn} x_n = b_n
 \end{cases}\]
 
 con coeficientes reales, queremos hallar valores de $x_1, \cdots, x_n$ que satisfagan todas las ecuaciones simultaneamente. En forma matricial escribimos el problema definiendo
@@ -34,7 +34,7 @@ de modo tal que buscamos soluciones de la ecuación $Ax = b$.
 
 \subsection{Existencia y unicidad de la solución}
 
-Notemos que 
+Notemos que
 
 \[
 Ax = b \Leftrightarrow x_1 \begin{pmatrix} a_{11}\\ \vdots\\ a_{n1}\end{pmatrix} + \cdots + x_n \begin{pmatrix} a_{1n}\\ \vdots\\ a_{nn}\end{pmatrix} = \begin{pmatrix} b_{1}\\ \vdots\\ b_{n}\end{pmatrix}
@@ -56,8 +56,8 @@ En definitiva $Ax = b$ tiene solución única si y sólo si las columnas de $A$ 
 
 \[\begin{cases}
 a_{11} x_1 \hspace{2.3cm} = b_1 \\
-\hspace{1.35cm}\ddots \\ 
-\hspace{2.2cm} a_{nn} x_n = b_n 
+\hspace{1.35cm}\ddots \\
+\hspace{2.2cm} a_{nn} x_n = b_n
 \end{cases}\]
 
 Pueden pasar dos cosas:
@@ -78,7 +78,7 @@ El costo del cómputo en este caso es claramente $\mathcal{O}(n)$.
 \[\begin{cases}
 a_{11} x_1 + a_{12} x_2 + \cdots + a_{1n} x_n = b_1 \\
 \hspace{1.26cm} a_{22} x_2 + \cdots + a_{2n} x_n = b_2 \\
-\hspace{2.5cm}\vdots \\ 
+\hspace{2.5cm}\vdots \\
 \hspace{3.35cm} a_{nn} x_n = b_n
 \end{cases}\]
 
@@ -86,7 +86,6 @@ Pueden pasar dos cosas:
 
 \begin{itemize}
 \item Si $a_{ii} \neq 0$ para todo $i$, entonces las columnas de $A$ son l. i. y la solución es única. Más aún, es
-
 \begin{align}
 x_n &= \frac{b_n}{a_{nn}}	\nonumber\\
 x_{n - 1} &= \frac{b_{n - 1} - a_{(n-1)n} x_n}{a_{(n-1)(n-1)}}	\nonumber\\
@@ -138,7 +137,7 @@ El último será el
 El invariante fundamental de este proceso es que al principio del paso $k$, las primeras $k - 1$ columnas tienen únicamente ceros debajo de la diagonal. Al concluir los $n - 1$ pasos obtendremos la matriz $M^{(n - 1)}$ que es triangular superior.
 
 Podemos relajar levemente la hip'otesis $a_{(k+1)(k+1)}^{(k)} \neq 0$ para cada $k$, notando que si en el paso $k$ se tiene $a_{(k+1)(k+1)}^{(k)} = 0$ pero todos los valores de la columna $k$ debado de esta entrada tambi'en son nulos, podemos pasar inmediatamente al siguiente paso del proceso, y el invariante se mantiene. El algoritmo de eliminaci'on gaussiana requiere que la matriz de entrada cumpla esta propiedad, y de lo contrario falla.
- 
+
 \begin{algorithm}
 \DontPrintSemicolon
 \SetKwInOut{Input}{input}
@@ -174,7 +173,7 @@ Se llama \textit{pivote} al elemento $a^{(k - 1)}_{kk}$ de cada iteración del a
 \item Si no, debemos intercambiar la fila $k$ por alguna otra fila $i_0 > k$ tal que $a^{(k-1)}_{i_0k} \neq 0$, y continuar con la eliminación normalmente.
 \end{itemize}
 
-Repitiendo esto cada vez que ocurra el problema a lo largo de la ejecución del algoritmo, llegaremos nuevamente a una matriz triangular inferior. 
+Repitiendo esto cada vez que ocurra el problema a lo largo de la ejecución del algoritmo, llegaremos nuevamente a una matriz triangular inferior.
 
 \begin{obs}{
 \label{obs:sistemas1}
@@ -221,14 +220,14 @@ Como muestra el siguiente resultado, esta forma de escribir a una matriz no es m
 
 \begin{propo}
 	Sea $A \in \mathbb{R}^{n \times n}$. Entonces $A$ tiene factorizaci'on LU si y s'olo si admite eliminaci'on gaussiana sin pivoteo.
-	
+
 	\begin{proof}
-	
+
 ($\Leftarrow$) Supongamos que $A$ admite eliminación gaussiana sin pivoteo, y veamos cómo calcular la factorización LU de una matriz $A$. Notemos que en el paso $k$ de la eliminación se realizan las operaciones de fila $F_i = F_i - m_{ik} F_k$ para $i = k + 1, \cdots, n$, salvo que el elemento de la diagonal sea nulo, en cuyo caso podemos pensar que $m_{ik} = 0$. En términos matriciales esto es multiplicar $A^{(k)}$ a izquierda por las matrices de elementales
 
 \[
-M_k = 
-\begin{pmatrix} 
+M_k =
+\begin{pmatrix}
 1 		& \cdots 	& 0 				& \cdots 	& 0 \\
 0 		& \ddots 	& 0 				& \cdots 	& 0 \\
 \vdots 	& 			& 1 				& 			& \vdots\\
@@ -237,7 +236,7 @@ M_k =
 0		& \cdots		& 0				& \cdots		& 1\\
 \end{pmatrix}
 \cdots
-\begin{pmatrix} 
+\begin{pmatrix}
 1 		& \cdots 	& 0 				& \cdots 	& 0 \\
 0 		& \ddots 	& 0 				& \cdots 	& 0 \\
 \vdots 	& 			& 1 				& 			& \vdots\\
@@ -246,7 +245,7 @@ M_k =
 0		& \cdots		& -m_{nk}	& \cdots		& 1\\
 \end{pmatrix}
 =
-\begin{pmatrix} 
+\begin{pmatrix}
 1 		& \cdots 	& 0 				& \cdots 	& 0 \\
 0 		& \ddots 	& 0 				& \cdots 	& 0 \\
 \vdots 	& 			& 1 				& 			& \vdots\\
@@ -256,7 +255,7 @@ M_k =
 \end{pmatrix}
 \]
 
-Al cabo de los $n - 1$ pasos de eliminación gaussiana tendremos que $M_{n - 1} \cdots M_1 A = U$ con $U$ triangular superior. 
+Al cabo de los $n - 1$ pasos de eliminación gaussiana tendremos que $M_{n - 1} \cdots M_1 A = U$ con $U$ triangular superior.
 
 Observemos que $M_k$ es inversible para cada $k$, puesto que $M_k$ es triangular inferior con unos en la diagonal. Entonces podemos escribir $A = M_1^{-1}\cdots M_{n - 1}^{-1} U = LU$, con $L = M_1^{-1}\cdots M_{n - 1}^{-1}$. Si bien ya hemos llegado a la factorización LU de $A$, podemos simplificar la expresión de $L$. Notemos que $M_k = I_n - m_k e_k^t$ con $m_k = \begin{pmatrix}0\\ \vdots \\ 0 \\ m_{(k+1)k} \\ \vdots \\ m_{nk}\end{pmatrix}$ y $e_k$ el $k$-ésimo vector canónico de $\mathbb{R}^n$. Usando esta escritura es fácil ver que $M_k^{-1} = I_n + m_k e_k^t$, ya que
 
@@ -274,7 +273,7 @@ L & = M_1^{-1} \cdots M_{n - 1}^{-1} &\\
 	& = I_n + m_1 e_1^t + \cdots + m_{n - 1} e_{n - 1}^t & \text{(pues } e_i^t m_j = 0 \text{ si } i \leq j \text{)}
 \end{align*}
 
-En definitiva $A = LU$ con $L = \begin{pmatrix} 
+En definitiva $A = LU$ con $L = \begin{pmatrix}
 1 			& \cdots 	& 0 				& \cdots 	& 0 \\
 m_{21} 		& \ddots 	& 0 				& \cdots 	& 0 \\
 \vdots 		& 			& 1 				& 			& \vdots\\
@@ -370,7 +369,7 @@ donde $u = \begin{pmatrix}a_{21} \\ \vdots \\ a_{n1} \end{pmatrix}$, $v^t = (a_{
 
 \[\left(\begin{array}{c|c}
 1 & 0 \cdots 0\\ \hline
--u / a_{11} & I_{n - 1} 
+-u / a_{11} & I_{n - 1}
 \end{array}\right)
 \left(\begin{array}{c|c}
 a_{11} & v^t\\ \hline
@@ -380,7 +379,7 @@ u & A_{n - 1}
 a_{11} & v^t\\ \hline
 0 & \\
 \vdots & -uv^t / a_{11} + A_{n - 1}\\
-0 & 
+0 &
 \end{array}\right)\]
 
 Veamos que el bloque $B = -uv^t / a_{11} + A_{n - 1}$ es una matriz e. d. d. f. Por comodidad supondremos que los índices de las matrices de dimensión $(n - 1) \times (n - 1)$ que estamos considerando corren de 2 hasta $n$. Si $2 \leq i, j \leq n$ son cualesquiera entonces
@@ -416,7 +415,7 @@ Que es lo que queríamos probar. Entonces, por hipótesis inductiva, $B$ admite 
 
 \[L = \left(\begin{array}{c|c}
 1 & 0 \cdots 0\\ \hline
-v / a_{11} & L_{n - 1} 
+v / a_{11} & L_{n - 1}
 \end{array}\right)
 \hspace{0.5cm}
 U = \left(\begin{array}{c|c}
@@ -617,7 +616,7 @@ A = \begin{pmatrix}
 a_{11} & \cdots & a_{n1} \\
 \vdots & \ddots & \vdots \\
 a_{n1} & \cdots & a_{nn}
-\end{pmatrix} = 
+\end{pmatrix} =
 \begin{pmatrix}
 \ell_{11} & 0 & \cdots & 0 \\
 \ell_{21} & \ell_{22} & \cdots & 0 \\
