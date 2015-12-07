@@ -729,5 +729,16 @@ $\ell_{11} = \sqrt{a_{11}}$;\\
 
 La complejidad del algoritmo es cúbica, que es la misma que la de LU. Sin embargo, en términos prácticos el cómputo de la factorización de Cholesky resulta ser el doble de rápido que el de LU. Además, al igual que LU, permite resolver eficientemente el problema de la resolución sucesiva de sistemas de misma matriz $A$.
 
+\begin{propo}
+	Sea $A \rn{m}{n}$. Entonces tanto $A^tA$ como $AA^t$ son matrices simetricas definidas positivas.
+
+	\begin{proof} Veamos que se cumple para $A^tA$, ya que para $AA^t$ es análogo.
+		\begin{itemize}
+			\item Simétrica: $(A^tA)^t = A^t(A^t)^t = A^tA$.
+			\item Definida positiva: $\forall\ x \neq 0 \in \R^{n},\ x^tA^tAx = (Ax)^tAx = ||Ax||_{2}^{2} > 0$, ya que $x \neq 0$.
+		\end{itemize}
+	\end{proof}
+\end{propo}
+
 \subsection{Estabilidad numérica de Cholesky}
 A diferencia de LU, Cholesky no depende de pivoteos, manteniendo así el error acotado. El único problema que puede sufrir esta escritura es la presencia del cómputo de raíces cuadradas. Si bien los números a los que se les toma raíz son siempre positivos, si éstos son suficientemente pequeños se pueden tornar negativos a lo largo del cómputo, debido al error de redondeo, siendo imposible continuar con el algoritmo. Pese a que ésto sólo sucede en matrices muy mal condicionadas, para evitarlo puede optarse por sumarle a la matriz $A$ otra matriz diagonal con entradas de valor absoluto chico, y así reforzar su condición de definida positiva. La desventaja en este caso es que se pierde precisión en el resultado.
