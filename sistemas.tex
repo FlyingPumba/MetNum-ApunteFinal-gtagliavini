@@ -122,17 +122,17 @@ a_{n1}^{(k)} & \cdots & a_{nn}^{(k)} & b_n^{(k)}
 
 a la matriz ampliada luego de $k$ pasos del algoritmo. Inicialmente, asumamos que $a_{(k+1)(k+1)}^{(k)} \neq 0$ para todo $k$. La entrada es $M^{(0)} = \left(\begin{array}{c|c}A & b\end{array}\right)$. En el primer paso, el algoritmo de eliminación gaussiana fuerza, mediante operaciones de filas, la aparición de ceros en la primer columna, debajo de la diagonal,
 
-\texttt{Paso 1:} $F_i \leftarrow F_i - \frac{a_{i1}^{(0)}}{a_{11}^{(0)}}F_1$ para $i = 2, \cdots, n$
+\texttt{Paso 1:} $F_i \leftarrow F_i - \dfrac{a_{i1}^{(0)}}{a_{11}^{(0)}}F_1$ para $i = 2, \cdots, n$
 
-\texttt{Paso 2:} $F_i \leftarrow F_i - \frac{a_{i2}^{(1)}}{a_{22}^{(1)}}F_2$ para $i = 3, \cdots, n$
+\texttt{Paso 2:} $F_i \leftarrow F_i - \dfrac{a_{i2}^{(1)}}{a_{22}^{(1)}}F_2$ para $i = 3, \cdots, n$
 
 En el paso $k < n$, colocamos ceros en la columna $k$, debajo de la diagonal,
 
-\texttt{Paso k:} $F_i \leftarrow F_i - \frac{a_{ik}^{(k - 1)}}{a_{kk}^{(k - 1)}}F_k$ para $i = k + 1, \cdots, n$
+\texttt{Paso k:} $F_i \leftarrow F_i - \dfrac{a_{ik}^{(k - 1)}}{a_{kk}^{(k - 1)}}F_k$ para $i = k + 1, \cdots, n$
 
 El último será el
 
-\texttt{Paso n - 1:} $F_i \leftarrow F_i - \frac{a_{i(n-1)}^{(n-2)}}{a_{(n-1)(n-1)}^{(n-2)}}F_{n - 1}$ para $i = n$
+\texttt{Paso n - 1:} $F_i \leftarrow F_i - \dfrac{a_{i(n-1)}^{(n-2)}}{a_{(n-1)(n-1)}^{(n-2)}}F_{n - 1}$ para $i = n$
 
 El invariante fundamental de este proceso es que al principio del paso $k$, las primeras $k - 1$ columnas tienen únicamente ceros debajo de la diagonal. Al concluir los $n - 1$ pasos obtendremos la matriz $M^{(n - 1)}$ que es triangular superior.
 
@@ -154,7 +154,7 @@ Podemos relajar levemente la hip'otesis $a_{(k+1)(k+1)}^{(k)} \neq 0$ para cada 
 		}
 	}{
 		\For{$i$ = $k + 1$ \KwTo $n$}{
-			$m_{ik} = \frac{a_{ik}}{a_{kk}}$\;
+			$m_{ik} = \dfrac{a_{ik}}{a_{kk}}$\;
 			$F_i \leftarrow F_i - m_{ik} F_k$\;
 		}
 	}
@@ -186,7 +186,7 @@ Toda matriz $A \in \mathbb{R}^{n \times n}$ admite eliminación gaussiana con pi
 
 \subsection{Pivoteo parcial}
 
-Los coeficientes $m_{ik}$ de cada paso dependen de $a_{ik}^{(k - 1)}$ y $a_{kk}^{(k - 1)}$ que son resultados de operaciones realizadas a lo largo de las iteraciones $1, \cdots, k - 1$ y que, en consecuencia, acarrean un error de redondeo. Si al computar el cociente $\frac{a_{ik}^{(k - 1)}}{a_{kk}^{(k - 1)}}$ resulta que el divisor $a_{kk}^{(k - 1)}$ es un número con valor absoluto pequeño, el error que acumulaba $a_{ik}$ se ve amplificado. Por esta razón, es deseable que $a_{kk}$ tenga valor absoluto lo más grande posible. Con este objetivo se implementa la estrategia de \emph{pivoteo parcial}: al comienzo del $k$-ésimo paso, se permuta la fila $k$ con alguna fila $i_0 \geq k$ tal que $|a_{i_0k}^{(k - 1)}| = \max\limits_{k \leq i \leq n} |a_{ik}^{(k - 1)}|$.
+Los coeficientes $m_{ik}$ de cada paso dependen de $a_{ik}^{(k - 1)}$ y $a_{kk}^{(k - 1)}$ que son resultados de operaciones realizadas a lo largo de las iteraciones $1, \cdots, k - 1$ y que, en consecuencia, acarrean un error de redondeo. Si al computar el cociente $\dfrac{a_{ik}^{(k - 1)}}{a_{kk}^{(k - 1)}}$ resulta que el divisor $a_{kk}^{(k - 1)}$ es un número con valor absoluto pequeño, el error que acumulaba $a_{ik}$ se ve amplificado. Por esta razón, es deseable que $a_{kk}$ tenga valor absoluto lo más grande posible. Con este objetivo se implementa la estrategia de \emph{pivoteo parcial}: al comienzo del $k$-ésimo paso, se permuta la fila $k$ con alguna fila $i_0 \geq k$ tal que $|a_{i_0k}^{(k - 1)}| = \max\limits_{k \leq i \leq n} |a_{ik}^{(k - 1)}|$.
 
 Cuanto mayor sea el pivote, más pequeño será $m_{ik}$ y en consecuencia la operación  $F_i \leftarrow F_i - m_{ik}F_k$ sobre la matriz ampliada del sistema no hará variar sus entradas en gran medida. Intuitivamente, la variación del valor absoluto de los elementos de la matriz ampliada a lo largo de las iteraciones es una medida de la efectividad del pivoteo parcial. En este sentido definimos lo siguiente.
 
@@ -327,6 +327,8 @@ Entonces $U_1 U_2^{-1} = L_1^{-1} L_2$, siendo $U_1 U_2^{-1}$ triangular superio
 En general, la factorización LU de una matriz no es única. Por ejemplo, la matriz nula admite infinitas factorizaciones LU.
 \end{obs}
 
+
+
 \subsubsection{Aplicación}
 Supongamos que dada una matriz $A$ con factorización LU y vectores $b_1, \cdots, b_k$ queremos calcular una solución de $Ax = b_i$ para cada $i = 1, \cdots, k$. Si usáramos el algoritmo de eliminación gaussiana junto con backward substitution para resolver cada uno de los sistemas, tendríamos un costo de $\mathcal{O}(n^3)$ por cada sistema.
 
@@ -432,6 +434,30 @@ Notemos que $L$ es triangular inferior con unos en la diagonal y $U$ es triangul
 \end{propo}
 
 \begin{propo}
+Si $A \in \mathbb{R}^{n \times n}$ es e. d. d. f. entonces $A$ es no singular (inversible).
+
+\begin{proof}
+Por absurdo, supongamos que $A$ es singular.
+
+Entonces, $\exists\ \hat{x} \neq 0 /\ A\hat{x} = 0$.
+Sea $|\hat{x}_k| = \max_{1 \leq i \leq n}{|\hat{x}_i|} > 0$, ya que $\hat{x} \neq 0$.
+
+Luego,
+\begin{align*}
+A\hat{x} = 0 &\implies a_{k1}\hat{x}_1 + \dots + a_{kk}\hat{x}_k + \dots + a_{kn}\hat{x}_n = 0 \\
+&\iff a_{kk}\hat{x}_k = - \sum_{\substack{j = 1\\ j \neq k}}^{n}{a_{kj}\hat{x}_j} \\
+&\iff |a_{kk}\hat{x}_k| = |- \sum_{\substack{j = 1\\ j \neq k}}^{n}{a_{kj}\hat{x}_j}|
+	\leq \sum_{\substack{j = 1\\ j \neq k}}^{n}{|a_{kj}||\hat{x}_j|} \\
+&\iff |a_{kk}||\hat{x}_k| \leq \sum_{\substack{j = 1\\ j \neq k}}^{n}{|a_{kj}||\hat{x}_j|} \\
+&\overset{\hat{x}_k \neq 0}{\iff} |a_{kk}| \leq \sum_{\substack{j = 1\\ j \neq k}}^{n}{|a_{kj}|\frac{|\hat{x}_j|}{|\hat{x}_k|}}
+	\leq \sum_{\substack{j = 1\\ j \neq k}}^{n}{|a_{kj}|}
+\end{align*}
+
+Absurdo, ya que $A$ era e. d. d. f., que viene de suponer que $A$ es singular.
+\end{proof}
+\end{propo}
+
+\begin{propo}
 \label{propo:lu}
 
 Sea $A \in \mathbb{R}^{n \times n}$ inversible. Entonces $A$ tiene factorización LU si y sólo si sus $n$ menores principales son no nulos.
@@ -511,6 +537,23 @@ Haciendo la multiplicación es fácil ver que $A = LU$, que es lo que queríamos
 
 \end{proof}
 \end{propo}
+
+\subsection{Matrices banda}
+
+Decimos que $A \rn{n}{n}$ es una matriz banda $p,q$ si si todos sus elementos
+son cero fuera de una zona diagonal cuyo rango se determina por las constantes $p$ y $q$:
+$$a_{i,j}=0 \quad \text{si}\quad j<i-p \quad\text{ o }\quad j>i+q; \quad p, q > 0.$$
+
+Los valores $p$ y $q$ son el ''semiancho'' de banda izquierdo y derecho respectivamente. El ''ancho de banda'' de una matriz es $p + q + 1$, y se puede definir como el número menor de diagonales adyacentes con valores no nulos.
+
+Una matriz banda con $p$ = $q$ = 0 es una matriz diagonal
+
+Una matriz banda con $p$ = $q$ = 1 es una matriz tridiagonal; cuando $p$ = $q$ = 2 se tiene una matriz pentadiagonal y así sucesivamente.
+
+\begin{obs}
+	Si $A$ es una matriz banda $p,q$ y tiene factorización $LU$, entonces
+	$L$ tiene $p$ bandas, y $U$ tiene $q$ bandas.
+\end{obs}
 
 \subsection{Matrices simétricas definidas positivas y factorización de Cholesky}
 
