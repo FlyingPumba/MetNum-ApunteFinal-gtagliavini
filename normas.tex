@@ -55,6 +55,48 @@ Si $F : \mathbb{R}^{n \times n} \to \mathbb{R}$ es una norma matricial y $f : \m
 para todos $A \in \mathbb{R}^{n \times n}$, $x \in \mathbb{R}^n$.
 \end{defi}
 
+\begin{propi} Desigualdad de Cauchy-Schwarz-Bunyakovsky: Sean $x,y \in \R^{n}$.
+    Entonces, $|x^ty| \leq ||x||_2 ||y||_2$
+
+    \begin{proof}
+        TODO
+    \end{proof}
+\end{propi}
+
+\begin{propi} Sea $x \in \R^{n}$. Entonces, vale que:
+    \begin{itemize}
+        \item $||x||_{\infty} \leq ||x||_1$
+            \begin{proof} Quiero ver que
+                \begin{align*}
+                    ||x||_{\infty} = \max\limits_{1 \leq i \leq n}|x_i|
+                    = |x_k| &\leq \sum_{i = 1}^{n} |x_i| = ||x||_1\\
+                    \iff |x_k| &\leq |x_k| + \sum_{\substack{i = 1\\ i \neq k}}^{n} |x_i|
+                \end{align*}
+                Que vale ya que $\sum\limits_{\substack{i = 1\\ i \neq k}}^{n} |x_i| \geq 0$.
+            \end{proof}
+        \item $||x||_1 \leq n||x||_{\infty}$
+            \begin{proof}
+                \begin{align*}
+                    ||x||_1 = \sum_{i = 1}^{n} |x_i|
+                    &\leq \sum_{i = 1}^{n} \max\limits_{1 \leq j \leq n}|x_j| \\
+                    &= n\max\limits_{1 \leq j \leq n}|x_j| \\
+                    &= n||x||_{\infty}
+                \end{align*}
+            \end{proof}
+        \item $||x||_{\infty} \leq ||x||_2$
+            \begin{proof}
+                \begin{align*}
+                    ||x||_{\infty} &\leq ||x||_2 \\
+                    \iff \max\limits_{1 \leq i \leq n}|x_i| &\leq \sqrt{(x_1)^2 + \dots + (x_n)^2} \\
+                    \iff |x_k| &\leq \sqrt{(x_1)^2 + \dots + (x_n)^2} \\
+                    \iff |x_k|^2 &\leq (x_1)^2 + \dots + (x_n)^2 \\
+                    \iff 0 &\leq (x_1)^2 + \dots + (x_{k_1})^2 + (x_{k+1})^2 + \dots + (x_n)^2 \\
+                \end{align*}
+                Que vale ya que $\forall\ 1 \leq i \leq n,\ (x_i)^2 \geq 0$.
+            \end{proof}
+    \end{itemize}
+\end{propi}
+
 \subsection{Normas inducidas}
 
 \begin{defi}
