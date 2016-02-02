@@ -560,8 +560,33 @@ Una matriz banda con $p$ = $q$ = 1 es una matriz tridiagonal; cuando $p$ = $q$ =
 \subsubsection{Matrices simétricas y definidas positivas}
 
 \begin{defi}
+Una matriz $A \in \mathbb{R}^{n \times n}$ se dice simétrica si $A = A^t$.
+\end{defi}
+
+\begin{defi}
+Una matriz $A \in \mathbb{R}^{n \times n}$ se dice antisimétrica si $A^t = -A$.
+\end{defi}
+
+\begin{defi}
 Una matriz $A \in \mathbb{R}^{n \times n}$ se dice definida positiva si $x^tAx > 0$ para todo $x \neq 0$.
 \end{defi}
+
+\begin{propo}
+	$\forall\ A \in \mathbb{R}^{n \times n}$, existen $S$ matriz simétrica y $T$
+	matriz antisimétrica tales que $A = S + T$.
+
+	\begin{proof} $Sea A \in \mathbb{R}^{n \times n}$. Entonces, busco $S$ y $T$ tales que:
+	\begin{itemize}
+		\item $A = S + T$
+		\item $A^t = S^t + T^t = S - T \iff A^t + T = S$
+	\end{itemize}
+
+	Luego, $A = A^t + T + T \iff A - A^t = 2T \iff T = \frac{1}{2}(A - A^t)$.
+
+	Por lo que, $A = S + \frac{1}{2}(A - A^t) \iff S = A - \frac{1}{2}A +\frac{1}{2}A^t
+		\iff S = \frac{1}{2}(A + A^t)$.
+	\end{proof}
+\end{propo}
 
 \begin{propo}
 Si $A \in \mathbb{R}^{n \times n}$ es definida positiva entonces es inversible.
@@ -598,10 +623,6 @@ Si $A \in \mathbb{R}^{n \times n}$ es definida positiva entonces admite factoriz
 Por la última proposición, todas las submatrices principales son inversibles. Pero vimos que toda matriz que cumple esto, admite factorización LU. Además por ser $A$ inversible, la escritura es única.
 \end{proof}
 \end{coro}
-
-\begin{defi}
-Una matriz $A \in \mathbb{R}^{n \times n}$ se dice simétrica si $A = A^t$.
-\end{defi}
 
 \begin{propo}
 \label{propo:ldl}
